@@ -1,0 +1,48 @@
+@()
+<div class="tab-pane" id="rappel">
+	<div class="col-md-10">
+	<div class="col-md-12"  >
+			<div class='col-md-7' align="left">
+				<input id="select_all_notis" type='checkbox' />
+				<b>Tous Choisir</b>
+				
+			</div>
+			<div class='col-md-5' align="right">
+				<button id="deleteListNotis" class="btn btn-danger">Supprimer</button>
+			</div>
+		</div>
+		<table class="table-condensed">
+			@for(notis <- Notification.findNotificationsByUser(controllers.Application.getSessionUser())){
+				<tr>
+				<td class="col-md-7">
+					<input id="@notis.idNotification" type='checkbox' class="noti_check_box" /><tt><pre>@notis.content</pre></tt></td>
+				<td class="col-md-2">@notis.noteDate</td>
+				<td class="col-md-2"><button class="btn btn-primary btn-md" data-toggle="modal" data-target="#noti@notis.idNotification">
+							Consulter
+						</button></td>
+						<td><a href="" onclick="javascript:del('@routes.MessageController.deleteNoti(notis.idNotification)')">Supprimer</a></td>
+			</tr>
+
+<div class="modal fade" id="noti@notis.idNotification" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					<h4 class="modal-title" id="myModalLabel">Date: @notis.noteDate</h4>
+				</div>
+				<div class="modal-body">
+					@notis.content
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					
+				</div>
+			</div>
+		</div>
+	</div>
+
+				}
+				
+		</table>	
+	</div>
+</div>

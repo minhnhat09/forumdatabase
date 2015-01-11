@@ -1,0 +1,163 @@
+@(thread:models.Thread, currentPage: com.avaje.ebean.Page[Post])
+<div class='threadcomment container'>
+	<div class='row'>
+		<div class="col-md-2 leftpanel ">
+			Nb lues: <b>@thread.viewCount</b> | Nb Co: <b>@currentPage.getTotalRowCount</b>
+		</div>
+		<div class="col-md-10 rightpanel">
+			<div class='row'>
+				<div class='col-md-10'>
+					<span style="font-size:150%;">@thread.threadName</span>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+</div>
+<div class='threadcomment container'>
+	<div class='row'>
+		<div class="col-md-2 leftpanel bottompanel">
+			<!-- @thread.author.userName -->
+		</div>
+		<div class="col-md-10 rightpanel bottompanel">
+			<div class='row'>
+				<div class='col-md-11'>
+					Publicie le: <b>@("%1$td/%1$tm/%1$tY".format(thread.publicDate))</b> à <b>@("%1$tH:%1$tM:%1$tS ".format(thread.publicDate))</b>
+				</div>
+				<div class='col-md-1'>
+					<a href="@routes.UserController.userHome(thread.author)">@thread.author.userName</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class='row'>
+		<div class="col-md-2 leftcontentpanel" align="center">
+			<img 
+src="@routes.Assets.at("imgs/" + "users/" + thread.author.userName + "/avatar/" + thread.author.avatar)"
+
+			alt="..." class="img-thumbnail" width="100" height="100">
+			<div class='row' align="center">
+				<a href="@routes.UserController.userHome(thread.author)">@thread.author.userName</a>
+			</div>
+			<div class='row'>
+				<div class="col-md-6" align="left">
+					Titre:
+				</div>
+				<div class="col-md-6" align="right">
+					<b>@User.showTitle(thread.author)</b>
+				</div>
+			</div>
+			<div class='row'>
+				<div class="col-md-6" align="left">
+					Sujet:
+				</div>
+				<div class="col-md-6" align="right">
+					<b>@models.Thread.countThreadsByUser(thread.author.userName)</b>
+				</div>
+			</div>
+			<div class='row bottomusercontact'>
+				<div class="col-md-12" align="center">
+					<button id="addContactThread"class='btn btn-info btn-sm' value="@thread.author.userName">
+						<span class="glyphicon glyphicon-folder-open"></span>Ajout aux contacts</button>
+				</div>
+			</div>
+			<div class='row bottomusercontact'>
+				<div class="col-md-12" align="center">
+					<a href="@routes.MessageController.writeMessageWithUser(thread.author)" class='btn btn-info btn-sm'>
+						<span class="glyphicon glyphicon-envelope"></span>Envoyer un message</a>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-10 rightcontentpanel">
+			<div class='row threadcontent'>
+				<div class="col-md-12">
+					@Html(thread.content)
+				</div>
+					<!-- <div class='col-md-12'>
+						<img src="@routes.Assets.at("imgs/Renault_1.jpg")" alt="..." class="img-thumbnail">
+					</div> -->
+				
+				<br>
+				<blockquote>
+					<p><h2>Bibliographie</h2></p>
+					<table class="col-md-12" border="2px solid red;">
+						<tr>
+							<th>Auteur</th>
+							<th>Content</th>
+							<th>Lien</th>
+						</tr>
+					@for(bibli <- Bibliography.findListByThread(thread.idThread)){
+						<tr>
+							<td class="col-md-2">@bibli.author</td>
+							<td class="col-md-7">@bibli.content</td>
+							<td class="col-md-3"><a target="_blank">@bibli.lien</td>
+						</tr>
+					}
+						
+					</table>
+				</blockquote>
+				
+			</div>
+			
+			<div class='row threadfooter'>
+				<div class='row'>
+					<div class='col-md-2'>
+					</div>
+					<div class='col-md-10' align="right">
+					
+						<!--Social Network Icon-->
+						<a id="popupFB" href="https://www.facebook.com/sharer/sharer.php?u=@routes.ThreadController.threadHome(thread)"><img class="img-thumbnail" src="@routes.Assets.at("imgs/sharelogo/facebook.png")" alt="..."></a>
+						<a id="popupLK" href="http://www.linkedin.com/shareArticle?mini=true&url=@routes.ThreadController.threadHome(thread)&title=@thread.threadName"><img class="img-thumbnail" src="@routes.Assets.at("imgs/sharelogo/linkedin.png")" alt="..."></a>
+						<a id="popupTW" href="http://twitter.com/share?url=@routes.ThreadController.threadHome(thread)&via=bef_renault"><img class="img-thumbnail" src="@routes.Assets.at("imgs/sharelogo/twitter.png")" alt="..."></a>
+						<a id="popupGG" href="https://plus.google.com/share?url=@routes.ThreadController.threadHome(thread)"><img class="img-thumbnail" src="@routes.Assets.at("imgs/sharelogo/googleplus.png")" alt="..."></a>
+				<!--		<a id="popupGG" href="javascript:window.print()"><img src="@routes.Assets.at("icon/googleplus.png")" alt=""></a> -->
+					
+						<a href="mailto:?subject=@thread.threadName&body="><img class="img-thumbnail" src="@routes.Assets.at("imgs/sharelogo/sharethis.png")" alt="..."></a>	
+						
+						<button class='btn btn-info' id="favori">
+							<span class="glyphicon glyphicon-star"></span>Mise en Favori
+							<span style="color:red;">@thread.favoriteCount</span>
+						</button>
+						<button class='btn btn-info' id="like">
+							<span class="glyphicon glyphicon-thumbs-up"></span>Like
+							<span style="color:red;">@thread.likeCount</span>
+						</button>
+						<button class='btn btn-info' id="dislike">
+							<span class="glyphicon glyphicon-thumbs-down"></span>Dislike
+							<span style="color:red;">@thread.dislikeCount</span>
+						</button>
+
+						<button class='btn btn-info'>Note
+							<span style="color:red;">@thread.rating/5</span>
+						</button>
+					</div>
+				</div>
+
+				<div class='row'>
+					<div class='col-md-12'>
+						<a href="@routes.ThreadController.newComment(thread)" class='btn btn-success comment'>
+							<span class="glyphicon glyphicon-edit"></span>Répondre à la dicussion
+						</a>
+						<!-- <a href="#" class="btn btn-warning editThread">
+							<span class="glyphicon glyphicon-ok"></span>Éditer
+						</a> -->
+						@if(models.Thread.isThreadOwner(thread, controllers.Application.getSessionUser())) {
+							<a class="btn btn-warning" href="@routes.ThreadController.editThread(thread.idThread.toString)" id="@thread.idThread">
+
+								<span class="glyphicon glyphicon-ok"></span>Éditer</a>
+							
+							}
+					</div>
+				</div>
+				<hr>
+				<div class="row">
+					<div class="col-md-12">
+						<blockquote>
+						<h4>@thread.author.signature</h4>
+					</blockquote>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

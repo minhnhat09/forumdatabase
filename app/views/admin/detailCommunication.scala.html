@@ -1,0 +1,25 @@
+@(communicationForm: Form[models.Communication], searchForm:Form[controllers.SearchController.Search])
+
+@import helper._
+@import helper.twitterBootstrap._
+
+
+@main("Ajouter une nouvelle", searchForm) {
+    
+    <h1>Ajouter nouvelle communication</h1>
+    
+    @helper.form(routes.AdminController.saveCommunication(), 'class -> "form-group") {
+       
+        <fieldset>
+        	<input type="hidden" value="@communicationForm("idCommunication").valueOr("0")" name="idCommunication"/>
+            @helper.inputText(communicationForm("nameCommunication"), '_label -> "Information Communication", 
+            	'class -> "form-control", 'placeholder -> "Information Communication", 'style ->"width:50%" )
+            @helper.textarea(communicationForm("content"), '_label -> "Contenu de la pub",
+                'class -> "form-control", 'placeholder -> "Contenu de la pub", 'rows -> 5)
+        </fieldset>
+        <div class="actions">
+            <input type="submit" value="Créer nouvelle communication" class="btn btn-primary"> 
+            <a href="@routes.AdminController.adminHome()" class="btn btn-danger">Annuler</a> 
+        </div>
+    }
+ }

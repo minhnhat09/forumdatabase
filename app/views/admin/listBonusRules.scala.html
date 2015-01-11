@@ -1,0 +1,118 @@
+@(currentPage: com.avaje.ebean.Page[BonusRule], searchForm:Form[controllers.SearchController.Search]) @adminMain(searchForm){
+
+
+	<!-- Button -->
+	<div class='row' align="right">
+
+	</div>
+	<!-- Members -->
+	<div class='row' style="margin-top:20px;padding-top:10px; border-top: 1px dashed rgba(86, 61, 124, 0.2);">
+
+		<div class="col-md-12">
+			<div class='row'>
+
+				<div class="col-md-6">
+					<!-- <input id="select_all_recompenses" type='checkbox' />
+					<b>Tous Choisir</b> -->
+					<a class="btn btn-success" href="@routes.AdminController.newBonusRule()">Nouveau règlement</a>
+				</div>
+				<div class="col-md-6" align="right">
+					<a href="@routes.GiftController.giftHome()" target="_blank">
+						<button type="submit" class="btn btn-primary">Mise à jour des cadeaux</button>
+					</a>
+					<!-- <div class="btn-group">
+						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+							Opération
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" role="menu">
+							<li>
+								<a href="#">Modifier</a>
+							</li>
+							<li>
+								<a href="#">Supprimer</a>
+							</li>
+						</ul>
+					</div> -->
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class='row'>
+		<div class="col-md-12">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th></th>
+						<th>Règlement</th>
+						<th>Points Experiences</th>
+						<th>Bonus</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					@for(bonusRule
+					<- currentPage.getList()){ <tr>
+						<td>
+							<input class="recompense_check_box" type='checkbox' />
+						</td>
+						<td>@bonusRule.name</td>
+						<td>@bonusRule.xp</td>
+						<td>@bonusRule.bonus</td>
+						<td>
+							<div class="btn-group">
+								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+									Opération
+									<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu" role="menu">
+									<li>
+										<a href="@routes.AdminController.modifyBonusRule(bonusRule)">Modifier</a>
+									</li>
+								<!-- 	<li>
+										<a href="#" onclick="javascript:del('@routes.AdminController.deleteBonusRule(bonusRule.idBonus.toString)')">Supprimer</a>
+									</li> -->
+								</ul>
+							</div>
+						</td>
+						</tr>
+						}
+
+				</tbody>
+			</table>
+
+		</div>
+	</div>
+<script>
+
+$(document).ready(function(){
+
+		$("#select_all_recompenses").click(function(){
+			if(this.checked){
+				$(".recompense_check_box").each(function(){
+					this.checked = true;
+				})
+			}else{
+				$(".recompense_check_box").each(function(){
+					this.checked = false;
+				})
+
+			}
+		});
+	});
+
+	function del(urlToDelete) {
+		$.ajax({
+			url: urlToDelete,
+			type: 'DELETE',
+			success: function(results) {
+				// Refresh the page
+				location.reload();
+				
+			}
+		});
+	}
+</script>
+
+}
+

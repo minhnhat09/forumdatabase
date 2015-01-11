@@ -1,0 +1,30 @@
+@(searchForm:Form[controllers.SearchController.Search])
+@main("Forum Accueil", searchForm){ 
+
+
+@for(service
+<- Service.findAllServices){ 
+<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title" align="left">@service.serviceName</h3>
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						@for(app
+					<- service.apps){  <div class="col-md-4" align="center">
+							<div class="row">
+								<a href="@routes.ForumController.forumHome(app)">
+								<img src="@routes.Assets.at("imgs/applications/app" + app.idApp + "/avatar/" + app.avatarApp)" width="50" height="50">@app.appName</a>
+							</div>
+							<hr>
+					</div>
+					}
+				</div>
+
+		</div>
+	</div>
+}
+ }
+
+
+

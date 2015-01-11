@@ -1,0 +1,110 @@
+#communication {
+	border-style: solid;
+	boder-width: 1px;
+}
+#section {
+	position: relative;
+	background: white;
+	font-size: .9em;
+	color: #526472;
+	float: left;
+}
+#section ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+#section li {
+	float: left;
+	padding-left: 25px;
+}
+#section a {
+	padding-right: 10px;
+	no-repeat right center;
+	color: #526472;
+	margin-right: 5px;
+}
+.headsection {
+	margin-bottom: 0;
+}
+#threadlisting {
+	margin-top: 25 px;
+}
+.threadlayout: not(.dropdown-menu) {
+	background: white;
+	font-size: .9em;
+	color: #526472;
+	float: left;
+}
+.threadlayout #outul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+.threadlayout .title_thread_left {
+	float: left;
+	padding-left: px;
+}
+.threadlayout .title_thread_left: nth-of-type(1) {
+	float: left;
+	padding-left: 15px;
+}
+.threadlayout .title_thread_left: nth-of-type(2) {
+	float: left;
+	padding-left: 55px;
+}
+.threadlayout .title_thread_left: nth-of-type(3) {
+	float: left;
+	padding-left: 300px;
+}
+.threadlayout .title_thread_left: nth-of-type(4) {
+	float: left;
+	padding-left: 55px;
+}
+.threadlayout .title_thread_left: nth-of-type(5) {
+	float: left;
+	padding-left: 55px;
+}
+.threadlayout .title_thread_left: nth-of-type(6) {
+	float: left;
+	padding-left: 55px;
+}
+.threadlayout a {
+	padding-right: 10px;
+	no-repeat right center;
+	color: #526472;
+	margin-right: 5px;
+}
+.threadlayout td {
+	column-width: 120px;
+}
+.threadlayout td: nth-child(n+1) {
+	column-width: 50px;
+	min-width: 50px;
+}
+.threadlayout td: nth-of-type(2) {
+	column-width: 400px;
+	min-width: 400px;
+	max-width: 400px;
+}
+.threadlayout td: nth-of-type(3) {
+	column-width: 120px;
+	min-width: 120px;
+	text-align: center;
+}
+.threadlayout td: nth-of-type(4) {
+	column-width: 120px;
+	min-width: 120px;
+	text-align: center;
+}
+.threadlayout td: nth-of-type(5) {
+	column-width: 120px;
+	min-width: 120px;
+	text-align: center;
+}
+.threadlayout td: nth-of-type(6) {
+	text-align: center;
+}
+.subtitle {
+	font-size: x-small;
+}

@@ -1,0 +1,267 @@
+@(searchForm:Form[controllers.SearchController.Search])
+@adminMain(searchForm){
+<div class='row' style="margin-top:20px;padding-top:10px; border-top: 1px dashed rgba(86, 61, 124, 0.2);">
+
+</div>
+<div class='row'>
+	<div class="col-md-12">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>Sujet</th>
+					<th>Service</th>
+					<th>Application</th>
+					<th>Etiquette</th>
+					<th></th>
+				</tr>
+			</thead>
+			
+			<tbody>
+				<form method="POST" action="@routes.AdminController.export("themes")">
+					<tr>
+					<td>Les thèmes des post postés</td>
+					<td>
+						
+						<select class="form-control"style="width:120px;"  id="themeService" name="themeService">
+							
+
+							<option class="service" value="-1">All</option>
+
+
+							@for(service <- Service.findAllServices){
+							<option id="@service.idService" class="service" value="@service.idService">@service.serviceName</option>
+						}
+					</select>
+
+
+				</td>
+				<td>
+					<select id="themeApp" class="form-control" style="width:120px" name="themeApp">
+						<option class="blank" value="-1">All</option>
+
+					</select>
+				</td>
+				<td>
+					<select id="themeTag" class="form-control" style="width:120px" name="themeTag">
+						<option class="blank" value="-1">All</option>
+						@for(tag <- Tag.findListTag){
+						<option id="@tag.idTag" class="tag" value="@tag.idTag">@tag.tagTitle</option>
+					}
+				</select>
+			</td>
+			<td>
+				<input class='btn btn-primary' id="exportThemes" value="Export" type="submit">
+			</td>
+		</tr>
+				</form>
+				
+		
+
+
+
+<form method="POST" action="@routes.AdminController.export("notes")">
+<tr>
+			<td>Les notes sur les posts</td>
+			<td>
+				<select class="form-control" style="width:120px" id="noteService" name="noteService">
+					<option class="service" value="-1">All</option>
+					@for(service <- Service.findAllServices){
+					<option id="@service.idService" class="service" value="@service.idService">@service.serviceName</option>
+				}
+			</select>
+		</td>
+		<td>
+			<select id="noteApp" class="form-control" style="width:120px" name="noteApp">
+				<option class="blank" value="-1">All</option>
+			</td>
+			<td>
+				<select id="noteTag" class="form-control" style="width:120px" name="noteTag">
+					<option class="blank" value="-1">All</option>
+					@for(tag <- Tag.findListTag){
+					<option id="@tag.idTag" class="tag" value="@tag.idTag">@tag.tagTitle</option>
+				}
+			</select>
+		</td>
+		<td>
+			<input type="submit" value="Export" class='btn btn-primary' id="exportNotes">
+		</td>
+	</tr>
+
+</form>
+		
+
+
+
+
+<form method="POST" action="@routes.AdminController.export("likes")">
+	<tr>
+		<td>Les like/dislike sur les posts</td>
+		<td>
+			<select class="form-control" style="width:120px" id="likeService" name="likeService">
+				<option class="blank" value="-1">All</option>
+				@for(service <- Service.findAllServices){
+				<option id="@service.idService" class="service" value="@service.idService">@service.serviceName</option>
+			}
+		</select>
+	</td>
+	<td>
+		<select id="likeApp" class="form-control" style="width:120px" name="likeApp">
+			<option class="service" value="-1">All</option>
+		</select>
+	</td>
+	<td>
+		<select id="likeTag" class="form-control" style="width:120px" name="likeTag">
+			<option class="blank" value="-1">All</option>
+			@for(tag <- Tag.findListTag){
+			<option class="tag" id="@tag.idTag" value="@tag.idTag">@tag.tagTitle</option>
+		}
+	</select>
+</td>
+<td>
+	<input type="submit" value="Export" class='btn btn-primary' id="exportLikes">
+</td>
+</tr>
+</form>
+	
+
+</tbody>
+</table>
+</div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){
+
+	$("option.service").each(function(){
+		$(this).click(function(){
+			var idService = $(this).attr("value");
+			
+			if(idService == -1){
+				var contentOptionApp = "<option class='blank' value='-1'>All</option>";
+				$("select#themeApp").empty().append(contentOptionApp);
+					$("select#noteApp").empty().append(contentOptionApp);
+					$("select#likeApp").empty().append(contentOptionApp);
+			}else{
+				appRoutes.controllers.AdminController.getAppsByService(idService).ajax({
+				type: 'POST',
+				success: function(listApps) {
+					var contentOptionApp = "<option class='blank' value='-1'>All</option>";
+					contentOptionApp += listApps;
+					$("select#themeApp").empty().append(contentOptionApp);
+					$("select#noteApp").empty().append(contentOptionApp);
+					$("select#likeApp").empty().append(contentOptionApp);
+					}
+				});	
+			}
+			
+			
+		});
+	});
+
+	// $("#exportThemes").click(function(){
+		
+
+	// 	var e 		 = document.getElementById("themeService");
+	// 	var idService= e.options[e.selectedIndex].value;
+
+	// 	var e2		  = document.getElementById("themeApp");
+	// 	var idApp     = e2.options[e2.selectedIndex].value;
+
+	// 	var e3		  = document.getElementById("themeTag");
+	// 	var idTag 	  = e3.options[e3.selectedIndex].value;
+
+		
+
+	// 	var data = {
+	// 				'idService':idService,
+	// 				'idApp':idApp,
+	// 				'idTag':idTag
+	// 			}
+		
+	// 	appRoutes.controllers.AdminController.exportThemes().ajax({
+	// 		data:JSON.stringify(data),
+	// 		contentType:'application/json',
+	// 		type:'POST',
+	// 		success:function(result){
+				
+	// 		},
+	// 		error:function(result){
+	// 			alert("not ok");
+	// 		}
+	// 	})	;
+		
+	// });
+
+	// $("#exportNotes").click(function(){
+		
+
+	// 	var e 		 = document.getElementById("noteService");
+	// 	var idService= e.options[e.selectedIndex].value;
+
+	// 	var e2		  = document.getElementById("noteApp");
+	// 	var idApp     = e2.options[e2.selectedIndex].value;
+
+	// 	var e3		  = document.getElementById("noteTag");
+	// 	var idTag 	  = e3.options[e3.selectedIndex].value;
+
+	// 	alert(idService + idApp + idTag);
+
+	// 	var data = {
+	// 				'idService':idService,
+	// 				'idApp':idApp,
+	// 				'idTag':idTag
+	// 			}
+	// 			appRoutes.controllers.AdminController.exportNotes().ajax({
+	// 					data:JSON.stringify(data),
+	// 					contentType:'application/json',
+	// 					type:'POST',
+	// 					success:function(resultats){
+	// 						alert("Export susscès");
+	// 					},
+	// 					error:function(resultats){
+	// 						alert("Export échec");
+	// 					}
+	// 			});
+		
+	// });
+
+
+	// $("#exportLikes").click(function(){
+		
+
+	// 	var e 		 = document.getElementById("likeService");
+	// 	var idService= e.options[e.selectedIndex].value;
+
+	// 	var e2		  = document.getElementById("likeApp");
+	// 	var idApp     = e2.options[e2.selectedIndex].value;
+
+	// 	var e3		  = document.getElementById("likeTag");
+	// 	var idTag 	  = e3.options[e3.selectedIndex].value;
+
+	// 	alert(idService + idApp + idTag);
+
+	// 	var data = {
+	// 				'idService':idService,
+	// 				'idApp':idApp,
+	// 				'idTag':idTag
+	// 			}
+	// 			appRoutes.controllers.AdminController.exportLikes().ajax({
+	// 					data:JSON.stringify(data),
+	// 					contentType:'application/json',
+	// 					type:'POST',
+	// 					success:function(resultats){
+	// 						alert("Export susscès");
+	// 					},
+	// 					error:function(resultats){
+	// 						alert("Export échec");
+	// 					}
+	// 			});
+		
+	// });
+
+});
+
+
+
+
+</script>
+}

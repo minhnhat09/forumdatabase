@@ -1,0 +1,14 @@
+@(searchForm:Form[controllers.SearchController.Search])
+<!-- logo -->
+
+	<div class="container">
+		@logo()
+		@if(controllers.Application.isConnected()){
+			@loginBarConnected(searchForm)
+		}else{
+			@loginBar(searchForm)
+		}
+	</div>
+<br><br>
+@navigation()
+<!-- @breadcrumb() -->

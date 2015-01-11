@@ -1,0 +1,32 @@
+@(tagForm: Form[models.Tag], searchForm:Form[controllers.SearchController.Search])
+
+@import helper._
+@import helper.twitterBootstrap._
+
+
+@main("Ajouter une étiquette", searchForm) {
+    
+    <h1>Ajouter nouvelle étiquette</h1>
+    
+    @helper.form(routes.AdminController.saveTag(), 'class -> "form-group") {
+       
+        <fieldset>
+        	<input type="hidden" value="@tagForm("idTag").valueOr("0")" name="idTag"/>
+            @helper.inputText(tagForm("tagTitle"), '_label -> "Nom de l'étiquette", 
+            	'class -> "form-control", 'placeholder -> "Nom de l'étiquette", 'style ->"width:50%" )
+           <div class="form-group">
+                            <label class="col-md-12">* Category</label>
+                            <div class="col-md-12">
+                                <select class="selectpicker" name="category">
+                                    <option value="0">Pays</option>
+                                    <option value="1">Module</option>
+                                </select>
+                            </div>
+                        </div>
+        </fieldset>
+        <div class="actions">
+            <input type="submit" value="Créer nouveau titre" class="btn btn-primary"> 
+            <a href="@routes.AdminController.adminHome()" class="btn btn-danger">Annuler</a> 
+        </div>
+    }
+ }

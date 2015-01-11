@@ -1,0 +1,27 @@
+@(app:models.Application,currentPage:com.avaje.ebean.Page[models.Thread], searchForm:Form[controllers.SearchController.Search],currentSortBy: String, currentOrder: String)
+@main("Page Application", searchForm){
+<link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("css/forum.css")">
+@breadcrumbForum(app.appName)
+<div class="row">
+	<div class="col-xs-12 col-md-10">
+		@zoneModerator(app) @zoneSearch(app)  @zoneTag(app)
+		<div class="panel-body">
+			<div class="row">
+				
+				<div class="alert alert-success" style="margin:0">
+					<span class="glyphicon glyphicon-star"></span>Sujet en Post-it</div>
+				<table class="threadlayout table table-bordered">
+					@zoneSpin(app)
+				</table>
+				<div class="alert alert-success" style="margin:0">
+					<span class="glyphicon glyphicon-star"></span>Sujet</div>
+				<table class="threadlayout table table-bordered">
+					@zoneTitle(app, currentSortBy, currentOrder) @zoneSubject(app, currentPage) 
+				</table>
+			</div>
+		</div>
+		@zonePagination(app, currentPage)
+	</div>
+	@zoneCommunication()
+</div>
+}

@@ -1,0 +1,198 @@
+@(thread:models.Thread, currentPage: com.avaje.ebean.Page[Post], searchForm:Form[controllers.SearchController.Search])
+@main(thread.threadName, searchForm){
+<link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("css/thread.css")"> 
+  
+@breadcrumbThread(thread.application.appName, thread.application, thread.threadName)
+<!-- Service 1 -->
+<div class='row'>
+@zoneButton(thread)
+
+</div>
+<div class='row'>
+
+@zonePagination(thread, currentPage)
+</div>
+<br>
+<!-- first page -->
+@if(currentPage.getPageIndex == 0){
+@zoneFirstPost(thread, currentPage)
+@zoneComment(thread, currentPage)
+}else{
+
+@zoneComment(thread, currentPage)
+}
+<br/>
+<div class="row col-md-12">
+	<div class="col-md-3">
+		<a href="@routes.ThreadController.newComment(thread)"class="btn btn-success comment"><span class="glyphicon glyphicon-edit"></span>Répondre à la discussion</a>
+	</div>
+	<div class="col-md-9">@zonePagination(thread, currentPage)</div>
+</div>
+
+
+<script>
+	$(document).ready(function(){
+
+		//Behavior block subject
+		@if(thread.isBlocked){
+			$(".comment").hide();
+			$(".paneauBlock").show();
+		}else{
+			$(".comment").show();
+			$(".paneauBlock").hide();
+		}
+
+		if(@models.Thread.isThreadOwner(thread, controllers.Application.getSessionUser())){
+			$(".editThread").show();
+		}	
+		else{
+			$(".editThread").hide();
+		}
+
+		
+		
+		$("#note").click(function(){
+			var e 		 = document.getElementById("selectNote");
+			var noteUser = e.options[e.selectedIndex].value;
+			var data = {
+				'idUser':'@controllers.Application.getSessionUser',
+				'idThread':'@String.valueOf(thread.idThread)',
+				'note':noteUser
+			}
+			
+			appRoutes.controllers.ThreadController.noteThread().ajax({
+					data:JSON.stringify(data),
+					contentType:'application/json',
+					type:'POST',
+					success:function(resultats){
+						alert("Noter susscès");
+					},
+					error:function(resultats){
+						alert("Noter échec");
+					}
+			});
+		});
+
+		$("#favori").click(function(){
+			var data = {
+				'idUser':'@controllers.Application.getSessionUser',
+				'idThread':'@String.valueOf(thread.idThread)'
+			}
+			appRoutes.controllers.ThreadController.bookmarkThread().ajax({
+					data:JSON.stringify(data),
+					contentType:'application/json',
+					type:'POST',
+					success:function(resultats){
+						alert("Mise en favori susscès");
+					},
+					error:function(resultats){
+						alert("Mise en favori échec");
+					}
+			});
+		});
+
+		$("#like").click(function(){
+			var data = {
+				'idUser':'@controllers.Application.getSessionUser',
+				'idThread':'@String.valueOf(thread.idThread)'
+			}
+			appRoutes.controllers.ThreadController.likeThread().ajax({
+					data:JSON.stringify(data),
+					contentType:'application/json',
+					type:'POST',
+					success:function(resultats){
+						alert("Like susscès");
+					},
+					error:function(resultats){
+						alert("Like échec");
+					}
+			});
+		});
+
+		$("#dislike").click(function(){
+			var data = {
+				'idUser':'@controllers.Application.getSessionUser',
+				'idThread':'@String.valueOf(thread.idThread)'
+			}
+			appRoutes.controllers.ThreadController.dislikeThread().ajax({
+					data:JSON.stringify(data),
+					contentType:'application/json',
+					type:'POST',
+					success:function(resultats){
+						alert("Dislike susscès");
+					},
+					error:function(resultats){
+						alert("Dislike échec");
+					}
+			});
+		});
+
+
+		$("#addContactThread").each(function(){
+			$(this).click(function(){
+				var data = {
+					'idSender':"@controllers.Application.getSessionUser",
+					'idReceiver':"@thread.author.userName"
+				}
+				appRoutes.controllers.PersonController.sendRequest().ajax({
+						data:JSON.stringify(data),
+						contentType:'application/json',
+						type:'POST',
+						success:function(resultats){
+							alert("Demande envoyé");
+						},
+						error:function(resultats){
+							alert("Erreur!");
+						}
+				});
+
+			});
+		});
+	
+		$("button#addContactPost").each(function(){
+		$(this).click(function(){
+			var idReceiver = $(this).attr("value");
+			
+			var data = {
+					'idSender':"@controllers.Application.getSessionUser",
+					'idReceiver':idReceiver
+				}
+				appRoutes.controllers.PersonController.sendRequest().ajax({
+						data:JSON.stringify(data),
+						contentType:'application/json',
+						type:'POST',
+						success:function(resultats){
+							alert("Demande envoyé");
+						},
+						error:function(resultats){
+							alert("Erreur!");
+						}
+				});
+		});
+	});
+	
+
+
+	$("#popupFB").click(function(){
+		var url = $(this).attr("href");
+			MyWindow=window.open(url,'MyWindow','toolbar=yes,location=yes,directories=yes,status=yes,menubar=yes,scrollbars=yes,resizable=yes,width=800,height=300'); return false;
+	});
+	
+	$("#popupLK").click(function(){
+		var url = $(this).attr("href");
+			MyWindow=window.open(url,'MyWindow','toolbar=yes,location=yes,directories=yes,status=yes,menubar=yes,scrollbars=yes,resizable=yes,width=800,height=300'); return false;
+	});
+	$("#popupTW").click(function(){
+		var url = $(this).attr("href");
+			MyWindow=window.open(url,'MyWindow','toolbar=yes,location=yes,directories=yes,status=yes,menubar=yes,scrollbars=yes,resizable=yes,width=800,height=300'); return false;
+	});
+		$("#popupGG").click(function(){
+		var url = $(this).attr("href");
+			MyWindow=window.open(url,'MyWindow','toolbar=yes,location=yes,directories=yes,status=yes,menubar=yes,scrollbars=yes,resizable=yes,width=800,height=300'); return false;
+	});
+	});
+	
+</script>
+
+
+}

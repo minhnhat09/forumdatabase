@@ -1,0 +1,27 @@
+@(thread:models.Thread, currentPage:com.avaje.ebean.Page[Post])
+<div class='col-md-6'>
+
+</div>
+<div class='col-md-6' align='right'>
+    <div class="btn-group">
+   	    @if(currentPage.hasPrev){
+		<a class="btn btn-primary" href="@routes.ThreadController.threadHome(thread, currentPage.getPageIndex - 1)"><span class='glyphicon glyphicon-chevron-left'>
+   	    </span>Page precedente</a>
+
+   	    }else{
+		<a class="btn btn-primary" disabled="disabled"><span class='glyphicon glyphicon-chevron-left'>
+   	    </span>Page precedente</a>
+
+   	    }
+		
+		<a class="btn btn-primary">@currentPage.getDisplayXtoYofZ(" - ", " / ")</a>
+        @if(currentPage.hasNext){
+        	<a class="btn btn-primary" href="@routes.ThreadController.threadHome(thread, currentPage.getPageIndex + 1)">Page suivante<span class='glyphicon glyphicon-chevron-right'></span></a>
+        }else{
+        	<a class="btn btn-primary" disabled="disabled">Page suivante<span class='glyphicon glyphicon-chevron-right'></span></a>
+        }
+        
+    </div>
+
+</div>
+

@@ -1,0 +1,89 @@
+/* Account for fixed navbar */
+body {
+
+}
+/*Header*/
+.wrapper {
+  width: 100%;
+  height: 150px;
+}
+/*Menu*/
+.navbar .nav{
+    float: none;
+    text-align: center;
+}
+.navbar .nav > li{
+    float: none;
+    display: inline-block;
+}
+
+/*Images logo*/
+.img-rounded{
+  padding-top: 30px;
+}
+
+/*Text Algin Left And Right At The Same Time*/
+.alignleft {
+  float: left;
+}
+.alignright {
+  float: right;
+}
+/*Sign in Menu*/
+#sign-in-menu{
+  width: 280px;
+  height: 240px;
+}
+/*Search Menu*/
+#srch-term{
+  width: 250px;
+}
+
+#right-header-side{
+   padding-top: 30px;
+}
+
+.dropdown-menu{
+  z-index: 9000;
+}
+
+/*Carousel Apps*/
+#carousel{
+  text-align: center;
+}
+
+.carousel-inner{
+  width: 770px;
+  margin-left: 150px;
+}
+
+.item{
+  text-align: center;
+}
+
+.carousel-control{
+  width: 50px;
+}
+
+.app-name-titles{
+  outline: 0;
+  text-decoration: none; 
+}
+
+.app-name-titles:link {
+    color: #0099FF;
+}
+
+.app-name-titles:visited {
+    color: #0099FF;
+}
+
+.app-name-titles:hover {
+    text-shadow: 0 0 6px #999;
+    text-decoration: none;
+    background-color: #cccccc;
+}
+
+.app-name-titles:active {
+    color: #33FF66;
+}

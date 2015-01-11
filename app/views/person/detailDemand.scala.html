@@ -1,0 +1,33 @@
+@(demandForm: Form[models.Demand], searchForm:Form[controllers.SearchController.Search])
+
+@import helper._
+@import helper.twitterBootstrap._
+
+
+@main("Ajouter une demande", searchForm) {
+    
+    <h1>Ajouter nouvelle demande</h1>
+    
+    @helper.form(routes.InscriptionController.saveDemand(), 'class -> "form-group") {
+       
+        <fieldset>
+        	<input type="hidden" value="@demandForm("idDemand").valueOr("0")" name="idDemand"/>
+            @helper.inputText(demandForm("name"), '_label -> "Nom et Prénom", 
+                'class -> "form-control", 'placeholder -> "", 'style ->"width:50%" )
+            @helper.inputText(demandForm("ipn"), '_label -> "IPN", 
+            	'class -> "form-control", 'placeholder -> "", 'style ->"width:50%" )
+            @select(demandForm("idService"), options(models.Service.options), '_label -> "Service Inscrite", '_default -> "-- Choisir un service --", '_showConstraints -> false ) 
+            @helper.inputText(demandForm("email"), '_label -> "Email", 
+                'class -> "form-control", 'placeholder -> "", 'style ->"width:50%" )
+            @helper.inputText(demandForm("motif"), '_label -> "Motif", 
+                'class -> "form-control", 'placeholder -> "", 'style ->"width:50%" )
+
+        </fieldset>
+        <div class="actions">
+            <input type="submit" value="Envoyer la demande" class="btn btn-primary"> 
+            <a href="routes.InscriptionController.inscription()" class="btn btn-danger">Annuler</a> 
+        </div>
+    }
+
+    
+ }

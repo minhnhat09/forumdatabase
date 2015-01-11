@@ -1,0 +1,83 @@
+@(title: String, searchForm:Form[controllers.SearchController.Search])(content: Html)
+<!-- bỏ title vào, sau đó nội dung là nội dung chính của 
+  từng trang -->
+  <!DOCTYPE html>
+
+  <html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=10">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>@title</title>
+
+    <!-- CSS RESSOURCES -->
+    <!-- Bootstrap -->
+    <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("css/bootstrap.min.css")"> 
+    <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("css/jquery-ui-1.9.2.custom.min.css")">
+    <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("css/bootstrap-select.css")">
+
+    <!-- Custom -->
+    <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("css/forum-header.css")">
+    <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("css/main.css")"> 
+    
+
+
+    <!-- JAVASCRIPT RESSOURCES -->
+    <script src="@routes.Assets.at("js/jquery.js")"></script>
+    <script src="@routes.Assets.at("js/bootstrap.js")"></script>
+    <script src="@routes.Assets.at("js/jquery-ui-1.9.2.custom.min.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.at("js/bootstrap-select.js")"></script>
+    <script src="@controllers.routes.Application.jsRoutes()" type="text/javascript"></script>
+
+    <script src="@routes.Assets.at("js/html5shiv.js")" type="text/javascript"></script>
+    
+
+    <script type="text/javascript">
+    $(function() {
+			// Setup drop down menu
+			$('.dropdown-toggle').dropdown();
+
+			// Fix input element click problem
+			$('.dropdown input, .dropdown label').click(function(e) {
+				e.stopPropagation();
+			});
+
+			$('.selectpicker').selectpicker({
+				'selectedText': 'cat'
+			});
+			
+			//insert zone bilio when click on Nouveau
+			
+			$("#btn").click(function(){
+       $("#bibli").append(zoneBilio);
+     });
+		});
+    </script>
+  </head>
+  <body class="">
+   @if(flash.containsKey("success")){
+   <div class="alert alert-success">
+    @flash.get("success")
+  </div>
+}
+@if(flash.containsKey("error")){
+<div class="alert alert-danger">
+  @flash.get("error")
+</div>
+}
+
+
+
+@header.headerBar(searchForm)	
+<div class="container">
+
+  @content
+
+</div>
+<footer class="footer">
+  <div class="container">
+    <p>Copyright DSIR Renault 2014</p>
+  </div>
+</footer>
+</body>
+</html>

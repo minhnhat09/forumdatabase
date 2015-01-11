@@ -1,0 +1,151 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /                           					controllers.Application.displayInterface()
+GET		/accueil										controllers.AccueilController.accueil()
+GET		/test/											controllers.Application.index()
+
+#Authentication
+GET     /login                              			controllers.Application.login()
+POST    /login                              			controllers.Application.authenticate()
+GET     /forgetpasswordpage                   			controllers.Application.forgetPassPage()
+POST    /forgetpassword                        			controllers.Application.forgetPassword()
+GET     /logout                             			controllers.Application.logout()
+#Page Search
+POST	/search											controllers.SearchController.search()
+GET	   	/searchall/:content								controllers.SearchController.searchAll(page: Integer ?= 0, content: String)
+GET	   	/searchbyauthor/:content						controllers.SearchController.searchByAuthor(page: Integer ?= 0, content: String)
+#Page Admin
+
+GET 	/admin/											controllers.AdminController.adminHome()
+POST	/admin/toggle									controllers.AdminController.toggleAdminMode()
+
+#Tab Admin User
+GET		/admin/users/									controllers.AdminController.listUsers(page: Integer ?= 0, s ?= "user_name", o ?= "asc", f ?= "")
+POST    /admin/users/mod=:user			 				controllers.AdminController.changeStatusMod(user: models.User)
+POST    /admin/users/admin=:user			 			controllers.AdminController.changeStatusAdmin(user: models.User)
+POST    /admin/users/block=:user			 			controllers.AdminController.blockUnblockUser(user: models.User)
+POST    /admin/users/expert=:user			 			controllers.AdminController.changeExpert(user: models.User)
+DELETE  /admin/users/user=:user			 				controllers.AdminController.deleteUser(user: models.User)
+#Tab Admin Inscription
+GET		/admin/demands/									controllers.AdminController.listDemands(page: Integer ?= 0)
+POST	/amdin/demands/validdemand/:idAV				controllers.AdminController.validateDemand(idAV: Integer)
+DELETE	/admin/demands/:idAV							controllers.AdminController.deleteDemand(idAV: Integer)
+#Tab Admin Service
+GET		/admin/services/								controllers.AdminController.listServices(page: Integer ?= 0)
+GET		/admin/services/newservice						controllers.AdminController.newService()
+GET		/admin/services/modifyservice/:service			controllers.AdminController.modifyService(service:models.Service)
+POST	/admin/services/saveservice						controllers.AdminController.saveService()
+DELETE  /admin/services/:idService					    controllers.AdminController.deleteService(idService:String)
+#Tab Admin App
+GET		/admin/apps/									controllers.AdminController.listApps(page: Integer ?= 0)
+GET		/admin/apps/newapp								controllers.AdminController.newApp()
+GET		/admin/apps/modifyapp/:app						controllers.AdminController.modifyApp(app:models.Application)
+POST	/admin/apps/saveapp								controllers.AdminController.saveApp()
+DELETE  /admin/apps/:idApp							    controllers.AdminController.deleteApp(idApp:String)
+#Tab Admin Bonus Rule
+GET		/admin/bonusrules/								controllers.AdminController.listBonusRules(page: Integer ?= 0)
+GET		/admin/bonusrules/newbonusrule					controllers.AdminController.newBonusRule()
+POST	/admin/bonusrules/savebonusrule					controllers.AdminController.saveBonusRule()
+GET  	/admin/bonusrules/:idBonus   					controllers.AdminController.modifyBonusRule(idBonus: models.BonusRule)
+DELETE  /admin/bonusrules/:idBonus					    controllers.AdminController.deleteBonusRule(idBonus:String)
+
+#Page Gift
+GET 	/gift/											controllers.GiftController.giftHome()
+GET		/gift/newgift									controllers.GiftController.newGift()
+POST	/gift											controllers.GiftController.saveGift()
+GET 	/gift/:idGift									controllers.GiftController.modifyGift(idGift: Integer)
+DELETE 	/gift/:listGift									controllers.GiftController.deleteListGift(listGift:String)
+POST  	/gift/:listGift									controllers.GiftController.buyListGift(listGift:String)
+#Tab Admin Tag
+GET		/admin/tags/									controllers.AdminController.listTags()
+GET		/admin/tags/newtags								controllers.AdminController.newTag()
+POST	/admin/tags/savetags							controllers.AdminController.saveTag()
+GET  	/admin/tags/:idTag   							controllers.AdminController.modifyTag(idTag: models.Tag)
+DELETE  /admin/tags/:idTag								controllers.AdminController.deleteTag(idTag:Integer)
+#Tab Admin Title
+GET		/admin/titles/									controllers.AdminController.listTitles()
+GET		/admin/titles/newtitles							controllers.AdminController.newTitle()
+POST	/admin/titles/savetitles						controllers.AdminController.saveTitle()
+GET  	/admin/titles/:idTitle   						controllers.AdminController.modifyTitle(idTitle: models.Title)
+DELETE  /admin/titles/:idTitle							controllers.AdminController.deleteTitle(idTitle:String)
+#Tab Admin Report
+GET		/admin/reports/									controllers.AdminController.listReports()
+POST  	/admin/reports/:idService						controllers.AdminController.getAppsByService(idService:String)
+POST	/admin/reports/									controllers.AdminController.export(option:String)
+
+
+#Tab Admin Communication
+GET		/admin/communications/							controllers.AdminController.listCommunications(page: Integer ?= 0)
+GET		/admin/communications/newcommunications			controllers.AdminController.newCommunication()
+POST	/admin/communications/savecommunications		controllers.AdminController.saveCommunication()
+GET  	/admin/communications/:idCom   					controllers.AdminController.modifyCommunication(idCom: models.Communication)
+DELETE  /admin/communications/:idCom					controllers.AdminController.deleteCommunication(idCom:String)
+#Page Inscription					
+GET		/inscription/									controllers.InscriptionController.inscription()
+GET		/demandcode/newdemand							controllers.InscriptionController.newDemand()
+POST	/demandcode/savedemand							controllers.InscriptionController.saveDemand()
+POST	/inscription/saveuser							controllers.InscriptionController.saveUser()
+#Page Message
+GET		/message/										controllers.MessageController.message()
+GET		/message/sendmessage							controllers.MessageController.writeMessage()
+GET     /message/sendmessage/:user                      controllers.MessageController.writeMessageWithUser(user: models.User)
+POST	/message/										controllers.MessageController.sendMessage()
+POST	/message/listmess								controllers.MessageController.deleteListMess()
+POST	/message/listnotis								controllers.MessageController.deleteListNotis()
+DELETE  /message/:idMess								controllers.MessageController.deleteMess(idMess:Integer)
+DELETE  /message/noti/:idNoti							controllers.MessageController.deleteNoti(idNoti:Integer)
+#Page Person
+GET		/infoperson/:person								controllers.PersonController.person(person: models.User)
+GET  	/infoperson/modify/:person			   			controllers.PersonController.modifyPerson(person: models.User)
+POST	/infoperson/saveperson/:user					controllers.PersonController.savePerson(user:models.User)
+POST 	/infoperson/sendgift/:person					controllers.PersonController.sendGift(person:models.User)
+POST  	/infoperson/postcode/:code						controllers.PersonController.postCode(code:String)
+POST	/infoperson/contact/:idContact					controllers.PersonController.confirmContact(idContact: String)
+POST 	/infoperson/changepass/:person					controllers.PersonController.changePassword(person:models.User)
+GET 	/infoperson/changepicturepage/:person			controllers.PersonController.changePicturePage(person:models.User)
+POST 	/infoperson/changepicture/:person				controllers.PersonController.changePicture(person:models.User)
+DELETE  /infoperson/bookmark/:idUa						controllers.PersonController.deleteBookmark(idUa:Integer)
+#Page User
+GET		/infouser/:user									controllers.UserController.userHome(user: models.User)
+#Page Forum
+GET 	/forum/f=:app/									controllers.ForumController.forumHome(app: models.Application,page: Integer ?=0, s ?= "publicDate", o ?= "desc")
+GET 	/forum/f=:app/country							controllers.ForumController.forumTagCountry(app: models.Application,page: Integer ?=0, s ?= "publicDate", o ?= "desc")
+GET 	/forum/f=:app/module							controllers.ForumController.forumTagModule(app: models.Application,page: Integer ?=0, s ?= "publicDate", o ?= "desc")
+GET 	/forum/f=:app/tag=:tag							controllers.ForumController.forumTag(app: models.Application,tag: models.Tag, page: Integer ?=0, s ?= "publicDate", o ?= "desc")
+POST    /forum/f=:app/spin=:idThread			 		controllers.ThreadController.spinThread(app: models.Application, idThread:String)
+POST    /forum/f=:app/unspin=:idThread			 		controllers.ThreadController.unSpinThread(app: models.Application, idThread:String)
+POST    /forum/f=:app/blockunblock=:idThread			controllers.ThreadController.blockUnblockThread(app: models.Application, idThread:String)
+POST    /forum/f=:app/hot=:idThread			 			controllers.ThreadController.hotThread(app: models.Application, idThread:String)
+DELETE  /forum/f=:app/del=:idThread			 			controllers.ThreadController.deleteThread(app: models.Application, idThread:String)
+GET		/forum/api/findThreads							api.ThreadControllerApi.threadJson()
+GET		/forum/api/findThread							api.ThreadControllerApi.threadById()
+
+#Page Thread	
+GET		/showthread/t=:thread							controllers.ThreadController.threadHome(thread: models.Thread, page: Integer ?= 0)
+DELETE	/showthread/t=:thread/delPost=:idPost	 		controllers.ThreadController.deletePost(thread: models.Thread, idPost: String)
+
+POST	/showthread/									controllers.PersonController.sendRequest()
+POST	/showthread/notes								controllers.ThreadController.noteThread()
+POST	/showthread/bookmark							controllers.ThreadController.bookmarkThread()
+POST	/showthread/like								controllers.ThreadController.likeThread()
+POST	/showthread/dislike								controllers.ThreadController.dislikeThread()
+
+
+GET		/thread/newcomment/t=:thread					controllers.ThreadController.newComment(thread:models.Thread)
+GET		/thread/newcommentwithcode/t=:thread/p=:post	controllers.ThreadController.newCommentWithQuote(thread:models.Thread, post:models.Post)
+GET		/thread/editcomment/t=:thread/p=:idPost			controllers.ThreadController.editComment(thread:models.Thread, idPost: String)
+
+POST	/thread/savecomment/t=:thread					controllers.ThreadController.postComment(thread: models.Thread)
+POST	/thread/savecommentwithquote/t=:thread/p=:post	controllers.ThreadController.postCommentWithQuote(thread: models.Thread, post:models.Post)
+
+#Page Editor	
+GET		/editor/newthread/a=:app						controllers.EditorController.editorHome(app:models.Application)
+GET		/editor/editthread/t=:idThread					controllers.ThreadController.editThread(idThread: String)
+POST	/editor/postthread/:app							controllers.EditorController.postThread(app:models.Application)
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/js/routes             					controllers.Application.jsRoutes()
+GET     /assets/*file               					controllers.Assets.at(path="/public", file)

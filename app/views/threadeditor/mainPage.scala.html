@@ -1,0 +1,140 @@
+@(app:models.Application, threadForm:Form[models.Thread], searchForm:Form[controllers.SearchController.Search]) 
+@import helper._ 
+@implicitFieldConstructor = @{FieldConstructor(twitterBootstrapInput.render)} 
+
+@main("Page Editeur", searchForm){
+<script src="//cdn.ckeditor.com/4.4.4/standard/ckeditor.js"></script>
+<script src="@routes.Assets.at("js/ckeditor/adapters/jquery.js")"></script>
+<script  type="text/javascript">
+
+$(function(){
+	$('.editor').ckeditor();
+
+	
+});
+</script>
+<style type="text/css">
+.dropdown-menu{
+	z-index: 99999;
+}
+
+.panel{
+
+	border: 1px solid rgba(86, 61, 124, 0.2);
+}
+.bgblue{
+	background-color:   #f8fb9e;
+}
+.msgitem{
+	height: 70px;
+	padding-top: 5px;
+	border-bottom: 1px dashed rgba(86, 61, 124, 0.2);
+}
+.greentext{
+	font-weight:bold;
+	color: #191970;
+}
+</style>
+@form(routes.EditorController.postThread(app)) {
+<div class='row'>
+	<input type="hidden" value="@threadForm("idThread").valueOr("0")" name="idThread"/>
+	<div class="col-md-1"></div>
+
+	<div class="col-md-10 panel">
+		<div class='row'>
+			
+
+			@select(threadForm("tags[0].idTag"), options(models.Tag.countryOptions), '_label -> "Ajouter une étiquette pays", '_default -> "-- Choisir un pays --", '_showConstraints -> false, 'class -> "form-control" ) 
+			@select(threadForm("tags[1].idTag"), options(models.Tag.moduleOptions), '_label -> "Ajouter une étiquette module", '_default -> "-- Choisir un module --", '_showConstraints -> false, 'class -> "form-control" ) 
+			@helper.inputText(threadForm("threadName"), 'class -> "form-control", 'placeholder -> "Saisir le titre",'_label -> "Saisir un titre")
+			
+		</div>
+		<h3>Contenu</h3>
+		<div class='row'>
+			@textarea(threadForm("content"), '_label -> "", 'placeholder -> "Any notes you want to add", 'rows -> 20, 'cols -> 60, 'class ->"editor" )
+		</div>
+		<div class='row'>
+			<!-- <span class="label label-default">Sauvegarde à 09:47</span> -->
+			
+<!--
+				<div class="form-group">
+					<b>Bibliographie:</b>
+					<input type="text" class="form-control" placeholder="Auteur" style="width: 100px;">
+				</div>
+				<div class="form-group">
+					&nbsp;
+					<input type="text" class="form-control" placeholder="Titre" style="width: 100px;">
+				</div>
+				<div class="form-group">
+					<b>Lien:</b>
+					<input type="text" class="form-control" placeholder="" style="width: 400px;">
+				</div>
+			-->
+			<h3>Bibliographie</h3>
+			<div class="col-md-12" id="bibli0">
+				<h4>Bibliographie 1</h4>
+				<div class="col-md4">
+					<label >Auteur</label>
+					<input class="form-control" type="text" name="biblios[0].author">
+				</div><div class="col-md4">
+				<label >Titre</label>
+				<input class="form-control" type="text" name="biblios[0].content">
+			</div><div class="col-md4">
+			<label >Lien</label>
+			<input class="form-control" type="text" name="biblios[0].lien">
+		</div>
+	</div>
+
+	<!-- <span id="addBibli" class="btn btn-primary">Nouveau</span> -->
+
+</div><br>
+<div class='row'>
+	<input type="submit" value="Poster" class="btn btn-primary">
+	<a href="@routes.ForumController.forumHome(app,0, "publicDate", "desc")" class="btn btn-danger">Annuler</a> 
+</div>
+</div>
+<div class="col-md-1">
+
+</div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+
+	$("#addBibli").click(function(){
+		alert("caca");
+	});
+
+});
+
+function addBibliFunc () {
+	var count  = 0;
+	var numBibli = count++;
+	alert(numBibli);
+	String zoneBibli =
+	"<div class='col-md-12' id='bibli" + numBibli +"'>
+	<h4>Bibliographie " + numBibli +"</h4>
+	<div class='col-md4'>
+	<label >Auteur</label>
+	<input class='form-control' type='text' name='biblios[" + numBibli +"].author'>
+	</div><div class='col-md4'>
+	<label >Titre</label>
+	<input class='form-control' type='text' name='biblios[" + numBibli +"].content'>
+	</div><div class='col-md4'>
+	<label >Lien</label>
+	<input class='form-control' type='text' name='biblios[" + numBibli +"].lien'>
+	</div>
+	</div";
+	$("#bibli" + count).append(zoneBibli);
+
+
+}
+
+
+
+</script>
+
+} }
+
+
+

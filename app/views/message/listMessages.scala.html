@@ -1,0 +1,60 @@
+@()
+<div class="tab-pane active" id="message">
+	<div class="col-md-10">
+		
+		<div class="col-md-12"  >
+			<div class='col-md-7' align="left">
+				<input id="select_all_mess" type='checkbox' />
+				<b>Tous Choisir</b>
+				<a class="btn btn-success" href="@routes.MessageController.writeMessage()">Ecrire un message</a>
+			</div>
+			<div class='col-md-5' align="right">
+				<button id="deleteListMess" class="btn btn-danger">Supprimer</button>
+			</div>
+		</div>
+		<table class="table-condensed">
+			@for(messages <- Message.findMessagesToByUser(controllers.Application.getSessionUser())){
+
+			<tr>
+				<td class="col-md-1"><a href="@routes.UserController.userHome(messages.userNameFrom)">@messages.userNameFrom.firstName @messages.userNameFrom.lastName</a></td>
+				<td class="col-md-2">
+					<img src="@routes.Assets.at("imgs/" + "users/" + messages.userNameFrom.userName + "/avatar/" + messages.userNameFrom.avatar)" alt="..." width="70" height="70">
+				</td>
+				
+				<td class="col-md-5">
+					<input id="@messages.idMessage" type='checkbox' class="mess_check_box"/><tt><pre style="height:50px;overflow: hidden; text-overflow:ellipsis;">@messages.content</pre></tt></td>
+					<td class="col-md-1">@{if(messages.sendDate == null)"" else("%1$tH:%1$tM:%1$tS %1$td/%1$tm/%1$tY".format(messages.sendDate))}</td>
+					<td class="col-md-2">
+						<button class="btn btn-primary btn-md" data-toggle="modal" data-target="#mess@messages.idMessage">
+							Consulter
+						</button>
+					<a href="" onclick="javascript:del('@routes.MessageController.deleteMess(messages.idMessage)')">Supprimer</a>
+					</td>
+					
+				</tr>
+
+				<div class="modal fade" id="mess@messages.idMessage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					<h4 class="modal-title" id="myModalLabel">From: @messages.userNameFrom.firstName @messages.userNameFrom.lastName</h4>
+				</div>
+				<div class="modal-body">
+					@messages.content
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					
+				</div>
+			</div>
+		</div>
+	</div>
+
+			}
+			
+		</table>	
+	</div>
+	<!-- Modal -->
+
+</div>

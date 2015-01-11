@@ -1,0 +1,132 @@
+@(currentPage: com.avaje.ebean.Page[Demand], searchForm:Form[controllers.SearchController.Search]) @adminMain(searchForm){
+
+
+	<!-- Button -->
+	<div class='row' align="right">
+
+	</div>
+	<!-- Members -->
+	<div class='row' style="margin-top:20px;padding-top:10px; border-top: 1px dashed rgba(86, 61, 124, 0.2);">
+
+		<div class="col-md-12">
+			<div class='row'>
+
+				<div class="col-md-6">
+					<input id="select_all_demands" type='checkbox' />
+					<b>Tous Choisir</b>
+					
+				</div>
+				<div class="col-md-6" align="right">
+					
+					<div class="btn-group">
+						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+							Opération
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" role="menu">
+							<li>
+								<a href="#">Modifier</a>
+							</li>
+							<li>
+								<a href="#">Supprimer</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class='row'>
+		<div class="col-md-12">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th></th>
+						<th>Demandeur</th>
+						<th>IPN</th>
+						<th>Service</th>
+						<th>Email</th>
+						<th>Motif</th>
+						<th>Date de demande</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					@for(demand
+					<- currentPage.getList()){ <tr>
+						<td>
+							<input class="demand_check_box" type='checkbox' />
+						</td>
+						<td>@demand.name</td>
+						<td>@demand.ipn</td>
+						<td>@Service.findById(demand.idService).serviceName</td>
+						<td>@demand.email</td>
+						<td>@demand.motif</td>
+						<td>@("%1$td/%1$tm/%1$tY".format(demand.dateApply))</td>
+						<td><div class="btn-group">
+							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+								Opération
+								<span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu" role="menu">
+								<li>
+									<a href="#" onclick="javascript:activate('@routes.AdminController.validateDemand(demand.idDemand)')">Valider</a>
+								</li>
+								<li>
+									<a href="#" onclick="javascript:del('@routes.AdminController.deleteDemand(demand.idDemand)')">Supprimer</a>
+								</li>
+							</ul>
+						</div></td>
+						</tr>
+						}
+
+				</tbody>
+			</table>
+
+		</div>
+	</div>
+<script type="text/javascript">
+	$(document).ready(function(){
+
+
+		$("#select_all_demands").click(function(){
+			if(this.checked){
+				$(".demand_check_box").each(function(){
+					this.checked = true;
+				})
+			}else{
+				$(".demand_check_box").each(function(){
+					this.checked = false;
+				})
+
+			}
+		});
+
+
+	});
+
+	function activate(urlToDelete) {
+		$.ajax({
+			url: urlToDelete,
+			type: 'POST',
+			success: function(results) { 
+				// Refresh the page
+				location.reload();
+				
+			}
+		});
+	}
+
+	function del(urlToDelete) {
+		$.ajax({
+			url: urlToDelete,
+			type: 'DELETE',
+			success: function(results) { 
+				// Refresh the page
+				location.reload();
+				
+			}
+		});
+	}
+</script>
+}

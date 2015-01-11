@@ -1,0 +1,43 @@
+@(zoneSearchForm:Form[controllers.SearchController.Search])
+<div class="col-xs-6 col-md-5 ">
+	<!-- Singin & Search Bar -->
+	<div id='right-header-side' class='dropdown'>
+		<!-- Signin -->
+		<div class="btn-group">
+	
+			
+			<a class="btn btn-primary"  href="@routes.Application.login()">Se Connecter</a>
+			<a class="btn btn-success"  href="@routes.InscriptionController.inscription()" style="margin-left:10px">S'inscrire</a>
+			<div id='sign-in-menu' class="dropdown-menu" style="padding: 10px; padding-bottom: 0px;">
+				<!-- Hidden SignIn Form -->
+				<form role="form">
+					<div class="form-group">
+						<label>Nom d'utilisateur</label>
+						<input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email" data-toggle="modal" data-target="#myModal">
+					</div>
+					<div class="form-group">
+						<label for="exampleInputPassword1">Mot de Passe</label>
+						<input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+					</div>
+					<div class="checkbox">
+						<a href="#" data-toggle="modal" data-target="#myModal">Vous avez perdu votre mot de passe?</a>
+					</div>
+					<div class="col-md-12" align="right">
+						<div id="textbox">
+							<p class="alignleft">
+								<label>
+									<input type="checkbox">Rester connecté
+								</label>
+							</p>
+							<p class="alignright">
+								<button type="submit" class="btn btn-primary">Login</button>
+							</p>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+	@searchForm(zoneSearchForm)
+</div>

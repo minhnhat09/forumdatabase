@@ -1,0 +1,65 @@
+@(searchForm:Form[controllers.SearchController.Search])(content:Html)
+
+
+@main("Page Administrateur", searchForm){
+
+
+@breadcrumbAdmin("Page Administrateur")
+<div class="container panel">
+		<!-- Header -->
+		<div class='row headpanel' align="center">
+			<div class="col-md-12">
+				<button class="btn btn-danger"><h3>Administrateur</h3></button>
+			</div>
+		</div>
+
+		<div class='row imageouterpanel'>
+			<div class="col-md-1"></div>
+			<div class="col-md-10">
+				<div class='row imagepanel'>
+					<div class="col-md-12">
+						<ul class="nav nav-tabs">
+							<li>
+								<a href="@routes.AdminController.listUsers(0)">Gestion des membres</a>
+							</li>
+							<li>
+								<a href="@routes.AdminController.listDemands(0)">Validation d'Inscription</a>
+							</li>
+							<li>
+								<a href="@routes.AdminController.listServices(0)">Service</a>
+							</li>
+								<li>
+								<a href="@routes.AdminController.listApps(0)">Application</a>
+							</li>
+							<li>
+								<a href="@routes.AdminController.listBonusRules(0)">Récompenses</a>
+							</li>
+							<li>
+								<a href="@routes.AdminController.listTags()">Etiquette</a>
+							</li>
+							<li>
+								<a href="@routes.AdminController.listReports()">Reportings</a>
+							</li>
+							<li>
+								<a href="@routes.AdminController.listCommunications(0)">Communication</a>
+							</li>
+							<li>
+								<a href="@routes.AdminController.listTitles">Titre</a>
+							</li>
+						</ul>
+						<!-- Tab panes -->
+						<div class="tab-content">
+							
+							@content
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-1"></div>
+		</div>
+		<!-- Content -->
+
+	</div>
+
+
+}
