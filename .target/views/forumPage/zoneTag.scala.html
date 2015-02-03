@@ -1,0 +1,53 @@
+@(app:models.Application)
+<div class="panel panel-default headsection">
+	<div class="panel-body">
+		<div class="row">
+			<div id="section" class="clearfix">
+				<ul>
+					<li>
+						<h5>
+							<b>Pays:</b>
+						</h5>
+					</li>
+					<li>&nbsp;</li>
+					
+					<li>
+						<a href="@routes.ForumController.forumTagCountry(app)" class="btn btn-link">Tous</a>
+					</li>
+					<li>|</li>
+					@for(tag <- Tag.findByCountry()){
+						<li>
+							<a href="@routes.ForumController.forumTag(app, tag)" class="btn btn-link">@tag.tagTitle</a>
+						</li>
+					<li>|</li>
+					}
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="panel panel-default headsection">
+	<div class="panel-body">
+		<div class="row">
+			<div id="section" class="clearfix">
+				<ul>
+					<li>
+						<b>Modules:&nbsp;</b>
+					</li>
+					<li>
+						<a href="@routes.ForumController.forumTagModule(app)" class="btn btn-link">Tous</a>
+					</li>
+					<li>|</li>
+					@for(tag <- Tag.findByModule()){
+						<li>
+							<a href="@routes.ForumController.forumTag(app, tag)" class="btn btn-link">@tag.tagTitle</a>
+						</li>
+					<li>|</li>
+					}
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>

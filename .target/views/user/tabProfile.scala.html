@@ -1,0 +1,68 @@
+@(person:User)
+<div class="tab-pane active" id="moncompte">
+						<div class='row' style="padding-top:20px;">
+							<div class="col-md-3"></div>
+							<div class="col-md-6">
+								<div class='row rowpadding'>
+									<div class="col-md-6">Pseudo</div>
+									<div class="col-md-6">@person.userName</div>
+								</div>
+								<div class='row rowpadding'>
+									<div class="col-md-6">Civilité</div>
+									<div class="col-md-6">@if(person.civilite == true){Madame} else {Monsieur}
+									</div>
+								</div>
+								<div class='row rowpadding'>
+									<div class="col-md-6">Nom</div>
+									<div class="col-md-6">@person.firstName</div>
+								</div>
+								<div class='row rowpadding'>
+									<div class="col-md-6">Prénom</div>
+									<div class="col-md-6">@person.lastName</div>
+								</div>
+								<div class='row rowpadding'>
+									<div class="col-md-6">Adresse</div>
+									<div class="col-md-6">@person.address
+										<br/>@person.postalCode, @person.city, France
+									</div>
+								</div>
+								<div class='row rowrowpadding'>
+									<div class="col-md-6">Téléphone fixe</div>
+									<div class="col-md-6">@person.homePhone</div>
+								</div>
+								<div class='row rowpadding'>
+									<div class="col-md-6">Téléphone mobile</div>
+									<div class="col-md-6">@person.mobilePhone</div>
+								</div>
+								<div class='row rowpadding'>
+									<div class="col-md-6">Service Inscrit</div>
+									<div class="col-md-6">@Service.findNameService(person.idServiceSubscribe)</div>
+								</div>
+								<div class='row rowpadding'>
+									<div class="col-md-6">Email</div>
+									<div class="col-md-6">@person.email</div>
+								</div>
+								
+								<div class='row rowpadding'>
+				<div class="col-md-6">Presentation</div>
+				<div class="col-md-6">@person.presentation</div>
+			</div>
+			
+			<div class='row rowpadding'>
+				<div class="col-md-6">Centre d'intérêt</div>
+				<div class="col-md-6">@person.hoppy</div>
+			</div>
+
+
+									<div class='row rowpadding'>
+										<div class="col-md-6"></div>
+										<div class="col-md-6">
+											<a href="@routes.MessageController.writeMessageWithUser(person)" class='btn btn-success'>Envoyer un message</a>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-3"></div>
+							</div>
+							
+							
+						</div>

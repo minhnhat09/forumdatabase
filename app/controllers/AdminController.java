@@ -31,8 +31,12 @@ import com.google.common.io.Files;
 
 import controllers.SearchController.Search;
 /**
- * Manage a database of the Admin Page
- * */
+ * Controller used to control {@link Area}
+ * @author NGUYEN Nhat Minh
+ * @version 1.0.0
+ * @category Controller
+ * @see {@link Object}
+ */
 @Security.Authenticated(Secured.class)
 public class AdminController extends Controller {
 	
@@ -40,6 +44,7 @@ public class AdminController extends Controller {
 	 * This result directly redirect to Admin page Home
 	 * 
 	 * */
+	
 	public static Result ADMIN_HOME 		= redirect(routes.AdminController.listUsers(0, "user_name", "asc", ""));
 	public static Result GO_HOME_DEMAND		= redirect(routes.AdminController.listDemands(0));
 	public static Result GO_HOME_TITLE 		= redirect(routes.AdminController.listTitles());
@@ -62,7 +67,10 @@ public class AdminController extends Controller {
 	
 	
 	
-	
+	/**
+	 * 
+	 * @return Admin Home Page
+	 */
 	public static Result adminHome(){
 		//return ok(views.html.admin.adminMain.render());
 		
@@ -75,6 +83,10 @@ public class AdminController extends Controller {
 			
 	}
 	
+	/**
+	 * method used to switch between to mode: admin mod allow to change forum's settings and normal mode
+	 * @return 
+	 */
 	public static Result toggleAdminMode(){
 		
 		if(controllers.Application.getAdminMode().equals("on")){
@@ -91,31 +103,39 @@ public class AdminController extends Controller {
 	}
 	
 	/**
-	 * Methods manage User Tab
-	 * */
+	 * list of methods manage users
+	 */
+	
+	/**
+	 * 
+	 * @param page of list, used for pagination
+	 * @param sortBy criteria of sort
+	 * @param order ascendant or descendant
+	 * @param filter search
+	 * @return
+	 */
 	public static Result listUsers(Integer page, String sortBy, String order, String filter){
 		Page<User> users = User.find(page, 10, sortBy, order, filter);
 		return ok(views.html.admin.listUsers.render(users, searchForm, sortBy, order, filter));
 		//return TODO;
 	}
 	
-	//Block user
-//	public static Result block(User user){
-//		user.isActive = false;
-//		user.update();
-//		return ok();
-//	}
-//	//Deblock user
-//	public static Result deBlock(User user){
-//		user.isActive = true;
-//		user.update();
-//		return ok();
-//	}
+	/**
+	 * 
+	 * @param user will be block/unblock
+	 * @return page
+	 */
 	public static Result blockUnblockUser(User user){
 		user.isBlock = !user.isBlock;
 		user.update();
 		return ok();
 	}
+	
+	/**
+	 * 
+	 * @param user status will be switch to expert/normal
+	 * @return
+	 */
 	public static Result changeExpert(User user){
 		user.isExpert = ! user.isExpert;
 		
@@ -123,8 +143,12 @@ public class AdminController extends Controller {
 		
 		return ok();
 	}
-	//affect mod to user
 	
+	/**
+	 * 
+	 * @param user status will be switched to moderateur/normal
+	 * @return
+	 */
 	public static Result changeStatusMod(User user){
 		
 		Permission statusMod  = Permission.findById(2);
@@ -138,6 +162,11 @@ public class AdminController extends Controller {
 		return ok();
 	}
 	
+	/**
+	 * 
+	 * @param user status will be switched to admin/normal
+	 * @return
+	 */
 	public static Result changeStatusAdmin(User user){
 		
 		Permission statusAdmin  = Permission.findById(1);
@@ -152,7 +181,11 @@ public class AdminController extends Controller {
 	}
 	
 	
-	
+	/**
+	 * method delete user and all his references
+	 * @param user 
+	 * @return
+	 */
 	public static Result deleteUser(User user){
 		
 		if(user == null){
@@ -170,12 +203,20 @@ public class AdminController extends Controller {
 	/**
 	 * Methods manage Demand Tab
 	 * */
-	
+	/**
+	 * 
+	 * @param page
+	 * @return list of inscription demand
+	 */
 	public static Result listDemands(int page){
 		Page<Demand> demands = Demand.find(page);
 		return ok(views.html.admin.listDemands.render(demands, searchForm));
 	}
-	
+	/**
+	 * Method used to delete inscription demand
+	 * @param idAV id Demand deleted
+	 * @return demand page
+	 */
 	public static Result deleteDemand(int idAV) {
 	    final Demand demand = Demand.findById(idAV);
 	    if(demand == null) {
@@ -189,6 +230,7 @@ public class AdminController extends Controller {
 		final Demand demand = Demand.findById(idAV);
 	    if(demand == null) {
 	    	flash("error", String.format("Demand not found"));
+	    	
 	        return notFound(String.format("Demand %s n'existe pas", idAV));
 	    }
 	    

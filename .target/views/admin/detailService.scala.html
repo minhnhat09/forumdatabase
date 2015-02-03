@@ -1,0 +1,27 @@
+@(serviceForm: Form[models.Service], searchForm:Form[controllers.SearchController.Search])
+
+@import helper._
+@import helper.twitterBootstrap._
+
+
+@main("Ajouter/Modifier Serivce", searchForm) {
+    
+    <h1>Ajouter/Modifier Service</h1>
+    
+    @helper.form(routes.AdminController.saveService(), 'class -> "form-group", 'enctype -> "multipart/form-data") {
+       
+        <fieldset>
+        	<input type="hidden" value="@serviceForm("idService").valueOr("0")" name="idService"/>
+            @helper.inputText(serviceForm("serviceName"), '_label -> "Nom du Service", 
+            	'class -> "form-control", 'placeholder -> "Nom du Service", 'style ->"width:50%" )
+            <!-- @helper.inputFile(serviceForm("picture"), '_label -> "Image du service", 
+                'style ->"width:50%" ) -->
+           
+		</fieldset>
+        <div class="actions">
+            <input type="submit" value="Créer nouveau service" class="btn btn-primary"> 
+            <a href="@routes.AdminController.adminHome()" class="btn btn-danger">Annuler</a> 
+            
+        </div>
+    }
+ }

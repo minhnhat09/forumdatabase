@@ -1,0 +1,43 @@
+@(app:models.Application)
+
+<div class="panel panel-default">
+	<div class="panel-body">
+		<div class='row'>
+			<div class="col-md-10">
+				<button class="btn btn-success"><h3>@app.appName</h3></button>
+				
+				<p>Modérateur:
+				@for(user <- models.User.findModsByApp(app)){
+					<a href="@routes.UserController.userHome(user)" class="btn btn-link">@user.firstName @user.lastName</a>
+				}
+				</p>
+				<p>Key Users:
+					 @for(keyUser <- models.User.findKeyUsersByApp(app)){
+					<a href="@routes.UserController.userHome(keyUser)" class="btn btn-link">@keyUser.firstName @keyUser.lastName</a>
+				}
+				</p>
+			</div>
+			<div class="col-md-2">
+				<button class='btn btn-info btn-lg' style='margin-top:15px;' data-toggle="modal" data-target="#keyUserModal">Présentation</button>
+			</div>
+
+			<div class="modal fade" id="keyUserModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Présentation de l'application</h4>
+      </div>
+      <div class="modal-body">
+	        
+					@models.Application.presentApp(app.idApp)
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+  </div>
+		</div>
+	</div>
+</div>

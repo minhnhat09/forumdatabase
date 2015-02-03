@@ -1,0 +1,126 @@
+@(person:User,sendGiftForm:Form[controllers.PersonController.SendGift], searchForm:Form[controllers.SearchController.Search]) 
+@import helper._
+@import helper.twitterBootstrap._
+
+@main("Page Mon compte", searchForm){
+
+
+<div class="container panel">
+	<!-- Header -->
+	<div class='row headpanel' align="center">
+		<div class="col-md-12">
+			<button class="btn btn-success"><h3>Mon Compte</h3></button>
+		</div>
+	</div>
+	<div class='row imageouterpanel'>
+		<div class="col-md-2"></div>
+		<div class="col-md-8">
+			<div class='row imagetop'>
+				<img src="@routes.Assets.at("imgs/" + "users/" + person.userName + "/avatar/" + person.avatar)" alt="..." class="img-thumbnail" width="100" height="100" />
+				<a href="@routes.PersonController.changePicturePage(person)" class="btn btn-link">Modifier la Photo</a>
+
+			</div>
+			<div class='row imagepanel'>
+				<ul class="nav nav-tabs">
+					<li>
+						<a href="#moncompte" data-toggle="tab">Profile</a>
+					</li>
+					<li>
+						<a href="#motdepasse" data-toggle="tab">Mot de Passe</a>
+					</li>
+					<li>
+						<a href="#bonus" data-toggle="tab">Bonus</a>
+					</li>
+					<li>
+						<a href="#gift" data-toggle="tab">Cadeau</a>
+					</li>
+					<li>
+						<a href="#contact" data-toggle="tab">Contact</a>
+					</li>
+					<li>
+						<a href="#bookmark" data-toggle="tab">Bookmark</a>
+					</li>
+				</ul>
+				<!-- Tab panes -->
+				<div class="tab-content">
+					<!--Tab Profile -->
+					@tabProfile(person)
+					<!--Tab Change Password-->
+					@tabPassword(person)
+					<!--Tab Bonus-->	
+					@tabBonus(person)	
+					<!--Tab Gift-->
+					@tabGift(person,sendGiftForm)
+					<!-- Tab Contact -->
+					@tabContact(person)
+					<!-- Tab Bookmark -->
+					@tabBookmark(person)
+					</div>
+				</div>
+			</div>
+			<div class="col-md-2"></div>
+		</div>
+		<!-- Content -->
+
+	</div>
+	<script>
+
+	$(document).ready(function() {
+		
+		
+
+		$("#postCode").click(function(){
+			var code = "@AccountValidation.generateCode()";
+			appRoutes.controllers.PersonController.postCode(code).ajax({
+				type:'POST',
+				success: function(resultats){
+					location.reload();
+				}
+			});
+		});
+		
+		
+
+
+		$(".confirmContact").each(function(){
+			console.log("do day");
+			$(this).click(function(){
+				var idContact = $(this).attr("value");
+				
+				appRoutes.controllers.PersonController.confirmContact(idContact).ajax({
+					type:'POST',
+					success:function(resultats){
+						//alert("Contact confirmé");
+						location.reload();
+					}
+				});
+			});
+		});
+
+
+	});
+
+	function toggleAdminMode(urlToDelete) {
+		$.ajax({
+			url: urlToDelete,
+			type: 'POST',
+			success: function(results) {
+				location.reload();
+			}
+		});
+	}
+
+	function del(urlToDelete) {
+		$.ajax({
+			url: urlToDelete,
+			type: 'DELETE',
+			success: function(results) { 
+				// Refresh the page
+				location.reload();
+				
+			}
+		});
+	}
+
+	</script>
+}

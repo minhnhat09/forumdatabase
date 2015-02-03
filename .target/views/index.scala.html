@@ -1,0 +1,24 @@
+@(message: String, searchForm:Form[controllers.SearchController.Search])
+
+@main("Welcome to BEF - YOU ROCK", searchForm) {
+
+    @message
+	<a class="btn btn-primary" href="@routes.GiftController.giftHome()">Gestion des cadeaux</a>
+	<a class="btn btn-primary" href="@routes.AccueilController.accueil()">Forum Accueil</a>
+	<a class="btn btn-primary" href="@routes.AdminController.adminHome()">Admin Page</a>
+	<a class="btn btn-primary" href="@routes.InscriptionController.inscription()">Page d'inscription</a>
+	<a class="btn btn-primary" href="@routes.MessageController.message()">Page Message</a>
+	<a class="btn btn-primary" href="">Page Info Personne</a>
+	<a class="btn btn-primary" href="@routes.ForumController.forumHome(models.Application.findById("1"))">Page forum</a>
+
+	<a class="btn btn-primary" href="@routes.ForumController.forumTag(models.Application.findById("1"),models.Tag.findById(1))">Page forum tag</a>
+	
+	<a class="btn btn-primary" href="@routes.ThreadController.threadHome(models.Thread.findById(1))">Page de post</a>
+	
+	<a class="btn btn-primary" href="@routes.SearchController.searchByAuthor(0,"minh")">Page de recherche</a>
+	
+	<a class="btn btn-primary" href="@routes.UserController.userHome(User.findById("tata"))">Page User</a>
+	<a class="btn btn-primary" href="@routes.UserController.userHome(User.findById("tata"))">Page User</a>
+	
+	
+}

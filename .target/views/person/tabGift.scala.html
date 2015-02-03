@@ -1,0 +1,106 @@
+@(person:User, sendGiftForm:Form[controllers.PersonController.SendGift])
+@import helper._
+@import helper.twitterBootstrap._
+
+<div class="tab-pane" id="gift">
+
+	<div class="row rowpadding">
+		<h1>Vos cadeaux</h1>
+		<table class="col-md-12">
+			<tr>
+
+				<th></th>
+				<th>Nom</th>
+				<th>Bonus</th>
+				<th>Quantité</th>
+			</tr>
+			@for(giftuser
+			<- GiftUser.findByUser(person.userName)){ <tr>
+			<td>
+				<img src="@routes.Assets.at("imgs/logo.png")" alt="..." width="50" height="50">
+			</td>
+			<td>
+				<b id="@giftuser.gift.idGift">@giftuser.gift.name</b>
+			</td>
+			<td>@giftuser.gift.bonus</td>
+			<td>
+				<select id="idGift@giftuser.gift.idGift">
+					@for(a <- 1 to giftuser.amount){
+					<option class="select_gift" id="@giftuser.gift.idGift" value="@a">@a</option>	
+				}
+			</select>
+		</td>
+		<td>
+			<!-- Button trigger modal -->
+			<button class="sendButton btn btn-success" data-toggle="modal" data-target="#sendGiftModal" id="@giftuser.gift.idGift">
+				Envoyer le cadeau
+			</button>
+		</td>
+	</tr>
+}
+</table>
+<div class="modal fade" id="sendGiftModal" tabindex="-1" role="dialog" aria-labelledby="myModelLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">
+					<span aria-hidden="true">&times;</span>
+					<span class="sr-only">Close</span>
+				</button>
+				<h4 class="modal-title" id="myModalLabel">Envoyer cadeaux à un ami</h4>
+			</div>
+			<div class="modal-body">
+				@if(flash.containsKey("success")){
+				<div class="alert alert-success">
+					@flash.get("success")
+				</div>
+			}
+			@helper.form(routes.PersonController.sendGift(person), 'class -> "form-group"){
+			<fieldset>
+
+				@helper.inputText(sendGiftForm("userName"), '_label -> "Nom d'utilisateur", 
+				'class -> "form-control", 'placeholder -> "Nom d'utilisateur", 'style ->"width:50%" )
+				<input type="hidden"  name="idGift" id="idGift"/>
+				<input type="hidden"  name="amount" id="amount"/>
+
+			</fieldset>
+
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			<input type="submit" class="btn btn-success" value="Envoyer">
+		</div>}
+	</div>
+</div>
+</div>
+</div>
+<br>
+<br>
+<div class="row">
+	<a href="@routes.GiftController.giftHome()" class="btn btn-primary">Aller voir les cadeaux</a>
+	<!-- <button class="btn btn-primary" id="test">Test</button> -->
+</div>
+</div>
+<script type="text/javascript">
+
+$(".sendButton").click(function(e){
+	var idGift = this.id;
+
+	$("#idGift").val(this.id);
+	var e = document.getElementById("idGift" + idGift);
+	var amountToSend = e.options[e.selectedIndex].value;
+
+	
+	
+	
+	$("#amount").val(amountToSend);
+});
+
+
+$("#test").click(function(){
+	var e = document.getElementById("idGift" + 1);
+	var strUser = e.options[e.selectedIndex].value;
+	alert(strUser);
+});
+
+</script>

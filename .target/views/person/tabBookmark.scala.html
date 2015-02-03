@@ -1,0 +1,30 @@
+@(person:User)
+@import helper._
+@import helper.twitterBootstrap._
+
+<div class="tab-pane" id="bookmark">
+
+	<div class="row rowpadding">
+		<h4>Articles préférés</h4>
+		<table class="col-md-12">
+			<tr>
+				<th></th>
+				<th>Nom</th>
+				<th>Forum</th>
+				
+			</tr>
+			@for(ua <- UserAppreciation.findBookmark(person)){
+			<tr>
+				<td></td>
+				<td><a href="@routes.ThreadController.threadHome(ua.thread, 0)">@ua.thread.threadName</a></td>
+				<td>@ua.thread.application.appName</td>
+				<td><a href="" onclick="javascript:del('@routes.PersonController.deleteBookmark(ua.idAppreciation)')">Supprimer</a></td>
+			</tr>
+		}
+
+		</table>
+	</div>
+	<br>
+	<br>
+	
+</div>

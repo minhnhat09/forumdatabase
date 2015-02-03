@@ -1,0 +1,157 @@
+@(userForm: Form[models.User], searchForm:Form[controllers.SearchController.Search]) 
+
+
+@import helper._ 
+
+@implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.render) } 
+
+@main("Inscription", searchForm){
+	<!-- PANEL VOS INDENTIFIANTS -->
+	<div class="panel panel-default">
+		<div class="col-md-12">
+			<label>Si vous n'avez pas le code de Parrainage, click sur ce bouton</label>
+			<a href="@routes.InscriptionController.newDemand()" class="btn btn-success">Demande Code Parrainage</a>
+		</div>
+		
+		<div class="panel-heading">
+			<h3 class="panel-title" align="center">VOTRE COMPTE</h3>
+
+		</div>
+
+		@form(routes.InscriptionController.saveUser()){
+		<fieldset>
+			
+		<div class="panel-body">
+			<div id="textbox">
+				<p class="alignleft">
+					<span style='font-size:large;'>VOS INDENTIFIANTS</span>
+				</p>
+				<p class="alignright" style="text-color:red;">* Tous les champs marqués d'un astérique sont obligatoires</p>
+				<br/>
+			</div>
+			<hr/>
+			<!-- Row 1 -->
+			<div class="row">
+				<div class="col-md-6">
+				
+					@inputText(userForm("userName"), '_label -> "* Pseudo", 'class -> "form-control", 'placeholder -> "Pseudo" )
+				</div>
+				<div class="col-md-6">
+						@select(userForm("idServiceSubscribe"), options(models.Service.options), '_label -> "Service Inscrite", '_default -> "-- Choisir un service --", '_showConstraints -> false ) 
+				</div>
+			</div>
+			<!-- Row 2 -->
+			<div class="row">
+				<div class="col-md-6">
+					@inputText(userForm("email"), '_label -> "* Email", 'class -> "col-sm-6 form-control", 'placeholder -> "Email", 'type -> "email")
+				</div>
+				<div class="col-md-6">
+					@inputText(userForm("confirmEmail"), '_label -> "* Confirmation Email", 'class -> "col-sm-6 form-control", 'placeholder -> "Confirmation Email")
+				</div>
+			</div>
+			<!-- Row 3 -->
+			<div class="row">
+				<div class="col-md-6">
+					@inputPassword(userForm("password"), '_label -> "* Mot de passe", 'class -> "col-sm-6 form-control", 'placeholder -> "Mot de passe")
+				</div>
+				<div class="col-md-6">
+					@inputPassword(userForm("confirmPassword"), '_label -> "* Confirmation Mot de passe",'class -> "col-sm-6 form-control", 'placeholder -> "Confirmation Mot de passe")
+				</div>
+			</div>
+
+			<hr/>
+
+			<p class="alignleft">
+				<span style='font-size:large;'>VOS INFORMATIONS PERSONELLES</span>
+			</p>
+			<br/>
+			<hr/>
+			<!-- Row 1 -->
+			<div class="row">
+				<div class="col-md-6">
+					<form class="form-horizontal" role="form">
+						<div class="form-group">
+							<label for="inputEmail3" class="col-sm-2 control-label">* Civilité</label>
+							<div class="col-sm-10">
+								<select class="selectpicker" name="civilite">
+									<option value="0">Madame</option>
+									<option value="1">Monsieur</option>
+								</select>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+			<!-- Row 2 -->
+			<div class="row">
+				<div class="col-md-6">
+					@inputText(userForm("firstName"), '_label -> "* Nom", 'class -> "form-control", 'placeholder -> "Nom" )
+				</div>
+				<div class="col-md-6">
+					@inputText(userForm("lastName"), '_label -> "* Prénom", 'class -> "form-control", 'placeholder -> "Prénom" )
+				</div>
+			</div>
+			<!-- Row 3 -->
+			<div class="row">
+				<div class="col-md-6">
+					@inputText(userForm("address"), '_label -> "* Adresse", 'class -> "form-control", 'placeholder -> "Adresse" )
+				</div>
+				<div class="col-md-6">
+
+				</div>
+			</div>
+			<!-- Row 4 -->
+			<div class="row">
+				<div class="col-md-6">
+					@inputText(userForm("postalCode"), '_label -> "* Code Postal", 'class -> "form-control", 'placeholder -> "Code Postal" )
+				</div>
+				<div class="col-md-6">
+					@inputText(userForm("city"), '_label -> "* Ville", 'class -> "form-control", 'placeholder -> "Ville" )
+				</div>
+			</div>
+			<!-- End Row 4 -->
+			<!-- Row 5 -->
+			<div class="row">
+				<div class="col-md-6">
+							@select(userForm("country"), options(models.Tag.countryOptions), '_label -> "* Pays", '_default -> "-- Choisir un pays --", '_showConstraints -> false ) 
+				</div>
+			</div>
+			<!-- END Row 5 -->
+			<!-- Row 6 -->
+			<div class="row">
+				<div class="col-md-12">
+					<p>* Merci de nous indiquer au moins un de vos numéros de téléphone</p>
+
+				</div>
+			</div>
+			<!-- END Row 6 -->
+			<!-- Row 7 -->
+			<div class="row">
+				<div class="col-md-6">
+					@inputText(userForm("homePhone"), '_label -> " Téléphone fixe", 'class -> "form-control", 'placeholder -> "Téléphone fixe" )
+				</div>
+				<div class="col-md-6">
+					@inputText(userForm("mobilePhone"), '_label -> " Téléphone portable", 'class -> "form-control", 'placeholder -> "Téléphone portable" )
+				</div>
+			</div>
+			<!-- End Row 7 -->
+
+			<hr/>
+
+			<!-- Row 1 -->
+			<div class="row">
+				<div class="col-md-6">
+					@inputText(userForm("signinCode"), '_label -> "* Code de parrainage", 'class -> "form-control", 'placeholder -> "Code de Parrainage" )
+				</div>
+				<div class="col-md-6 action" align="right">
+					
+					<input type="submit" value="Valider" class="btn btn-primary">
+				</div>
+			</div>
+		</div>
+	</div>
+	</fieldset>}
+
+
+
+}

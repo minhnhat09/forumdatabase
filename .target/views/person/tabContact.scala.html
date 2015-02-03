@@ -1,0 +1,45 @@
+@(person:User)
+@import helper._
+@import helper.twitterBootstrap._
+
+<div class="tab-pane" id="contact">
+
+	<div class="row rowpadding">
+		<h4>Vos Contacts</h4>
+		<table class="col-md-12">
+			<tr>
+				<th>Utilisateur</th>
+				<th>Nom</th>
+				<th></th>
+			</tr>
+			@for(contact <- Contact.findContacts(person)){
+			<tr>
+				<td><a href="@routes.UserController.userHome(contact.contact)">@contact.contact.userName</a></td>
+				<td><a href="@routes.UserController.userHome(contact.contact)">@contact.contact.firstName @contact.contact.lastName</a></td>
+				<td><a href="@routes.MessageController.writeMessageWithUser(contact.contact)" class="btn btn-success">Envoyer un message</a></td>
+			</tr>
+		}
+
+		</table>
+		<h4>Contacts à confimer</h4>
+		<table class="col-md-12">
+			<tr>
+				<th>Utilisateur</th>
+				<th>Nom</th>
+				<th></th>
+			</tr>
+			@for(contact <- Contact.findContactsUnconfirmed(person)){
+			<tr>
+				<td><a href="@routes.UserController.userHome(contact.contact)">@contact.contact.userName</a></td>
+				<td><a href="@routes.UserController.userHome(contact.contact)">@contact.contact.firstName @contact.contact.lastName</a></td>
+				<td><a id="baconga" value="@contact.idContact"   class="btn btn-success confirmContact">Confirmer</a></td>
+			</tr>
+		}
+
+		</table>
+		
+	</div>
+	<br>
+	<br>
+	
+</div>

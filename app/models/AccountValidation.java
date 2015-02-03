@@ -7,12 +7,11 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-import com.avaje.ebean.Page;
-
-import play.data.validation.Constraints;
 import play.db.ebean.Model;
 import play.mvc.PathBindable;
 import utils.GenerateCode;
+
+import com.avaje.ebean.Page;
 
 @Entity
 public class AccountValidation extends Model implements PathBindable<AccountValidation>{

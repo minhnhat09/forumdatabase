@@ -1,0 +1,25 @@
+@(titleForm: Form[models.Title], searchForm:Form[controllers.SearchController.Search])
+
+@import helper._
+@import helper.twitterBootstrap._
+
+
+@main("Ajouter un Titre", searchForm) {
+    
+    <h1>Ajouter nouveau titre</h1>
+    
+    @helper.form(routes.AdminController.saveTitle(), 'class -> "form-group") {
+       
+        <fieldset>
+        	<input type="hidden" value="@titleForm("idTitle").valueOr("0")" name="idTitle"/>
+            @helper.inputText(titleForm("titleName"), '_label -> "Nom du titre", 
+            	'class -> "form-control", 'placeholder -> "Nom du titre", 'style ->"width:50%" )
+            @helper.inputText(titleForm("exp"), '_label -> "Points", 
+                'class -> "form-control", 'placeholder -> "Points", 'style ->"width:50%" )
+        </fieldset>
+        <div class="actions">
+            <input type="submit" value="Créer nouveau titre" class="btn btn-success"> 
+            <a href="@routes.AdminController.adminHome()" class="btn btn-danger">Annuler</a> 
+        </div>
+    }
+ }

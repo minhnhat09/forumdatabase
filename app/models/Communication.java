@@ -6,7 +6,9 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.validation.Constraint;
 
+import play.data.validation.Constraints;
 import play.db.ebean.Model.Finder;
 import play.mvc.PathBindable;
 
@@ -19,8 +21,10 @@ public class Communication implements PathBindable<Communication>{
 	
 	@Id
 	public int idCommunication;
+	@Constraints.Required
 	public String nameCommunication;
 	@Column(columnDefinition = "LONGTEXT")
+	@Constraints.Required
 	public String content;
 	public Date lastDateUpdate;
 	public Date createDate;

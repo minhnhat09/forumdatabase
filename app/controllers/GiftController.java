@@ -21,8 +21,6 @@ import controllers.SearchController.Search;
 @Security.Authenticated(Secured.class)
 public class GiftController extends Controller {
 	public static final Form<Search> searchForm = Form.form(Search.class);
-	
-	
 	private static Result GIFT_HOME = redirect(routes.GiftController.giftHome());
 	private static final Form<Gift> giftForm = Form.form(Gift.class);
 	

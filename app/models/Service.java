@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import play.data.validation.Constraints;
 import play.db.ebean.Model;
 import play.mvc.PathBindable;
 
@@ -27,6 +28,7 @@ public class Service extends Model implements PathBindable<Service>{
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	public int idService;
+	@Constraints.Required
 	public String serviceName;
 	public Date createDate;
 	public String avatarService;

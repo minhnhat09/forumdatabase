@@ -13,7 +13,6 @@ import models.User;
 import models.UserAppreciation;
 import play.data.DynamicForm;
 import play.data.Form;
-import play.data.validation.ValidationError;
 import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Http.MultipartFormData;
@@ -25,7 +24,6 @@ import com.avaje.ebean.Ebean;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.io.Files;
 
-import controllers.PersonController.SendGift;
 import controllers.SearchController.Search;
 
 @Security.Authenticated(Secured.class)

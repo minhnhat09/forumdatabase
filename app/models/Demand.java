@@ -5,13 +5,13 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import com.avaje.ebean.Page;
-
-import controllers.Global;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
 import play.mvc.PathBindable;
-import utils.Config;
+
+import com.avaje.ebean.Page;
+
+import controllers.Global;
 
 @Entity
 public class Demand extends Model implements PathBindable<Demand>{
@@ -23,7 +23,9 @@ public class Demand extends Model implements PathBindable<Demand>{
 	
 	@Id
 	public int idDemand;
+	@Constraints.Required
 	public String name;
+	@Constraints.Required
 	public String ipn;
 	public String idService;
 	@Constraints.Required

@@ -1,0 +1,26 @@
+@()
+<button class="btn btn-md btn-success">
+<h3>Communication</h3>
+</button>
+
+<h3>Nouvelle Info</h3>
+<div class="row">
+	<div class="col-md-12">
+		<table class="table table-hover">
+			<tbody>
+				@for(com <- Communication.findList()){
+				<tr class="warning">
+				<td>@com.nameCommunication</td>
+				<td>@com.content</td>
+				<td>@("%1$td/%1$tm/%1$tY".format(com.createDate))</td>	
+
+				</tr>
+			}
+				
+			</tbody>
+
+		</table>
+
+	</div>
+	
+</div>

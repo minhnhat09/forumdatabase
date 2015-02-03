@@ -1,6 +1,5 @@
 package models;
 
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,8 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
-import com.avaje.ebean.Page;
-
+import play.data.validation.Constraints;
 import play.db.ebean.Model;
 import play.mvc.PathBindable;
 
@@ -24,7 +22,9 @@ public class Tag extends Model implements PathBindable<Tag>{
 	@Id
 	@GeneratedValue
 	public int idTag;
+	@Constraints.Required(message="Le nom est requis")
 	public String tagTitle;
+	@Constraints.Required(message="La catégorie est requise")
 	public String category;
 	
 	

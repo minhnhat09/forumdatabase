@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import play.data.validation.Constraints;
 import play.db.ebean.Model;
 @Entity
 public class Message extends Model {
@@ -23,11 +24,12 @@ public class Message extends Model {
 	@ManyToOne
 	public User userNameFrom;
 	
-	
+	@Constraints.Required
 	public String userNameTo;
 	
 	public Date sendDate = new Date();
 	@Column(columnDefinition = "LONGTEXT")
+	@Constraints.Required
 	public String content;
 	public boolean unRead;
 	

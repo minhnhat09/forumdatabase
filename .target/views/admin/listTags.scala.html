@@ -1,0 +1,110 @@
+@(searchForm:Form[controllers.SearchController.Search])
+@adminMain(searchForm){
+
+
+<!-- Button -->
+<div class='row' align="right">
+
+</div>
+<!-- Members -->
+<div class='row' style="margin-top:20px;padding-top:10px; border-top: 1px dashed rgba(86, 61, 124, 0.2);">
+
+	<div class="col-md-12">
+		<div class='row'>
+
+			<div class="col-md-6">
+				<input id="select_all_tags" type='checkbox' />
+				<b>Tous Choisir</b>
+				<a href="@routes.AdminController.newTag()" class="btn btn-primary">Nouveau Tag</a>
+			</div>
+			<div class="col-md-6" align="right">
+				<div class="btn-group">
+					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+						Opération
+						<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" role="menu">
+					
+						<li>
+							<a href="#">Supprimer</a>
+						</li>
+					</ul>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+</div>
+<div class='row'>
+	<div class="col-md-12">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th></th>
+					<th>Tag</th>
+					<th>Category</th>
+				</tr>
+			</thead>
+			<tbody>
+				@for(tag <- Tag.findListTag){
+				<tr>
+					<td>
+						<input class="tag_check_box" type='checkbox' />
+					</td>
+					<th>@tag.tagTitle</th>
+					<th>@tag.category</th>
+					
+					<td>
+						<div class="btn-group">
+							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+								Opération
+								<span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu" role="menu">
+								<li>
+									<a href="@routes.AdminController.modifyTag(tag)">Modifier</a>
+								</li>
+								<li>
+									<a href="" onclick="javascript:del('@routes.AdminController.deleteTag(tag.idTag)')">Supprimer</a>
+								</li>
+							</ul>
+						</div>
+					</td>
+				</tr>
+			}
+			</tbody>
+		</table>
+	</div>
+</div>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("#select_all_tags").click(function(){
+			if(this.checked){
+				$(".tag_check_box").each(function(){
+					this.checked = true;
+				})
+			}else{
+				$(".tag_check_box").each(function(){
+					this.checked = false;
+				})
+
+			}
+		});
+		
+
+	});
+	function del(urlToDelete) {
+		$.ajax({
+			url: urlToDelete,
+			type: 'DELETE',
+			success: function(results) { 
+				// Refresh the page
+				location.reload();
+				
+			}
+		});
+	}
+</script>
+
+}

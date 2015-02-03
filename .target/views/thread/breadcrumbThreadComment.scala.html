@@ -1,0 +1,16 @@
+@(appName:String, app:models.Application, threadName:String,thread:models.Thread)
+	<ol class="breadcrumb">
+		<li>
+			<a href="@routes.AccueilController.accueil">
+				<i class="glyphicon glyphicon-home"></i>
+			</a>
+		</li>
+		<li>
+			<a href="@routes.ForumController.forumHome(app)">@appName</a>
+		</li>
+		<li>
+			<a href="@routes.ThreadController.threadHome(thread)">@threadName</a>
+		</li>
+		<li class="active">Commenter</li>
+</ol>
+

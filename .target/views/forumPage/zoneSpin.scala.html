@@ -1,0 +1,78 @@
+@(app:models.Application)
+@for(spinedThread <- models.Thread.findSpinedThreads(app)){
+<tr>
+	<td>
+		<!--											<img src="imgs/folder_locked.png" width="30" height="30">-->
+		@{if(spinedThread.category == "normal")
+		<span class="glyphicon glyphicon-file glyphycon-lg" id="glyphicon" style="font-size:1.2em;"></span>
+		else if(spinedThread.category == "locked")
+		<span class="glyphicon glyphicon-lock" id="glyphicon" style="font-size:1.2em"></span>
+		else
+		<span class="glyphicon glyphicon-thumbs-up" id="glyphicon" style="font-size:1.2em"></span>
+	}
+
+</td>
+<td>
+	<div class="leftwing">
+		<div class="btn-group">
+			@for(tag <- spinedThread.tags){
+			<a href="" class="btn btn-link">[@tag.tagTitle]</a>
+		}
+
+	</div>
+	<a href="@routes.ThreadController.threadHome(spinedThread)"><span id="titre">@spinedThread.threadName</span></a>
+</div>
+		
+	</td>
+	
+	<td>
+		
+		
+		<div>@controllers.Global.getTimeDiff(spinedThread.publicDate)</div>
+	</td>
+	<td><div>@spinedThread.author.firstName @spinedThread.author.lastName</div></td>
+	<td>
+		<div>@spinedThread.responseCount</div>
+	</td>
+	<td><div>@spinedThread.likeCount</div></td>
+	<td><div>@spinedThread.dislikeCount</div></td>
+	<td><div>@spinedThread.rating</div></td>
+	
+	@if(controllers.Application.getAdminMode=="on"){
+
+	<td class="zoneMode">
+
+		<div class="btn-group">
+			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+				Opération
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" role="menu">
+				<li>
+					<a href="#" onclick="javascript:unSpin('@routes.ThreadController.unSpinThread(app, spinedThread.idThread.toString)')">Détacher</a>
+				</li>
+				<li>
+					<a href="#" onclick="javascript:hot('@routes.ThreadController.hotThread(app, spinedThread.idThread.toString)')">Mise en valeur</a>
+				</li>
+				<li>
+					<a href="#" onclick="javascript:blockUnblock('@routes.ThreadController.blockUnblockThread(app, spinedThread.idThread.toString)')">Bloquer/Débloquer</a>
+				</li>
+				<!-- <li>
+					<a href="#" onclick="javascript:unblock('@routes.ThreadController.blockUnblockThread(app, spinedThread.idThread.toString)')">Débloquer</a>
+				</li> -->
+				<li>
+					<a href="#" onclick="javascript:del('@routes.ThreadController.deleteThread(app, spinedThread.idThread.toString)')">Supprimer</a>
+				</li>
+				
+			</ul>
+		</div>
+
+	</td>
+	}
+
+	
+	
+
+
+</tr>
+}

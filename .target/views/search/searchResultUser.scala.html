@@ -1,0 +1,59 @@
+@(currentPage:com.avaje.ebean.Page[models.Thread], searchForm:Form[controllers.SearchController.Search])
+@main("Résultat de Recherche", searchForm){
+<div class="row">
+	<div class="col-xs-12 col-md-10">
+		<div class="panel-body">
+			<div class="row">
+				<div class="alert alert-success" style="margin:0">
+					<span class="glyphicon glyphicon-star"></span>Sujet</div>
+					<table class="threadlayout table table-bordered">
+						<tr>
+							<th>
+								Trier:
+							</th>
+							<th>
+								Dernier Post
+							</th>
+
+							<th>
+								Auteur de Sujet
+							</th>
+							<th>
+								Nombre de Rép 
+							</th>
+
+							
+							<th>
+								Note
+							</th>
+
+						</tr>
+						@for(thread <- currentPage.getList()){
+						<tr>
+							<td>
+								<span class="glyphicon glyphicon-lock" id="glyphicon"></span>
+							</td>
+							<td>
+								<div class="leftwing">
+
+									<span id="titre">@thread.threadName</span>
+								</div>
+
+							</td>
+							<td>
+								<div>@thread.author.firstName @thread.author.lastName</div>
+								<div class="subtitle">10/11/2011</div>
+							</td>
+							<td>
+								<div>@thread.responseCount</div>
+								
+							</td>
+							
+							<td>@thread.rating</td>
+						</tr> }
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+}

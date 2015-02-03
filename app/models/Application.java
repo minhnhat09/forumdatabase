@@ -2,7 +2,6 @@ package models;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -10,11 +9,12 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import com.avaje.ebean.Ebean;
-import com.avaje.ebean.Page;
-
+import play.data.validation.Constraints;
 import play.db.ebean.Model;
 import play.mvc.PathBindable;
+
+import com.avaje.ebean.Ebean;
+import com.avaje.ebean.Page;
 @Entity
 public class Application extends Model implements PathBindable<Application>{
 	
@@ -25,13 +25,16 @@ public class Application extends Model implements PathBindable<Application>{
 	@Id
 	@GeneratedValue
 	public int idApp;
+	@Constraints.Required
 	public String appName;
+	@Constraints.Required
 	public String appDescription;
 	public String avatarApp;
 	
 	@ManyToMany(mappedBy = "apps")
 	List<User> listKeyUsers;
 	
+	@Constraints.Required
 	@ManyToOne
 	public Service service;
 	

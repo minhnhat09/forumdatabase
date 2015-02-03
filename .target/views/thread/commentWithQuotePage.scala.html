@@ -1,0 +1,42 @@
+@(thread:models.Thread, post:models.Post, postForm:Form[models.Post], searchForm:Form[controllers.SearchController.Search]) 
+@import helper._ 
+@implicitFieldConstructor = @{FieldConstructor(twitterBootstrapInput.render)} 
+
+@main("Page Commenter", searchForm){
+<script src="//cdn.ckeditor.com/4.4.4/standard/ckeditor.js"></script>
+<script src="@routes.Assets.at("js/ckeditor/adapters/jquery.js")"></script>
+<script  type="text/javascript">
+
+$(function(){
+	$('.editor').ckeditor();
+});
+
+</script>
+
+@breadcrumbThreadComment(thread.application.appName, thread.application, thread.threadName,thread)
+@form(routes.ThreadController.postCommentWithQuote(thread, post)) {
+<div class='row'>
+	<div class="col-md-1"></div>
+
+	<div class="col-md-10 panel">
+		
+		<div class='row'>
+			@textarea(postForm("postContent"), '_label -> "", 'placeholder -> "Any notes you want to add", 'rows -> 5, 'cols -> 60, 'class ->"editor" )
+		</div>
+		<div class='row'>
+			
+			
+		</div>
+		<div class='row'>
+			<input type="submit" value="Poster" class="btn btn-primary">
+			<a href="@routes.ThreadController.threadHome(thread, 0)" class="btn btn-danger">Annuler</a>
+		</div>
+	</div>
+	<div class="col-md-1">
+
+	</div>
+</div>
+} }
+
+
+

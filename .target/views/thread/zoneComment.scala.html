@@ -1,0 +1,137 @@
+@(thread:models.Thread, currentPage: com.avaje.ebean.Page[Post])
+@for(post <- currentPage.getList()){
+<div class='threadcomment container'>
+	<div class='row'>
+		<div class="col-md-2 leftpanel bottompanel">
+			<a href="@routes.UserController.userHome(post.user)">@post.user.userName</a>
+		</div>
+		<div class="col-md-10 rightpanel bottompanel">
+			<div class='row'>
+				<div class='col-md-11'>
+					Publicie le: <b>@("%1$td/%1$tm/%1$tY".format(post.postTime))</b> à <b>@("%1$tH:%1$tM:%1$tS ".format(post.postTime))</b>
+				</div>
+				<div class='col-md-1'>
+					<a href="@routes.UserController.userHome(post.user)">@post.user.userName</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class='row'>
+		<div class="col-md-2 leftcontentpanel" align="center">
+			<img  
+
+			src="@routes.Assets.at("imgs/" + "users/" + post.user.userName + "/avatar/" + post.user.avatar)" 
+
+
+			alt="..." class="img-thumbnail" width="100" height="100">
+			<div class='row' align="center">
+				<a href="@routes.UserController.userHome(post.user)">@post.user.userName</a>
+			</div>
+			<div class='row'>
+				<div class="col-md-6" align="left">
+					Titre:
+				</div>
+				<div class="col-md-6" align="right">
+					<b>@User.showTitle(post.user)</b>
+				</div>
+			</div>
+			<div class='row'>
+				<div class="col-md-6" align="left">
+					Sujet:
+				</div>
+				<div class="col-md-6" align="right">
+					<b>@models.Thread.countThreadsByUser(post.user.userName)</b>
+				</div>
+			</div>
+			<div class='row bottomusercontact'>
+				<div class="col-md-12" align="center">
+					<button value="@post.user.userName" id="addContactPost" class='btn btn-info btn-sm'>
+						<span class="glyphicon glyphicon-folder-open"></span> Ajout aux contacts</button>
+					</div>
+				</div>
+				<div class='row bottomusercontact'>
+					<div class="col-md-12" align="center">
+						<a href="@routes.MessageController.writeMessageWithUser(post.user)" class='btn btn-info btn-sm'>
+							<span class="glyphicon glyphicon-envelope"></span>Envoyer un message</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-10 rightcontentpanel">
+
+					<br>
+					
+					
+					@for(quote <- PostQuote.findQuotesByPost(post.idPost)){
+
+					<blockquote class="blockquote-reverse">
+						<p>@Html(Post.findById(quote.quotes).postContent)</p> <footer>Ecrit par @Post.findById(quote.quotes).user.userName</footer>
+					</blockquote>
+				}
+				
+				
+				
+				
+				<div class='row threadcontent'>
+					<div class="col-md-12">
+						@Html(post.postContent)
+					</div>
+				</div>
+
+				<div class='row threadfooter'>
+					<div class='col-md-12'>
+						<a class='btn btn-success comment' href="@routes.ThreadController.newCommentWithQuote(thread, post)">
+
+							<span class="glyphicon glyphicon-edit"></span>Répondre avec citation</a>
+
+							@if(Post.isPostOwner(post, controllers.Application.getSessionUser())) {
+							<a class="btn btn-warning" href="@routes.ThreadController.editComment(thread, post.idPost.toString)" id="@post.idPost">
+
+								<span class="glyphicon glyphicon-ok"></span>Éditer</a>
+							<a id="@post.idPost" class="btn btn-danger" href="#" onclick="javascript:delPost('@routes.ThreadController.deletePost(thread, post.idPost.toString)')">
+
+								<span class="glyphicon glyphicon-remove"></span>Supprimer Post (User)</a>
+							}
+						</div>
+						
+							
+						
+						
+						
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<blockquote>
+								<h4>@thread.author.signature</h4>
+							</blockquote>
+						</div>
+					</div>
+
+					<div class="row">
+					@if(controllers.Application.getAdminMode=="on"){
+					
+						
+							<div class="col-md-12" style="text-align:right">
+							<a class="btn btn-danger btn-sm" href="#" onclick="javascript:delPost('@routes.ThreadController.deletePost(thread, post.idPost.toString)')">
+
+								<span class="glyphicon glyphicon-remove"></span>Supprimer Post (Mod)</a>
+							</div>
+					
+							}
+							
+							</div>
+				</div>
+			</div>
+		</div>
+<script type="text/javascript">
+	function delPost(urlToDelete) {
+	$.ajax({
+		url: urlToDelete,
+		type: 'DELETE',
+		success: function(results) {
+				// Refresh the page
+				location.reload();
+			}
+		});
+}
+</script>
+	}

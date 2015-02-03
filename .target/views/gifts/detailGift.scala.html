@@ -1,0 +1,39 @@
+@(giftForm: Form[models.Gift], searchForm:Form[controllers.SearchController.Search])
+
+@import helper._
+@import helper.twitterBootstrap._
+
+
+@main("Ajouter/Modifier cadeau", searchForm) {
+
+<h1>Ajouter/Modifier nouveau cadeau</h1>
+
+@helper.form(routes.GiftController.saveGift(), 'enctype -> "multipart/form-data", 'class -> "form-group") {
+
+<fieldset>
+    <input type="hidden" value="@giftForm("idGift").valueOr("0")" name="idGift"/>
+
+    @helper.inputText(giftForm("name"), '_label -> "Nom du cadeau", 
+    'class -> "form-control", 'placeholder -> "Nom du cadeau", 'style ->"width:50%" )
+    @helper.inputText(giftForm("bonus"), '_label -> "Bonus du cadeau", 
+    'class -> "form-control", 'placeholder -> "Bonus du cadeau", 'style ->"width:50%")
+            <!-- @helper.inputText(giftForm("category"), '_label -> "Category du cadeau", 
+            'class -> "form-control", 'placeholder -> "Category du cadeau", 'style ->"width:50%") -->
+            @helper.textarea(giftForm("description"), '_label -> "Description du cadeau",
+            'class -> "form-control", 'placeholder -> "Description du cadeau", 'rows -> 5)
+            <div class="form-group" sytle="width:50%">
+                <label for="category">Category</label>
+                <select name="category" class="form-control" style="width:50%">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                </select>
+            </div>
+            <input type="file" name="picture">
+        </fieldset>
+        <div class="actions">
+            <input type="submit" value="Créer/Modifier cadeau" class="btn btn-primary"> ou 
+            <a href="@routes.GiftController.giftHome()" class="btn btn-danger">Annuler</a> 
+        </div>
+    }
+}

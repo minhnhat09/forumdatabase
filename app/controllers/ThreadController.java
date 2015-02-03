@@ -3,13 +3,14 @@ package controllers;
 import java.util.Date;
 
 import models.BonusRule;
+import models.Notification;
 import models.Post;
 import models.PostQuote;
 import models.Thread;
 import models.User;
 import models.UserAppreciation;
 import play.data.Form;
-import play.libs.Json;
+import play.i18n.Messages;
 import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -19,7 +20,6 @@ import com.avaje.ebean.Page;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import controllers.SearchController.Search;
-import flexjson.JSONSerializer;
 @Security.Authenticated(Secured.class)
 public class ThreadController extends Controller {
 	private static final Form<Thread>		threadForm = Form.form(Thread.class);
@@ -33,6 +33,10 @@ public class ThreadController extends Controller {
 //		String json = serializer.serialize(thread);
 //		return ok(json);
 //	}
+	
+	
+	
+	
 	
 	public static Result threadHome(Thread thread, Integer page){
 		Page<Post> posts = Post.find(thread, page);
@@ -129,12 +133,20 @@ public class ThreadController extends Controller {
 		Post comment = boundForm.get();
 		comment.postContent = comment.postContent.replace("<img", "<img class='img-thumbnail' ");
 		User user = User.findById(Application.getSessionUser());
+		
 		comment.user = user;
 		comment.postTime = new Date();
 		comment.thread = thread;
 		comment.save();
 		
 		PostQuote pq = new PostQuote();
+		
+		//create a notification
+		Notification noti = new Notification();
+		noti.user = post.user;
+		noti.noteDate = new Date();
+		noti.content = comment.user.firstName + " " + comment.user.lastName +  Messages.get("notiwithquote");
+		noti.save();
 		pq.post = comment.idPost;
 		pq.quotes = post.idPost;
 		pq.save();

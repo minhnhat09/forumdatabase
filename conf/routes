@@ -122,6 +122,7 @@ POST    /forum/f=:app/hot=:idThread			 			controllers.ThreadController.hotThread
 DELETE  /forum/f=:app/del=:idThread			 			controllers.ThreadController.deleteThread(app: models.Application, idThread:String)
 GET		/forum/api/findThreads							api.ThreadControllerApi.threadJson()
 GET		/forum/api/findThread							api.ThreadControllerApi.threadById()
+POST	/forum/api/testPost								api.ThreadControllerApi.testPost()
 
 #Page Thread	
 GET		/showthread/t=:thread							controllers.ThreadController.threadHome(thread: models.Thread, page: Integer ?= 0)

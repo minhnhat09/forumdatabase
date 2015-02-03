@@ -1,0 +1,31 @@
+@(messageForm:Form[Message], searchForm:Form[controllers.SearchController.Search])
+@import helper._
+@import helper.twitterBootstrap._
+
+
+
+@main("Envoyer un message", searchForm) {
+    
+    <h1>Envoyer un message</h1>
+    @form(routes.MessageController.sendMessage(),'class -> "form-group"){
+    	<fieldset>
+        	
+            @helper.inputText(messageForm("userNameTo"), '_label -> "Nom du destinataire",
+            	'class -> "form-control", 'placeholder -> "Nom du destinataire"
+            )
+            @helper.textarea(messageForm("content"), '_label -> "Contenu du message",
+            	'class -> "form-control", 'placeholder -> "Contenu du message", 'rows -> 5)
+                        
+
+        </fieldset>
+        
+        <div class="actions">
+           <input type="submit" value="Envoyer" class="btn btn-primary"> 
+            <a href="@routes.MessageController.message()" class="btn btn-danger">Annuler</a> 
+        </div>
+     
+        
+    
+    }
+    
+}

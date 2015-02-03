@@ -1,0 +1,45 @@
+@(app:models.Application, currentSortBy: String, currentOrder: String)
+
+@link(newPage:Int, newSortBy:String) = @{
+
+var sortBy = currentSortBy
+var order  = currentOrder
+
+if(newSortBy != null) {
+sortBy = newSortBy
+if(currentSortBy == newSortBy) {
+if(currentOrder == "asc") {
+order = "desc"
+} else {
+order = "asc"
+}
+} else {
+order = "asc"
+}
+}
+
+// Generate the link
+routes.ForumController.forumHome(app, newPage,  sortBy, order)
+
+}
+
+@header(key:String, title:String) = {
+<th class="@key.replace(".","_") header @if(currentSortBy == key) @{if(currentOrder == "asc") "headerSortDown" else "headerSortUp"}">
+	<a href="@link(0, key)">@title</a>
+</th>
+}
+
+
+<tr>
+	<th>
+		
+	</th>
+	@header("threadName", "Nom du Post")
+	@header("publicDate", "Date de post")
+	@header("author.firstName", "Auteur")
+	@header("responseCount", "Nb de réponse")
+	@header("likeCount", "Like")
+	@header("dislikeCount", "Dislike")
+	@header("rating", "Note")
+	
+</tr>

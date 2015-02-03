@@ -1,0 +1,41 @@
+@(person:User, searchForm:Form[controllers.SearchController.Search]) 
+@import helper._
+@import helper.twitterBootstrap._
+
+@main("Page Information d'utilisateur", searchForm){
+<div class="container panel">
+	<!-- Header -->
+	<div class='row headpanel' align="center">
+		<div class="col-md-12">
+			<h3>Compte d'utilisateur</h3>
+		</div>
+	</div>
+	<div class='row imageouterpanel'>
+		<div class="col-md-2"></div>
+		<div class="col-md-8">
+			<div class='row imagetop'>
+				<img src="@routes.Assets.at("imgs/logo.png")" alt="..." class="img-thumbnail" width="100" height="100" />
+				
+
+			</div>
+			<div class='row imagepanel'>
+				<ul class="nav nav-tabs">
+					<li>
+						<a href="#moncompte" data-toggle="tab">Profile</a>
+					</li>
+				</ul>
+				<!-- Tab panes -->
+				<div class="tab-content">
+					<!--Tab Profile -->
+					@tabProfile(person)
+				
+					</div>
+				</div>
+			</div>
+			<div class="col-md-2"></div>
+		</div>
+		<!-- Content -->
+
+	</div>
+
+	}
