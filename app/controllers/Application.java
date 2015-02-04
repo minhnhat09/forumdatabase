@@ -64,7 +64,7 @@ public class Application extends Controller {
 
 		public String validate() {
 			if (User.authenticate(userName, password) == null) {
-				return "Invalid user or password";
+				return "Identifiant ou mot de passe non valide";
 
 			}
 			return null;

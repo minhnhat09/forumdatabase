@@ -53,7 +53,7 @@ public class MessageController extends Controller {
 		message.userNameFrom = userFrom;
 		message.save();
 		
-		flash("success","send Message");
+		flash("success","Le message a bien été envoyé");
 		return GO_HOME_MESSAGE;
 	}
 	
@@ -63,7 +63,7 @@ public class MessageController extends Controller {
 	        return notFound(String.format("Tag %s does not exists.", idNoti));
 	    }
 	    Ebean.delete(noti);
-	    flash("success", String.format("Successfully delete Noti"));
+	    flash("success", String.format("La notification a bien été supprimée"));
 	    return GO_HOME_MESSAGE;
 	  }
 	

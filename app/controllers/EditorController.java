@@ -21,7 +21,6 @@ public class EditorController extends Controller {
 	
 	
 	public static Result editorHome(models.Application app){
-		//return ok(views.html.threadeditor.mainPage.render(threadForm, tagCountryForm, tagModuleForm, biblioForm));
 		return ok(views.html.threadeditor.mainPage.render(app, threadForm, searchForm));
 		
 	}
@@ -31,7 +30,7 @@ public class EditorController extends Controller {
 		Form<Thread> boundThreadForm = threadForm.bindFromRequest();
 		
 		if(boundThreadForm.hasErrors()){
-			flash("error", String.format("Post content error"));
+			flash("error", String.format("Erreur lors de la création de l'article"));
 			return ok(views.html.threadeditor.mainPage.render(app, threadForm, searchForm));
 			
 		}
@@ -65,7 +64,7 @@ public class EditorController extends Controller {
 			thread.author.exp   += BonusRule.findByID("2").xp;
 			thread.author.bonus += BonusRule.findByID("2").bonus;
 			thread.author.update();
-			flash("success", String.format("Réussi à poster l'article" + EditorController.listToString(thread.biblios)));
+			flash("success", String.format("L'article a bien été enregistré"));
 			return redirect(routes.ForumController.forumHome(app,0, "publicDate", "desc"));
 			
 		}else{
@@ -74,9 +73,6 @@ public class EditorController extends Controller {
 				System.out.println(bibli.idBibliography);
 			}
 
-			
-			
-			
 			for (Bibliography bibli : thread.biblios) {
 				bibli.thread = thread;
 				bibli.update();

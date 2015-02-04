@@ -23,12 +23,14 @@ public class Demand extends Model implements PathBindable<Demand>{
 	
 	@Id
 	public int idDemand;
-	@Constraints.Required
+	@Constraints.Required(message="dsq")
+	@Constraints.MinLength(4)
 	public String name;
 	@Constraints.Required
 	public String ipn;
 	public String idService;
 	@Constraints.Required
+	@Constraints.Email
 	public String email;
 	@Constraints.Required
 	public String motif;

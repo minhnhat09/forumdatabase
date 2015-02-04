@@ -28,7 +28,7 @@ public class InscriptionController extends Controller {
 	public static Result saveDemand(){
 		Form<Demand> boundForm = demandForm.bindFromRequest();
 		if(boundForm.hasErrors()){
-			flash("error", String.format("Error"));
+			flash("error", String.format("Tous les champs marqués d'un astérique sont obligatoires"));
 			return badRequest(views.html.person.detailDemand.render(demandForm, searchForm));
 		}
 		Demand demand = boundForm.get();

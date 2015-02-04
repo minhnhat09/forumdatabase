@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import play.data.validation.Constraints;
 import play.db.ebean.Model;
 import play.mvc.PathBindable;
 
@@ -22,7 +23,8 @@ public class Post extends Model implements PathBindable<Post>{
 	@Id
 	@GeneratedValue
 	public int idPost;
-	
+	@Constraints.Required
+	@Constraints.MinLength(20)
 	@Column(columnDefinition = "LONGTEXT")
 	public String postContent;
 	

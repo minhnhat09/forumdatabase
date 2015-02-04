@@ -23,6 +23,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 
+import play.data.validation.Constraints;
 import play.db.ebean.Model;
 import play.mvc.PathBindable;
 
@@ -38,6 +39,7 @@ public class Thread extends Model implements PathBindable<Thread>{
 	@Id
 	@GeneratedValue
 	public int idThread;
+	@Constraints.Required
 	public String threadName;
 	public String threadType;
 	public int rating;
@@ -48,6 +50,7 @@ public class Thread extends Model implements PathBindable<Thread>{
 	public int dislikeCount;
 	public int favoriteCount;
 	@Column(columnDefinition = "LONGTEXT")
+	@Constraints.Required
 	public String content;
 	public String attachFile;
 	public String attachImg;

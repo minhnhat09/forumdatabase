@@ -153,7 +153,7 @@ public class ThreadController extends Controller {
 		
 		increaseBonus(comment.user);
 		
-		flash("success", String.format("Poster le commentaire avec succès"));
+		flash("success", String.format("Le commentaire a bien été ajouté"));
 		return redirect(routes.ThreadController.threadHome(thread, 0));
 	}
 	

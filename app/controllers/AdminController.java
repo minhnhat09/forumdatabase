@@ -173,6 +173,7 @@ public class AdminController extends Controller {
 		Permission statusUser = Permission.findById(3);
 		if(user.permission.equals(statusAdmin)){
 			user.permission = statusUser;
+			flash("success", "Le status d'utilisateur est changé");
 		}else{
 			user.permission = statusAdmin;
 		}
@@ -426,7 +427,7 @@ public class AdminController extends Controller {
 			app.update();
 		}
 		
-		flash("success", String.format("Successfully added new Appplication"));
+		flash("success", String.format("L'application a bien été ajoutée"));
 		return GO_HOME_APPLICATION;
 	}
 	
@@ -477,7 +478,7 @@ public class AdminController extends Controller {
 			Ebean.update(bonusRule);
 		}
 		
-		flash("success", String.format("Successfully added bonus rule"));
+		flash("success", String.format("Le règlement a bien été ajouté"));
 		return redirect(routes.AdminController.listBonusRules(0));
 	}
 	
@@ -589,7 +590,7 @@ public class AdminController extends Controller {
 			Ebean.update(com);
 		}
 		
-		flash("success", String.format("Successfully added new communication"));
+		flash("success", String.format("La publicité de communication a bien été ajoutée"));
 		return redirect(routes.AdminController.listCommunications(0));
 	}
 	
@@ -634,7 +635,7 @@ public class AdminController extends Controller {
 			Ebean.update(title);
 		}
 		
-		flash("success", String.format("Successfully added new Title"));
+		flash("success", String.format("Le titre a bien été ajouté"));
 		return GO_HOME_TITLE;
 	}
 	
