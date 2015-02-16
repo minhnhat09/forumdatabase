@@ -23,8 +23,9 @@ public class InscriptionController extends Controller {
 	
 	
 	/**
-	 * Method demand form: new, save
-	 * */
+	 * 
+	 * @return
+	 */
 	public static Result saveDemand(){
 		Form<Demand> boundForm = demandForm.bindFromRequest();
 		if(boundForm.hasErrors()){
@@ -46,17 +47,24 @@ public class InscriptionController extends Controller {
 		return redirect(routes.InscriptionController.inscription());
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public static Result newDemand(){
 		return ok(views.html.person.detailDemand.render(demandForm, searchForm));
 	}
-	
-	
-	
-	
+	/**
+	 * 
+	 * @return
+	 */
 	public static Result inscription(){
 		return ok(views.html.person.inscriptionPage.render(userForm, searchForm));
 	}
-	
+	/**
+	 * 
+	 * @return
+	 */
 	public static Result saveUser(){
 		Form<User> boundForm = userForm.bindFromRequest();
 		

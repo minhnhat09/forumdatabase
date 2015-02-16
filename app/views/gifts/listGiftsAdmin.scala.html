@@ -5,7 +5,7 @@
 		<button class="btn btn-warning"><h3>@message</h3></button>
 	</div>
 </div>
-<!-- @if(controllers.Application.getAdminMode=="on"){
+	
 	
 <div class="alert alert-info">
 	<div class="col-md-12">
@@ -33,8 +33,8 @@
 
 	</div>
 </div>
-} -->
-<br>
+
+<!-- <br>
 <div class="row">
 	<h1>Votre Bonus: @User.findById(controllers.Application.getSessionUser()).bonus</h1>
 	<h1 id="total">Total:</h1>
@@ -43,7 +43,7 @@
 	<button class="btn btn-success" id="buyGift">Acheter Cadeaux</button>
 
 
-</div>
+</div> -->
 <div class='row total'>
 	<div class="col-md-1"></div>
 	<div class="col-md-10 ">
@@ -64,9 +64,9 @@
 								<img data-toggle="modal" data-target="#giftDescription@gift.idGift" src="@routes.Assets.at("imgs/gifts/" + gift.idGift + "/avatar/avatarGift")" alt="..." width="50" height="50">
 								</a>
 
-								<!-- @if(controllers.Application.getAdminMode=="on"){
+								
 									<a href="@routes.GiftController.modifyGift(gift.idGift)"><button class="btn btn-danger"><span class="glyphicon glyphicon-wrench"></span></button></a>
-								} -->
+								
 
 							</div>
 							<div class="row">

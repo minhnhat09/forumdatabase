@@ -17,9 +17,9 @@
 				<td class="col-md-7">
 					<input id="@notis.idNotification" type='checkbox' class="noti_check_box" /><tt><pre>@notis.content</pre></tt></td>
 				<td class="col-md-2">@("%1$td/%1$tm/%1$tY".format(notis.noteDate))</td>
-				<td class="col-md-2"><button class="btn btn-primary btn-md" data-toggle="modal" data-target="#noti@notis.idNotification">
+				<!-- <td class="col-md-2"><button class="btn btn-primary btn-md" data-toggle="modal" data-target="#noti@notis.idNotification">
 							Consulter
-						</button></td>
+						</button></td> -->
 						<td><a href="" onclick="javascript:del('@routes.MessageController.deleteNoti(notis.idNotification)')">Supprimer</a></td>
 			</tr>
 
@@ -34,7 +34,7 @@
 					@notis.content
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
 					
 				</div>
 			</div>

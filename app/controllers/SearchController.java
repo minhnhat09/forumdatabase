@@ -5,16 +5,29 @@ import play.mvc.Controller;
 import play.mvc.Result;
 
 import com.avaje.ebean.Page;
-
+/**
+ * Controller used to manage search operation
+ * @author NGUYEN Nhat Minh
+ * @version 1.0.0
+ * @category Controller
+ * @see {@link Object}
+ */
 public class SearchController extends Controller{
 	
 	public static final Form<Search> searchForm = Form.form(Search.class);
-	
+	/**
+	 * 
+	 * @author a073417
+	 *
+	 */
 	public static class Search{
 		public String option;
 		public String content;
 	}
-	
+	/**
+	 * 
+	 * @return
+	 */
 	public static Result search(){
 		Form<Search> boundForm = searchForm.bindFromRequest();
 		Search search = boundForm.get();
@@ -28,18 +41,34 @@ public class SearchController extends Controller{
 		default:return badRequest();
 		}
 	}
+	/**
+	 * 
+	 * @param page
+	 * @param content
+	 * @return
+	 */
 	public static Result searchAll(Integer page, String content){
 		Page<models.Thread> threads = models.Thread.findByName(page, content);
 		
 		return ok(views.html.search.searchResultAll.render(threads, searchForm));
 	}
-	
+	/**
+	 * 
+	 * @param page
+	 * @param content
+	 * @return
+	 */
 	public static Result searchByAuthor(Integer page, String content){
 		Page<models.Thread> threads = models.Thread.findByAuthor(page, content);
 		
 		return ok(views.html.search.searchResultAll.render(threads, searchForm));
 	}
-	
+	/**
+	 * 
+	 * @param page
+	 * @param content
+	 * @return
+	 */
 	public static Result searchByForum(Integer page, String content){
 		Page<models.Thread> threads = models.Thread.findByNameForum(page, content, 1);
 		return ok(views.html.search.searchResultAll.render(threads, searchForm));

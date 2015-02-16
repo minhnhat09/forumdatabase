@@ -35,6 +35,7 @@ public class AccountValidation extends Model implements PathBindable<AccountVali
 	 *  This user will receive a bonus
 	 *   It is not important to know who user this code though (the new user who
 	 *   want to sign up)*/
+	
 	@ManyToOne
 	public User user;
 

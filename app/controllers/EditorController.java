@@ -12,20 +12,34 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
 import controllers.SearchController.Search;
-
+/**
+ * Main controller manage authentication, login, forget password
+ * @author NGUYEN Nhat Minh
+ * @version 1.0.0
+ * @category Controller
+ * @see {@link Object}
+ */
 @Security.Authenticated(Secured.class)
 public class EditorController extends Controller {
 	
 	private static final Form<Thread> threadForm 		= Form.form(Thread.class);
 	public static final Form<Search> searchForm 		= Form.form(Search.class);
 	
-	
+	/**
+	 * 
+	 * @param app
+	 * @return
+	 */
 	public static Result editorHome(models.Application app){
 		return ok(views.html.threadeditor.mainPage.render(app, threadForm, searchForm));
 		
 	}
 	
-	
+	/**
+	 * 
+	 * @param app
+	 * @return
+	 */
 	public static Result postThread(models.Application app){
 		Form<Thread> boundThreadForm = threadForm.bindFromRequest();
 		
@@ -85,7 +99,11 @@ public class EditorController extends Controller {
 		}
 		
 	}
-	
+	/**
+	 * 
+	 * @param list
+	 * @return
+	 */
 	public static String listToString(List<Bibliography> list){
 		String author = "";
 		for (Bibliography bibliography : list) {

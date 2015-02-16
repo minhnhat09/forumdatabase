@@ -20,6 +20,12 @@ import play.Play;
 
 public class Global extends GlobalSettings{
 	
+	/**
+	 * 
+	 * @param subject
+	 * @param messageTo
+	 * @param code
+	 */
 	public static void sendMail(String subject, String messageTo, String code){
 		
 		final String smtpHost = Play.application().configuration().getString("smtp.host");
@@ -60,56 +66,13 @@ public class Global extends GlobalSettings{
 			throw new RuntimeException(e);
 		}
 	}
-	
-//	public static void sendMail1(){
-//		// Load SMTP configuration
-//        String smtpHost = Play.application().configuration().getString("smtp.host");
-//        Integer smtpPort = Play.application().configuration().getInt( "smtp.port" );
-//        String smtpUser = Play.application().configuration().getString( "smtp.user" );
-//        String smtpPassword = Play.application().configuration().getString( "smtp.password" );
-//        
-//        System.out.println("host " + smtpHost);
-//        System.out.println("port " + smtpPort);
-//        System.out.println("user " + smtpUser);
-//        System.out.println("pass " + smtpPassword);
-//        // Render template
-//        //String body = email.render( created ).body();
-//
-//    // Prepare email
-//    Email mail = new SimpleEmail();
-//    try {
-//        mail.setFrom("nhatminh1809@gmail.com");
-//        mail.setSubject("Songuku");
-//        mail.setMsg("This is the message from BEF");
-//        mail.addTo("nhatminh1809@yahoo.com.vn");
-//    } catch (EmailException e) {
-//        e.printStackTrace();
-//    }
-//
-//    System.out.println("ok");
-//    
-//    // Application de la configuration SMTP
-//    mail.setHostName( smtpHost );
-//    if ( smtpPort != null && smtpPort > 1 && smtpPort < 65536 ) {
-//        mail.setSmtpPort( smtpPort );
-//        System.out.println("check port ok");
-//       // mail.setSSL(true);
-//    }
-//    if ( ! smtpUser.isEmpty() ) {
-//        mail.setAuthentication( smtpUser, smtpPassword );
-//    }
-//System.out.println("iden ok");
-//    // And finally
-//    try {
-//        mail.send();
-//    } catch (EmailException e) {
-//        e.printStackTrace();
-//    }
-		
-		
-//	}
-	
-	 public static String getTimeDiff(Date begin) {
+
+	/**
+	 * 
+	 * @param begin
+	 * @return
+	 */
+	public static String getTimeDiff(Date begin) {
 		 DateTime start = new DateTime();
 		 if(begin != null)
 		 		start = new DateTime(begin.getTime());

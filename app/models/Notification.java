@@ -42,9 +42,18 @@ public class Notification extends Model {
 				.findRowCount();
 	}
 	
+	public static List<Notification> listNotificationsUnread(String userName){
+		return find.where().eq("un_read", 0)
+				  .eq("user_user_name", userName)
+				.findList();
+	}
+	
+	
+	
 	public static List<Notification> findNotificationsByUser(String userName){
 		return find.where()
 				.ilike("user_user_name", "%" + userName + "%")
+				.orderBy().desc("noteDate")
 				.findList();
 	}
 

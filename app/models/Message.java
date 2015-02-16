@@ -39,12 +39,14 @@ public class Message extends Model {
 	public static List<Message> findMessagesToByUser(String userName){
 		return find.where()
 				.ilike("user_name_to", "%" + userName + "%")
+				.orderBy().desc("sendDate")
 				.findList();
 	}
 	
 	public static int messagesUnread(String userName){
 		return find.where().eq("un_read", 0)
 				  .eq("user_name_to", userName)
+				  
 				.findRowCount();
 	}
 	

@@ -8,36 +8,64 @@ import java.io.IOException;
 import models.Gift;
 import play.data.Form;
 import play.mvc.Controller;
-import play.mvc.Result;
-import play.mvc.Security;
 import play.mvc.Http.MultipartFormData;
 import play.mvc.Http.MultipartFormData.FilePart;
+import play.mvc.Result;
+import play.mvc.Security;
 
 import com.avaje.ebean.Ebean;
 import com.google.common.io.Files;
 
 import controllers.SearchController.Search;
-
+/**
+ * Gift controller manage gifts
+ * @author NGUYEN Nhat Minh
+ * @version 1.0.0
+ * @category Controller
+ * @see {@link Object}
+ */
 @Security.Authenticated(Secured.class)
 public class GiftController extends Controller {
 	public static final Form<Search> searchForm = Form.form(Search.class);
-	private static Result GIFT_HOME = redirect(routes.GiftController.giftHome());
+	private static Result GIFT_HOME 			= redirect(routes.GiftController.giftHome());
+	private static Result GIFT_HOME_ADMIN       = redirect(routes.GiftController.giftHomeAdmin());
+	
 	private static final Form<Gift> giftForm = Form.form(Gift.class);
-	
+	/**
+	 * 
+	 * @return
+	 */
 	public static Result giftHome(){
-		return ok(views.html.gifts.list.render("Gestion des cadeaux", searchForm));
+		return ok(views.html.gifts.list.render("Achat des cadeaux", searchForm));
 	}
-	
+	/**
+	 * 
+	 * @return
+	 */
+	public static Result giftHomeAdmin(){
+		return ok(views.html.gifts.listGiftsAdmin.render("Gestion des cadeaux", searchForm));
+	}
+	/**
+	 * 
+	 * @return
+	 */
 	public static Result newGift(){
 		return ok(views.html.gifts.detailGift.render(giftForm, searchForm));
 	}
-	
+	/**
+	 * 
+	 * @param idGift
+	 * @return
+	 */
 	public static Result modifyGift(int idGift){
 		final Gift gift = Gift.findById(idGift);
 		Form<Gift> filledForm =  giftForm.fill(gift);
 		return ok(views.html.gifts.detailGift.render(filledForm, searchForm));
 	}
-	
+	/**
+	 * 
+	 * @return
+	 */
 	public static Result saveGift(){
 		Form<Gift> boundForm = giftForm.bindFromRequest();
 		
@@ -110,10 +138,14 @@ public class GiftController extends Controller {
 		}else{
 			Ebean.update(gift);
 		}
-		flash("success", String.format("Successfully added gift"));
-		return GIFT_HOME;
+		flash("success", String.format("Le cadeau a bien été enregistré"));
+		return GIFT_HOME_ADMIN;
 	}
-	
+	/**
+	 * 
+	 * @param str
+	 * @return
+	 */
 	public static Result buyListGift(String str){
 		if(str != null){
 			if(Gift.buyListGift(str))
@@ -124,7 +156,11 @@ public class GiftController extends Controller {
 		}
 		else return forbidden();
 	}
-	
+	/**
+	 * 
+	 * @param str
+	 * @return
+	 */
 	public static Result deleteListGift(String str){
 		
 		if(str != null){

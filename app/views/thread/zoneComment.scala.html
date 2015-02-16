@@ -63,8 +63,9 @@
 					
 					@for(quote <- PostQuote.findQuotesByPost(post.idPost)){
 
-					<blockquote class="blockquote-reverse">
-						<p>@Html(Post.findById(quote.quotes).postContent)</p> <footer>Ecrit par @Post.findById(quote.quotes).user.userName</footer>
+					<blockquote class="quote blockquote-reverse">
+						<p>@Html(Post.findById(quote.quotes).postContent)</p> 
+						<footer><h4>Ecrit par @Post.findById(quote.quotes).user.userName</h4></footer>
 					</blockquote>
 				}
 				
@@ -100,7 +101,7 @@
 					</div>
 					<div class="row">
 						<div class="col-md-12">
-							<blockquote>
+							<blockquote class="signature">
 								<h4>@thread.author.signature</h4>
 							</blockquote>
 						</div>

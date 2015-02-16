@@ -31,7 +31,7 @@ import com.google.common.io.Files;
 
 import controllers.SearchController.Search;
 /**
- * Controller used to control {@link Area}
+ * Controller used to control {@link User Demand Service Application Title Tag Gift}
  * @author NGUYEN Nhat Minh
  * @version 1.0.0
  * @category Controller
@@ -69,7 +69,7 @@ public class AdminController extends Controller {
 	
 	/**
 	 * 
-	 * @return Admin Home Page
+	 * @return Adminstrateur page
 	 */
 	public static Result adminHome(){
 		//return ok(views.html.admin.adminMain.render());
@@ -117,7 +117,7 @@ public class AdminController extends Controller {
 	public static Result listUsers(Integer page, String sortBy, String order, String filter){
 		Page<User> users = User.find(page, 10, sortBy, order, filter);
 		return ok(views.html.admin.listUsers.render(users, searchForm, sortBy, order, filter));
-		//return TODO;
+		
 	}
 	
 	/**
@@ -230,13 +230,13 @@ public class AdminController extends Controller {
 	public static Result validateDemand(int idAV){
 		final Demand demand = Demand.findById(idAV);
 	    if(demand == null) {
-	    	flash("error", String.format("Demand not found"));
+	    	flash("error", String.format("Demande introuvable"));
 	    	
 	        return notFound(String.format("Demand %s n'existe pas", idAV));
 	    }
 	    
 		if(Demand.activateDemand(demand))
-			flash("success", String.format("Demande validé"));
+			flash("success", String.format("La demande a bien été validée"));
 		return GO_HOME_DEMAND;
 	}
 	
@@ -251,21 +251,37 @@ public class AdminController extends Controller {
 	/**
 	 * Methods manage Service Tab
 	 * */
+	/**
+	 * 
+	 * @param page 
+	 * @return return list of services
+	 */
 	public static Result listServices(int page){
 		Page<Service> services = Service.find(page);
 		return ok(views.html.admin.listServices.render(services, searchForm));
-		//return TODO;
+		
 	}
-	
+	/**
+	 * Method used to create new service
+	 * @return new service form
+	 */
 	public static Result newService(){
 		return ok(views.html.admin.detailService.render(serviceForm, searchForm));
 	}
-	
+	/**
+	 * Method used to modify an exist service
+	 * @param service service to be modidified
+	 * @return service form
+	 */
 	public static Result modifyService(Service service){
 		Form<Service> filledForm =  serviceForm.fill(service);
 		return ok(views.html.admin.detailService.render(filledForm, searchForm));
 	}
-	
+	/**
+	 * Method used to save Service, it receive arguments from http post from client
+	 * It used for both creation and modification service use case
+	 * @return status ok or not ok, 
+	 */
 	public static Result saveService(){
 		MultipartFormData body = request().body().asMultipartFormData();
 	    Form<Service> boundForm = serviceForm.bindFromRequest();
@@ -335,12 +351,17 @@ public class AdminController extends Controller {
 		return GO_HOME_SERVICE;
 	}
 
+	/**
+	 * Method used to delete a service
+	 * @param idService id of service to be deleted
+	 * @return Service admin page
+	 */
 	public static Result deleteService(String idService) {
 	    final Service service = Service.findById(idService);
 	    if(service == null) {
 	        return notFound(String.format("Service %s does not exists.", idService));
 	    }
-	    System.out.println(service.serviceName);
+	    
 	    Service.delService(service);
 	    return GO_HOME_SERVICE;
 	  }
@@ -348,20 +369,38 @@ public class AdminController extends Controller {
 	/**
 	 * Methods manage Apps 
 	 * */
+	
+	/**
+	 * Method used to render list of services
+	 * @param page for pagination
+	 * @return lists of applications in forum and its services
+	 */
 	public static Result listApps(int page){
 		Page<Application> apps = Application.find(page);
 		return ok(views.html.admin.listApps.render(apps, searchForm));
 	}
-	
+	/**
+	 * Method used to serve new application form
+	 * @return application form 
+	 */
 	public static Result newApp(){
 		return ok(views.html.admin.detailApp.render(appForm, searchForm));
 	}
 	
+	/**
+	 * Method used to modify application'information
+	 * @param app application to be modified
+	 * @return application form
+	 */
 	public static Result modifyApp(models.Application app){
 		Form<Application> filledForm =  appForm.fill(app);
 		return ok(views.html.admin.detailApp.render(filledForm, searchForm));
 	}
 	
+	/**
+	 * Method used to save application into database. It used for both creation and modification use case
+	 * @return status ok or not ok
+	 */
 	public static Result saveApp(){
 		Form<Application> boundForm = appForm.bindFromRequest();
 		MultipartFormData body = request().body().asMultipartFormData();
@@ -431,6 +470,11 @@ public class AdminController extends Controller {
 		return GO_HOME_APPLICATION;
 	}
 	
+	/**
+	 * Method used to delete application
+	 * @param idApp Application'id
+	 * @return application admin page
+	 */
 	public static Result deleteApp(String idApp) {
 	    final Application app = Application.findById(idApp);
 	    if(app == null) {
@@ -449,22 +493,41 @@ public class AdminController extends Controller {
 	/**
 	 * Methods manage Bonus Rules tab
 	 * */
+	
+	/**
+	 * Method used to show list of bonus rules admin page
+	 * @param page for pagincation purpose
+	 * @return bonus rule admin page
+	 */
 	public static Result listBonusRules(Integer page){
 		Page<BonusRule> bonusRules = BonusRule.find(page);
 		return ok(views.html.admin.listBonusRules.render(bonusRules, searchForm));
 	}
 
+	/**
+	 * Method used to render bonus rule form
+	 * @return form to create bonus rule
+	 */
 	public static Result newBonusRule(){
 		return ok(views.html.admin.detailBonusRule.render(bonusRuleForm, searchForm));
 	}
 	
+	/**
+	 * Method used to render bonus rule form
+	 * @param bonusRule it take a bonus rule as param
+	 * @return render bonus rule form
+	 */
 	public static Result modifyBonusRule(BonusRule bonusRule){
 		Form<BonusRule> filledForm =  bonusRuleForm.fill(bonusRule);
+		
 		return ok(views.html.admin.detailBonusRule.render(filledForm, searchForm));
+		
 	}
 	
-	
-	
+	/**
+	 * Method used to save bonus rule into database. It used for both creation and modification use case
+	 * @return status ok or not ok and redirect to bonus rule admin page
+	 */
 	public static Result saveBonusRule(){
 		Form<BonusRule> boundForm = bonusRuleForm.bindFromRequest();
 		if(boundForm.hasErrors()){
@@ -482,7 +545,11 @@ public class AdminController extends Controller {
 		return redirect(routes.AdminController.listBonusRules(0));
 	}
 	
-	
+	/**
+	 * Method used to delete bonus rule
+	 * @param idBonusRule it take id of bonus rule as param
+	 * @return redirect to bonus rule admin page
+	 */
 	
 	public static Result deleteBonusRule(String idBonusRule) {
 	    final BonusRule bonusRule = BonusRule.findByID(idBonusRule);
@@ -496,22 +563,37 @@ public class AdminController extends Controller {
 	/**
 	 * Methods manage Tag Tab
 	 * */
+	
+	/**
+	 * Method used to render tag admin page
+	 * @return tag admin page
+	 */
 	public static Result listTags(){
-		//Page<Tag> tags = Tag.find(page);
 		return ok(views.html.admin.listTags.render(searchForm));
-		//return TODO;
 	}
 	
-	
+	/**
+	 * Method used to render tag form
+	 * @return render tag form page
+	 */
 	public static Result newTag(){
 		return ok(views.html.admin.detailTag.render(tagForm, searchForm));
 	}
 	
+	/**
+	 * Method used to modify tags
+	 * @param tag tag to be modified
+	 * @return render tag form to modify tag
+	 */
 	public static Result modifyTag(Tag tag){
 		Form<Tag> filledForm =  tagForm.fill(tag);
 		return ok(views.html.admin.detailTag.render(filledForm, searchForm));
 	}
 	
+	/**
+	 * Method used to save tag into database. It used for both creation and modification page
+	 * @return status ok or not ok and redirect to tag admin page
+	 */
 	public static Result saveTag(){
 		Form<Tag> boundForm = tagForm.bindFromRequest();
 		if(boundForm.hasErrors()){
@@ -552,28 +634,46 @@ public class AdminController extends Controller {
 	/**
 	 * Methods manage Reporting Tab
 	 * */
+	/**
+	 * Method used to render reporting admin page
+	 * @return reporting admin page
+	 */
 	public static Result listReports(){
 		return ok(views.html.admin.listReports.render(searchForm));
 	}
 	/**
 	 * Methods manage Communication Tab
 	 * */
-	
+	/**
+	 * Method used to render communication form page to create or modify communication
+	 * @return communication form page
+	 */
 	public static Result newCommunication(){
 		return ok(views.html.admin.detailCommunication.render(communicationForm, searchForm));
 	}
-	
+	/**
+	 * Method used to render communication form page
+	 * @param com it takes a communication as param
+	 * @return communication form page
+	 */
 	public static Result modifyCommunication(Communication com){
 		Form<Communication> filledForm =  communicationForm.fill(com);
 		return ok(views.html.admin.detailCommunication.render(filledForm, searchForm));
 	}
 	
-	
+	/**
+	 * Method used to render list of communications
+	 * @param page page for pagination purpose
+	 * @return render communication page
+	 */
 	public static Result listCommunications(int page){
 		Page<Communication> coms = Communication.find(page);
 		return ok(views.html.admin.listCommunications.render(coms, searchForm));
 	}
-	
+	/**
+	 * Method used to save a communication into database. It used for both creation and modification use case
+	 * @return status ok or not ok. Redirect to communication admin page
+	 */
 	public static Result saveCommunication(){
 		Form<Communication> boundForm = communicationForm.bindFromRequest();
 		if(boundForm.hasErrors()){
@@ -593,7 +693,11 @@ public class AdminController extends Controller {
 		flash("success", String.format("La publicité de communication a bien été ajoutée"));
 		return redirect(routes.AdminController.listCommunications(0));
 	}
-	
+	/**
+	 * Method used to delete a communication 
+	 * @param idCommunication it take a communication id 
+	 * @return render communication admin page
+	 */
 	public static Result deleteCommunication(String idCommunication) {
 	    final Communication com = Communication.findByID(idCommunication);
 	    if(com == null) {
@@ -606,21 +710,33 @@ public class AdminController extends Controller {
 	/**
 	 * Methods manage Tag Tab
 	 * */
+	/**
+	 * Method used to render list of titles
+	 * @return titles admin page
+	 */
 	public static Result listTitles(){
-		
 		return ok(views.html.admin.listTitles.render(searchForm));
-		
 	}
-	
+	/**
+	 * Method used to create new title
+	 * @return new title form page
+	 */
 	public static Result newTitle(){
 		return ok(views.html.admin.detailTitle.render(titleForm, searchForm));
 	}
-	
+	/**
+	 * Method used to modify title
+	 * @param title it take a title as a param
+	 * @return
+	 */
 	public static Result modifyTitle(Title title){
 		Form<Title> filledForm =  titleForm.fill(title);
 		return ok(views.html.admin.detailTitle.render(filledForm, searchForm));
 	}
-	
+	/**
+	 * Method used to save title into database. It used for both creation and modification use case
+	 * @return status ok or not ok. It redirect to title admin page
+	 */
 	public static Result saveTitle(){
 		Form<Title> boundForm = titleForm.bindFromRequest();
 		if(boundForm.hasErrors()){
@@ -638,7 +754,11 @@ public class AdminController extends Controller {
 		flash("success", String.format("Le titre a bien été ajouté"));
 		return GO_HOME_TITLE;
 	}
-	
+	/**
+	 * Method used to delete title
+	 * @param idTitle It take a title as a param
+	 * @return redirect to title admin page
+	 */
 	public static Result deleteTitle(String idTitle) {
 	    final Title title = Title.findById(idTitle);
 	    if(title == null) {
@@ -648,7 +768,11 @@ public class AdminController extends Controller {
 	    return GO_HOME_TITLE;
 	  }
 	
-	
+	/**
+	 * Ajax method used to get applications
+	 * @param service It take a service as a param
+	 * @return list of applications by service
+	 */
 	public static Result getAppsByService(String service){
 		List<Application> listApps  = Application.findByIdService(service);
 		String textToSend = "";
@@ -661,6 +785,12 @@ public class AdminController extends Controller {
 	}
 	
 	
+	
+	/**
+	 * Method used to export theme
+	 * @param themes
+	 * @return
+	 */
 	public static Result exportThemes(String themes){
 		System.out.println("do export themes");
 		DynamicForm form = Form.form().bindFromRequest();
@@ -675,7 +805,11 @@ public class AdminController extends Controller {
 		
 		
 	}
-	
+	/**
+	 * 
+	 * @param option
+	 * @return
+	 */
 	public static Result export(String option){
 		if(option.equals("themes")){
 			System.out.println("do export themes");
@@ -717,7 +851,11 @@ public class AdminController extends Controller {
 		}
 	}
 	
-	
+	/**
+	 * 
+	 * @param notes
+	 * @return
+	 */
 	public static Result exportNotes(String notes){
 		System.out.println("do export notes");
 		DynamicForm form = Form.form().bindFromRequest();
@@ -725,15 +863,6 @@ public class AdminController extends Controller {
 		String idApp = form.get("noteApp");
 		String idTag = form.get("noteTag");
 		System.out.println(idService + idApp + idTag);
-//		Thread.exportTest();
-		
 		return badRequest(views.html.admin.listReports.render(searchForm));
-		
-		
 	}
-	
-	
-	
-	
-	
 }

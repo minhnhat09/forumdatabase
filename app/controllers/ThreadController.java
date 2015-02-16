@@ -20,35 +20,45 @@ import com.avaje.ebean.Page;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import controllers.SearchController.Search;
+/**
+ * Controller used to manage Thread
+ * @author NGUYEN Nhat Minh
+ * @version 1.0.0
+ * @category Controller
+ * @see {@link Object}
+ */
 @Security.Authenticated(Secured.class)
 public class ThreadController extends Controller {
 	private static final Form<Thread>		threadForm = Form.form(Thread.class);
 	private static final Form<Post> 		postForm   = Form.form(Post.class);
 	public static final Form<Search> searchForm = Form.form(Search.class);
 	
-	
-//	public static Result threadJson(){
-//		Thread thread = Thread.findById(1);
-//		JSONSerializer serializer = new JSONSerializer().include("threadName").exclude("*").prettyPrint(true);
-//		String json = serializer.serialize(thread);
-//		return ok(json);
-//	}
-	
-	
-	
-	
-	
+	/**
+	 * 
+	 * @param thread
+	 * @param page
+	 * @return
+	 */
 	public static Result threadHome(Thread thread, Integer page){
 		Page<Post> posts = Post.find(thread, page);
 		thread.viewCount += 1;
 		thread.update();
 		return ok(views.html.thread.mainPage.render(thread, posts, searchForm));
 	}
-	
+	/**
+	 * 
+	 * @param thread
+	 * @return
+	 */
 	public static Result newComment(Thread thread){
 		return ok(views.html.thread.commentPage.render(thread, postForm, searchForm));
 	}
-	
+	/**
+	 * 
+	 * @param thread
+	 * @param idPost
+	 * @return
+	 */
 	public static Result editComment(Thread thread, String idPost){
 		
 		final Post post = Post.findById(Integer.parseInt(idPost));
@@ -65,6 +75,11 @@ public class ThreadController extends Controller {
 	}
 	
 
+	/**
+	 * 
+	 * @param idThread
+	 * @return
+	 */
 	public static Result editThread(String idThread){
 		
 		final Thread thread = Thread.findById(Integer.parseInt(idThread));
@@ -81,11 +96,20 @@ public class ThreadController extends Controller {
 		
 	}
 	
-	
+	/**
+	 * 
+	 * @param thread
+	 * @param post
+	 * @return
+	 */
 	public static Result newCommentWithQuote(Thread thread, Post post){
 		return ok(views.html.thread.commentWithQuotePage.render(thread, post, postForm, searchForm));
 	}
-	
+	/**
+	 * 
+	 * @param thread
+	 * @return
+	 */
 	public static Result postComment(Thread thread){
 		
 		Form<Post> boundForm = postForm.bindFromRequest();
@@ -115,6 +139,10 @@ public class ThreadController extends Controller {
 		return redirect(routes.ThreadController.threadHome(thread, 0));
 	}
 
+	/**
+	 * 
+	 * @param user
+	 */
 	public static void increaseBonus(User user){
 		user.exp += BonusRule.findByID("3").xp;
 		user.bonus += BonusRule.findByID("3").bonus;
@@ -122,6 +150,12 @@ public class ThreadController extends Controller {
 		
 	}
 	
+	/**
+	 * 
+	 * @param thread
+	 * @param post
+	 * @return
+	 */
 	public static Result postCommentWithQuote(Thread thread, Post post){
 	
 		Form<Post> boundForm = postForm.bindFromRequest();
@@ -145,7 +179,7 @@ public class ThreadController extends Controller {
 		Notification noti = new Notification();
 		noti.user = post.user;
 		noti.noteDate = new Date();
-		noti.content = comment.user.firstName + " " + comment.user.lastName +  Messages.get("notiwithquote");
+		noti.content = comment.user.firstName + " " + comment.user.lastName +  " " + Messages.get("notiwithquote") + " " + comment.thread.threadName;
 		noti.save();
 		pq.post = comment.idPost;
 		pq.quotes = post.idPost;
@@ -157,6 +191,10 @@ public class ThreadController extends Controller {
 		return redirect(routes.ThreadController.threadHome(thread, 0));
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	@BodyParser.Of(BodyParser.Json.class)
 	public static Result noteThread(){
 		JsonNode json = request().body().asJson();
@@ -170,6 +208,10 @@ public class ThreadController extends Controller {
 		else return forbidden();
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	@BodyParser.Of(BodyParser.Json.class)
 	public static Result bookmarkThread(){
 		JsonNode json = request().body().asJson();
@@ -182,7 +224,10 @@ public class ThreadController extends Controller {
 		else return forbidden();
 	}
 	
-	
+	/**
+	 * 
+	 * @return
+	 */
 	@BodyParser.Of(BodyParser.Json.class)
 	public static Result likeThread(){
 		JsonNode json = request().body().asJson();
@@ -195,6 +240,10 @@ public class ThreadController extends Controller {
 		else return forbidden();
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	@BodyParser.Of(BodyParser.Json.class)
 	public static Result dislikeThread(){
 		JsonNode json = request().body().asJson();
@@ -207,6 +256,12 @@ public class ThreadController extends Controller {
 		else return forbidden();
 	}
 	
+	/**
+	 * 
+	 * @param app
+	 * @param idThread
+	 * @return
+	 */
 	public static Result spinThread(models.Application app, String idThread){
 		final Thread thread = Thread.findById(Integer.parseInt(idThread));
 		
@@ -220,6 +275,12 @@ public class ThreadController extends Controller {
 		return ok();
 	}
 	
+	/**
+	 * 
+	 * @param app
+	 * @param idThread
+	 * @return
+	 */
 	public static Result unSpinThread(models.Application app, String idThread){
 		final Thread thread = Thread.findById(Integer.parseInt(idThread));
 		
@@ -233,6 +294,12 @@ public class ThreadController extends Controller {
 		return ok();
 	}
 	
+	/**
+	 * 
+	 * @param app
+	 * @param idThread
+	 * @return
+	 */
 	public static Result blockUnblockThread(models.Application app, String idThread){
 		final Thread thread = Thread.findById(Integer.parseInt(idThread));
 		if(thread == null){
@@ -251,20 +318,13 @@ public class ThreadController extends Controller {
 		thread.update();
 		return ok();
 	}
-	
-//	public static Result unblockThread(models.Application app, String idThread){
-//		final Thread thread = Thread.findById(Integer.parseInt(idThread));
-//		if(thread == null){
-//			
-//			return notFound(String.format("Article % n'existe pas", idThread));
-//		}
-//		System.out.println("idThread" + thread.idThread);
-//		thread.isBlocked = false;
-//		thread.category = "normal";
-//		thread.update();
-//		return ok();
-//	}
-	
+
+	/**
+	 * 
+	 * @param app
+	 * @param idThread
+	 * @return
+	 */
 	public static Result hotThread(models.Application app, String idThread){
 		final Thread thread = Thread.findById(Integer.parseInt(idThread));
 		if(thread == null){
@@ -287,6 +347,12 @@ public class ThreadController extends Controller {
 		return ok();
 	}
 	
+	/**
+	 * 
+	 * @param app
+	 * @param idThread
+	 * @return
+	 */
 	public static Result deleteThread(models.Application app, String idThread){
 		final Thread thread = Thread.findById(Integer.parseInt(idThread));
 		if(thread == null){
@@ -298,7 +364,12 @@ public class ThreadController extends Controller {
 		
 		return ok();
 	}
-	
+	/**
+	 * 
+	 * @param thread
+	 * @param idPost
+	 * @return
+	 */
 	
 	public static Result deletePost(Thread thread , String idPost){
 		final Post post = Post.findById(Integer.parseInt(idPost));
@@ -308,18 +379,5 @@ public class ThreadController extends Controller {
 		Post.delPost(post);
 		return ok();
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }
 

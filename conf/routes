@@ -54,6 +54,7 @@ DELETE  /admin/bonusrules/:idBonus					    controllers.AdminController.deleteBon
 
 #Page Gift
 GET 	/gift/											controllers.GiftController.giftHome()
+GET 	/admin/gifts/									controllers.GiftController.giftHomeAdmin()
 GET		/gift/newgift									controllers.GiftController.newGift()
 POST	/gift											controllers.GiftController.saveGift()
 GET 	/gift/:idGift									controllers.GiftController.modifyGift(idGift: Integer)
@@ -95,6 +96,8 @@ GET     /message/sendmessage/:user                      controllers.MessageContr
 POST	/message/										controllers.MessageController.sendMessage()
 POST	/message/listmess								controllers.MessageController.deleteListMess()
 POST	/message/listnotis								controllers.MessageController.deleteListNotis()
+POST    /message/:idMess								controllers.MessageController.viewMess(idMess:Integer)
+POST    /message/:idUser								controllers.MessageController.viewNotis(idUser: String)
 DELETE  /message/:idMess								controllers.MessageController.deleteMess(idMess:Integer)
 DELETE  /message/noti/:idNoti							controllers.MessageController.deleteNoti(idNoti:Integer)
 #Page Person

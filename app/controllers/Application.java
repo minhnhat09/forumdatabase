@@ -24,15 +24,27 @@ public class Application extends Controller {
 	public static Result FORGET_PASS_HOME = redirect(routes.Application
 			.forgetPassPage());
 
+	/**
+	 * 
+	 * @return
+	 */
 	public static Result index() {
 		return ok(views.html.index.render("Your new application is ready.",
 				searchForm));
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public static Result displayInterface() {
 		return ok(views.html.displayInterface.render());
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public static Result forgetPassword() {
 		DynamicForm form = Form.form().bindFromRequest();
 		String userName = form.get("userName");
@@ -50,12 +62,19 @@ public class Application extends Controller {
 		return FORGET_PASS_HOME;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public static Result forgetPassPage() {
 		return ok(views.html.forgetPassword.render(searchForm));
 	}
 
-	// -- Authentication
-
+	/**
+	 * 
+	 * @author a073417
+	 *
+	 */
 	public static class Login {
 		@Constraints.Required
 		public String userName;
@@ -106,31 +125,57 @@ public class Application extends Controller {
 		}
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public static String getSessionUser() {
 		return session("userName");
 	}
 
+	/**
+	 * 
+	 */
 	public static void turnOnAdminMode() {
 		session("adminMode", "on");
 	}
 
+	/**
+	 * 
+	 */
 	public static void turnOffAdminMode() {
 		session("adminMode", "off");
 
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public static String getAdminMode() {
 		return session("adminMode");
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public static int getPermissionUser() {
 		return Integer.parseInt(session("permissionUser"));
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public static User getUser() {
 		return User.findById(session("userName"));
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public static boolean isAdmin() {
 		int permission = Application.getPermissionUser();
 		if (permission == 1)
@@ -148,10 +193,19 @@ public class Application extends Controller {
 		return redirect(routes.Application.login());
 	}
 
+	/**
+	 * 
+	 * @param text
+	 * @return
+	 */
 	public static String clarifyText(String text) {
 		return text.replace("\"", "");
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public static boolean isConnected() {
 		if (session("userName") != null)
 			return true;

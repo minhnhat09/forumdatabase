@@ -26,6 +26,13 @@ import com.google.common.io.Files;
 
 import controllers.SearchController.Search;
 
+/**
+ * Controller used to manage User information
+ * @author NGUYEN Nhat Minh
+ * @version 1.0.0
+ * @category Controller
+ * @see {@link Object}
+ */
 @Security.Authenticated(Secured.class)
 public class PersonController extends Controller {
 	public static final Form<SendGift> sendGiftForm = Form.form(SendGift.class);
@@ -34,7 +41,11 @@ public class PersonController extends Controller {
 	
 	
 	
-	
+	/**
+	 * 
+	 * @param user
+	 * @return
+	 */
 	public static Result person(User user) {
 		// User user = User.findUserbyUserName(userName.);
 		
@@ -47,7 +58,11 @@ public class PersonController extends Controller {
 		}
 		
 	}
-	
+	/**
+	 * 
+	 * @param idUserAppreciation
+	 * @return
+	 */
 	public static Result deleteBookmark(int idUserAppreciation) {
 	    final UserAppreciation ua = UserAppreciation.findById(idUserAppreciation);
 	    if(ua == null) {
@@ -58,6 +73,11 @@ public class PersonController extends Controller {
 	    return ok();
 	  }
 
+	/**
+	 * 
+	 * @param user
+	 * @return
+	 */
 	public static Result changePicture(User user) {
 		MultipartFormData body = request().body().asMultipartFormData();
 		FilePart picture = body.getFile("picture");
@@ -121,16 +141,30 @@ public class PersonController extends Controller {
 		}
 	}
 
+	/**
+	 * 
+	 * @param user
+	 * @return
+	 */
 	public static Result changePicturePage(User user) {
 		return ok(views.html.person.changePicture.render(user, searchForm));
 	}
 
+	/**
+	 * 
+	 * @param user
+	 * @return
+	 */
 	public static Result modifyPerson(User user) {
 		Form<User> filledForm = personForm.fill(user);
 		return ok(views.html.person.detailPerson.render(user, searchForm));
 	}
 
-	// save modification user
+	/**
+	 * 
+	 * @param user
+	 * @return
+	 */
 	public static Result savePerson(User user) {
 		
 		DynamicForm form 	= Form.form().bindFromRequest();
@@ -184,29 +218,25 @@ public class PersonController extends Controller {
 		user.update();
 		
 		return redirect(routes.PersonController.person(user));
-		//Form<User> boundForm = personForm.bindFromRequest();
-//		System.out.println("do day");
-//		if (boundForm.hasErrors()) {
-//			
-//			flash("error", String.format("Error"));
-//			return badRequest(views.html.person.detailPerson.render(personForm,
-//					searchForm));
-//		}
-//		User user = boundForm.get();
-//
-//		System.out.println(user.userName);
-//		Ebean.update(user);
-//
-//		flash("success", String.format("Successfully modified user"));
-//		return redirect(routes.PersonController.person(user));
+
 	}
 
+	/**
+	 * 
+	 * 
+	 *
+	 */
 	public static class SendGift {
 		public String userName;
 		public String idGift;
 		public int amount;
 	}
 
+	/**
+	 * 
+	 * @param str
+	 * @return
+	 */
 	public static Result postCode(String str) {
 		if (str != null) {
 			User user = User.findById(Application.getSessionUser());
@@ -218,6 +248,11 @@ public class PersonController extends Controller {
 			return forbidden();
 	}
 
+	/**
+	 * 
+	 * @param user
+	 * @return
+	 */
 	public static Result sendGift(User user) {
 
 		Form<SendGift> boundForm = sendGiftForm.bindFromRequest();
@@ -257,6 +292,14 @@ public class PersonController extends Controller {
 		}
 	}
 
+	/**
+	 * 
+	 * @param user
+	 * @param friend
+	 * @param gift
+	 * @param amount
+	 * @return
+	 */
 	public static boolean offerGift(User user, User friend, Gift gift,
 			int amount) {
 		GiftUser gu = GiftUser.findByUserGift(user, gift);
@@ -292,6 +335,11 @@ public class PersonController extends Controller {
 
 	}
 
+	/**
+	 * 
+	 * @param user
+	 * @return
+	 */
 	public static Result changePassword(User user) {
 		DynamicForm form = Form.form().bindFromRequest();
 		String actualPass = form.get("actualPass");
@@ -329,6 +377,11 @@ public class PersonController extends Controller {
 
 	}
 
+	/**
+	 * 
+	 * @param idContact
+	 * @return
+	 */
 	public static Result confirmContact(String idContact) {
 		System.out.println(idContact);
 		if (Contact.confirmContact(idContact)) {
@@ -338,6 +391,10 @@ public class PersonController extends Controller {
 			return forbidden();
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	@BodyParser.Of(BodyParser.Json.class)
 	public static Result sendRequest() {
 		JsonNode json = request().body().asJson();

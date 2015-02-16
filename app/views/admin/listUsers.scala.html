@@ -9,14 +9,14 @@ var order  = currentOrder
 if(newSortBy != null) {
 sortBy = newSortBy
 if(currentSortBy == newSortBy) {
-if(currentOrder == "asc") {
-order = "desc"
-} else {
-order = "asc"
-}
-} else {
-order = "asc"
-}
+	if(currentOrder == "asc") {
+	order = "desc"
+	} else {
+	order = "asc"
+		}
+	} else {
+	order = "asc"
+		}
 }
 
 // Generate the link
@@ -25,9 +25,9 @@ routes.AdminController.listUsers(newPage, sortBy, order, currentFilter)
 }
 
 @header(key:String, title:String) = {
-<th class="@key.replace(".","_") header @if(currentSortBy == key) @{if(currentOrder == "asc") "headerSortDown" else "headerSortUp"}">
-	<a href="@link(0, key)">@title</a>
-</th>
+	<th class="@key.replace(".","_") header @if(currentSortBy == key) @{if(currentOrder == "asc") "headerSortDown" else "headerSortUp"}">
+		<a href="@link(0, key)">@title</a>
+	</th>
 }
 
 @adminMain(searchForm){

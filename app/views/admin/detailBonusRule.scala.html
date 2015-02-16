@@ -4,7 +4,7 @@
 @import helper.twitterBootstrap._
 
 
-@main("Ajouter règlement", searchForm) {
+@main("Modifier règlement", searchForm) {
     
     <h1>Ajouter/Modifier nouveau règlement</h1>
     
@@ -20,8 +20,8 @@
             	'class -> "form-control", 'placeholder -> "Bonus", 'style ->"width:50%")
 		</fieldset>
         <div class="actions">
-            <input type="submit" value="Créer nouveau règlement" class="btn btn-primary"> 
-            <a href="@routes.AdminController.adminHome()" class="btn btn-danger">Annuler</a> 
+            <input type="submit" value="Modifier le règlement" class="btn btn-primary"> 
+            <a href="@routes.AdminController.listBonusRules(0)" class="btn btn-danger">Annuler</a> 
         </div>
     }
  }

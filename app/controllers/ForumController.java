@@ -13,27 +13,57 @@ import controllers.SearchController.Search;
 @Security.Authenticated(Secured.class)
 public class ForumController extends Controller {
 	public static final Form<Search> searchForm = Form.form(Search.class);
-	
-	
-	
+	/**
+	 * 
+	 * @param app
+	 * @param page
+	 * @param sortBy
+	 * @param order
+	 * @return
+	 */
 	public static Result forumHome(models.Application app, Integer page, String sortBy, String order){
 		Page<Thread> pageThreads = Thread.findPage(page, app, sortBy, order); 
 		return ok(views.html.forumPage.mainPage.render(app, pageThreads, searchForm, sortBy, order));
 		//return TODO;
 	}
 	
+	/**
+	 * 
+	 * @param app
+	 * @param page
+	 * @param sortBy
+	 * @param order
+	 * @return
+	 */
 	public static Result forumTagCountry(models.Application app, Integer page, String sortBy, String order){
 		Page<Thread> pageThreads = Thread.findPageAllTagCountry(page, app, sortBy, order); 
 		return ok(views.html.forumPage.mainPage.render(app, pageThreads, searchForm, sortBy, order));
 		//return TODO;
 	}
 	
+	/**
+	 * 
+	 * @param app
+	 * @param page
+	 * @param sortBy
+	 * @param order
+	 * @return
+	 */
 	public static Result forumTagModule(models.Application app, Integer page, String sortBy, String order){
 		Page<Thread> pageThreads = Thread.findPageAllTagCountry(page, app, sortBy, order); 
 		return ok(views.html.forumPage.mainPage.render(app, pageThreads, searchForm, sortBy, order));
 		//return TODO;
 	}
 	
+	/**
+	 * 
+	 * @param app
+	 * @param tag
+	 * @param page
+	 * @param sortBy
+	 * @param order
+	 * @return
+	 */
 	public static Result forumTag(models.Application app, Tag tag, Integer page, String sortBy, String order){
 		Page<Thread> threads = Thread.findPageByTag(page, app, tag, sortBy, order);
 		
