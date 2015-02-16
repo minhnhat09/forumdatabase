@@ -21,7 +21,7 @@
 							<a href="#message" data-toggle="tab">Messages</a>
 						</li>
 						<li>
-							<a href="#rappel" data-toggle="tab">Rappel</a>
+							<a href="#rappel" data-toggle="tab" onclick="javascript:viewNotis('@routes.MessageController.viewNotis(controllers.Application.getSessionUser())')">Rappel</a>
 						</li>
 					</ul>
 				</div>
@@ -50,6 +50,8 @@
 
 			}
 		});
+
+
 		
 		$("#select_all_notis").click(function(){
 			if(this.checked){
@@ -96,6 +98,8 @@
 			});
 		});
 
+		
+
 	});
 
 		
@@ -110,6 +114,26 @@
 				// Refresh the page
 				location.reload();
 				
+			}
+		});
+	}
+
+	function viewMess(urlToView){
+		$.ajax({
+			url:urlToView,
+			type:'POST',
+			success:function(results){
+
+			}
+		});
+	}
+
+	function viewNotis(urlToViewNotis){
+		$.ajax({
+			url:urlToViewNotis,
+			type:'POST',
+			success:function(results){
+				alert('gigidy');
 			}
 		});
 	}

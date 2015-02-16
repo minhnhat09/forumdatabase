@@ -78,19 +78,19 @@ src="@routes.Assets.at("imgs/" + "users/" + thread.author.userName + "/avatar/" 
 					</div> -->
 				
 				<br>
-				<blockquote>
+				<blockquote class="bibliographie">
 					<p><h2>Bibliographie</h2></p>
 					<table class="col-md-12" border="2px solid red;">
 						<tr>
 							<th>Auteur</th>
-							<th>Content</th>
+							<th>Contenu</th>
 							<th>Lien</th>
 						</tr>
 					@for(bibli <- Bibliography.findListByThread(thread.idThread)){
 						<tr>
 							<td class="col-md-2">@bibli.author</td>
 							<td class="col-md-7">@bibli.content</td>
-							<td class="col-md-3"><a target="_blank">@bibli.lien</td>
+							<td class="col-md-3">@bibli.lien</td>
 						</tr>
 					}
 						

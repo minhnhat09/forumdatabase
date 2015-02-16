@@ -1,8 +1,7 @@
 @(demandForm: Form[models.Demand], searchForm:Form[controllers.SearchController.Search])
 
 @import helper._
-@import helper.twitterBootstrap._
-
+@implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.render) } 
 
 @main("Ajouter une demande", searchForm) {
     
@@ -12,24 +11,25 @@
        
         <fieldset>
         	<input type="hidden" value="@demandForm("idDemand").valueOr("0")" name="idDemand"/>
-            @helper.inputText(demandForm("name"), '_label -> "Nom et Prénom", 
+            @helper.inputText(demandForm("name"), '_label -> "*Nom et Prénom", 
                 'class -> "form-control", 'placeholder -> "", 'style ->"width:50%" )
             
-            @helper.inputText(demandForm("ipn"), '_label -> "IPN", 
+            @helper.inputText(demandForm("ipn"), '_label -> "*IPN", 
             	'class -> "form-control", 'placeholder -> "", 'style ->"width:50%" )
             
             @select(demandForm("idService"), options(models.Service.options), '_label -> "Service Inscrite",'class -> "form-control", '_default -> "-- Choisir un service --", '_showConstraints -> false, 'style ->"width:50%" ) 
             
-            @helper.inputText(demandForm("email"), '_label -> "Email", 
+            @helper.inputText(demandForm("email"), '_label -> "*Email", 
                 'class -> "form-control", 'placeholder -> "", 'style ->"width:50%" )
             
-            @helper.textarea(demandForm("motif"), '_label -> "Motif", 
+            @helper.textarea(demandForm("motif"), '_label -> "*Motif", 
                 'class -> "form-control", 'placeholder -> "", 'style ->"width:50%" )
 
         </fieldset>
         <div class="actions">
             <input type="submit" value="Envoyer la demande" class="btn btn-primary"> 
-            <a href="routes.InscriptionController.inscription()" class="btn btn-danger">Annuler</a> 
+            <a href="@routes.InscriptionController.inscription()" class="btn btn-danger">Annuler</a> 
+
         </div>
     }
 

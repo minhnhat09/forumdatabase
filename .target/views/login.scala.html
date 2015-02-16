@@ -3,11 +3,11 @@
 <h1>Se Connecter</h1>
 
 @if(form.hasGlobalErrors) {
-<p class="error">
+<p class="alert alert-danger" style="width:50%">
 	@form.globalError.message
 </p>
 } @if(flash.contains("success")) {
-<p class="success">
+<p class="alert alert-success" style="width:50%">
 	@flash.get("success")
 </p>
 }

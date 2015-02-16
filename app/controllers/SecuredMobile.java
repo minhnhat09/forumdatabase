@@ -18,7 +18,7 @@ public class SecuredMobile extends Security.Authenticator {
     public String getUsername(Context ctx) {
     	System.out.println("----------------Authentication need-----------------");
     	System.out.println(ctx.session().get("userName"));
-        return ctx.session().get("userName");
+        return ctx.session().get("userNameMobile");
     }
     
     @Override

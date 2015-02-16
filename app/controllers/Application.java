@@ -5,8 +5,12 @@ import play.Routes;
 import play.data.DynamicForm;
 import play.data.Form;
 import play.data.validation.Constraints;
+import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Result;
+
+import com.fasterxml.jackson.databind.JsonNode;
+
 import controllers.SearchController.Search;
 
 /**
@@ -110,7 +114,7 @@ public class Application extends Controller {
 			System.out.println(loginForm.error("userName"));
 			return badRequest(views.html.login.render(loginForm, searchForm));
 		} else {
-			
+			session().clear();
 			session("userName", loginForm.get().userName);
 			User user = User.findById(loginForm.get().userName);
 			session("permissionUser",
@@ -119,11 +123,11 @@ public class Application extends Controller {
 			user.title = User.showTitle(user);
 			user.update();
 			return redirect(routes.AccueilController.accueil());
-			// return redirect(
-			// routes.Application.index()
-			// );
+			
 		}
 	}
+	
+
 
 	/**
 	 * 

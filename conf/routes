@@ -123,9 +123,7 @@ POST    /forum/f=:app/unspin=:idThread			 		controllers.ThreadController.unSpinT
 POST    /forum/f=:app/blockunblock=:idThread			controllers.ThreadController.blockUnblockThread(app: models.Application, idThread:String)
 POST    /forum/f=:app/hot=:idThread			 			controllers.ThreadController.hotThread(app: models.Application, idThread:String)
 DELETE  /forum/f=:app/del=:idThread			 			controllers.ThreadController.deleteThread(app: models.Application, idThread:String)
-GET		/forum/api/findThreads							api.ThreadControllerApi.threadJson()
-GET		/forum/api/findThread							api.ThreadControllerApi.threadById()
-POST	/forum/api/testPost								api.ThreadControllerApi.testPost()
+
 
 #Page Thread	
 GET		/showthread/t=:thread							controllers.ThreadController.threadHome(thread: models.Thread, page: Integer ?= 0)
@@ -149,6 +147,18 @@ POST	/thread/savecommentwithquote/t=:thread/p=:post	controllers.ThreadController
 GET		/editor/newthread/a=:app						controllers.EditorController.editorHome(app:models.Application)
 GET		/editor/editthread/t=:idThread					controllers.ThreadController.editThread(idThread: String)
 POST	/editor/postthread/:app							controllers.EditorController.postThread(app:models.Application)
+
+################################### MOBILE SERVER ##############################################################################
+#Application
+POST	/forum/api/authenticate							api.ApplicationApi.authenticateMobile()
+#Page Forum Json
+GET		/forum/api/findThreads							api.ThreadControllerApi.threadJson()
+GET		/forum/api/findThread							api.ThreadControllerApi.threadById()
+#Page Service Json
+GET	 	/forum/api/findAllForums						api.ForumControllerApi.findAllForums()
+GET		/forum/api/forum/idApp							api.
+
+
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/js/routes             					controllers.Application.jsRoutes()

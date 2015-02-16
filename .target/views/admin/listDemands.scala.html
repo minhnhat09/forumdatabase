@@ -1,9 +1,6 @@
 @(currentPage: com.avaje.ebean.Page[Demand], searchForm:Form[controllers.SearchController.Search]) @adminMain(searchForm){
-
-
 	<!-- Button -->
 	<div class='row' align="right">
-
 	</div>
 	<!-- Members -->
 	<div class='row' style="margin-top:20px;padding-top:10px; border-top: 1px dashed rgba(86, 61, 124, 0.2);">
@@ -44,7 +41,7 @@
 						<th></th>
 						<th>Demandeur</th>
 						<th>IPN</th>
-						<th>Service</th>
+						<!-- <th>Service</th> -->
 						<th>Email</th>
 						<th>Motif</th>
 						<th>Date de demande</th>
@@ -59,7 +56,7 @@
 						</td>
 						<td>@demand.name</td>
 						<td>@demand.ipn</td>
-						<td>@Service.findById(demand.idService).serviceName</td>
+						<!-- <td>@if(demand.idService != null){Service.findById(demand.idService).serviceName}</td> -->
 						<td>@demand.email</td>
 						<td>@demand.motif</td>
 						<td>@("%1$td/%1$tm/%1$tY".format(demand.dateApply))</td>

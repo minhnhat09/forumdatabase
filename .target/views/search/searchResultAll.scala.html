@@ -23,9 +23,6 @@
 							</th>
 
 							<th>
-								Dernier Message
-							</th>
-							<th>
 								Forum
 							</th>
 							<th>
@@ -48,18 +45,13 @@
 								<a href="@routes.UserController.userHome(thread.author)">
 									<div>@thread.author.firstName @thread.author.lastName</div>
 								</a>
-								<div class="subtitle">10/11/2011</div>
 							</td>
 							<td>
 								<div>@thread.responseCount</div>
-								
 							</td>
-							
-
 							<td>
 								<a href="@routes.ForumController.forumHome(thread.application)"><div>@thread.application.appName</div></a>
 							</td>
-
 							<td>@thread.rating</td>
 						</tr> }
 					</table>
