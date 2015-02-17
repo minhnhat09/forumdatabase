@@ -3,6 +3,7 @@ package api;
 import java.util.List;
 
 import models.Service;
+import models.Thread;
 import play.mvc.Controller;
 import play.mvc.Result;
 import flexjson.JSONSerializer;
@@ -25,6 +26,12 @@ public class ForumControllerApi extends Controller {
 		return ok(json);
 	}
 	
-	public static Result() findForumById(int)
 	
+	
+	public static Result findForumById(String idForum){
+		List<Thread> threads = Thread.findByApp(Integer.parseInt(idForum));
+		JSONSerializer serializer = new JSONSerializer();
+		String json = serializer.serialize(threads);
+		return ok(json);
+	}
 }

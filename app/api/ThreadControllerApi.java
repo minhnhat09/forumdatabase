@@ -22,8 +22,25 @@ import flexjson.JSONSerializer;
  * @see {@link ThreadController}
  */
 
-@Security.Authenticated(SecuredMobile.class)
+
 public class ThreadControllerApi extends Controller {
+	
+	
+	
+	/**
+	 * 
+	 * @return thread by id
+	 */
+	public static Result findThreadById(int idThread){
+		Thread thread = Thread.findById(idThread);
+		JSONSerializer serializer = new JSONSerializer().include("posts", "biblios");
+		String json = serializer.serialize(thread);
+		return ok(json);
+	}
+	
+	
+	
+	
 	
 	/**
 	 * 
@@ -41,8 +58,8 @@ public class ThreadControllerApi extends Controller {
 	 * @return thread by id
 	 */
 	public static Result threadById(){
-		Thread thread = Thread.findById(1);
-		JSONSerializer serializer = new JSONSerializer().prettyPrint(true);
+		Thread thread = Thread.findById(2);
+		JSONSerializer serializer = new JSONSerializer().include("posts", "biblios");
 		String json = serializer.serialize(thread);
 		return ok(json);
 	}

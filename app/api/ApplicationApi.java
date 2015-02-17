@@ -1,12 +1,13 @@
 package api;
 
 import models.User;
-
-import com.fasterxml.jackson.databind.JsonNode;
-
 import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Result;
+
+import com.fasterxml.jackson.databind.JsonNode;
+
+import flexjson.JSONSerializer;
 
 public class ApplicationApi extends Controller{
 
@@ -32,8 +33,9 @@ public class ApplicationApi extends Controller{
 			session("adminMode", "off");
 			user.title = User.showTitle(user);
 			user.update();
-			
-			return ok();
+			JSONSerializer serializer = new JSONSerializer();
+			String jsonReturn = serializer.serialize(user);
+			return ok(user.userName);
 		}
 	}
 }
