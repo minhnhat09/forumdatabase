@@ -152,7 +152,7 @@ POST	/editor/postthread/:app							controllers.EditorController.postThread(app:m
 #Application
 POST	/forum/api/authenticate							api.ApplicationApi.authenticateMobile()
 #User
-GET		/forum/api/user/cos :idUser							api.UserControllerApi.findUserById(idUser: String)
+GET		/forum/api/currentUser							api.UserControllerApi.findUserInfo()
 
 #Page Forum Json
 GET		/forum/api/findThreads							api.ThreadControllerApi.threadJson()
@@ -161,7 +161,8 @@ GET		/forum/api/findThread							api.ThreadControllerApi.threadById()
 GET	 	/forum/api/findAllForums						api.ForumControllerApi.findAllForums()
 GET		/forum/api/forum/:idForum						api.ForumControllerApi.findForumById(idForum: String)
 GET		/forum/api/forum/thread/:idThread				api.ThreadControllerApi.findThreadById(idThread: Integer)
-
+#Page Thread
+POST	/forum/api/thread/commentThread					api.ThreadControllerApi.commentThread()
 
 
 # Map static resources from the /public folder to the /assets URL path

@@ -6,11 +6,9 @@ import models.Thread;
 import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Result;
-import play.mvc.Security;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-import controllers.SecuredMobile;
 import controllers.ThreadController;
 import flexjson.JSONSerializer;
 
@@ -38,6 +36,22 @@ public class ThreadControllerApi extends Controller {
 		return ok(json);
 	}
 	
+	public static Result commentThread(){
+		JsonNode json = request().body().asJson();
+		if(json == null){
+			return badRequest();
+		}else{
+			System.out.println("comment thread");
+			String userName = session("userNameMobile");
+			String content = json.get("content").asText();
+			String idThread = json.get("currentThreadId").asText();
+			
+			System.out.println(userName + " " + content + " " + idThread);
+					
+			
+			return ok();
+		}
+	}
 	
 	
 	

@@ -8,8 +8,8 @@ import flexjson.JSONSerializer;
 public class UserControllerApi extends Controller{
 	
 	
-	public static Result findUserById(String idUser){
-		User user = User.findById(idUser);
+	public static Result findUserInfo(){
+		User user = User.findById(session("userNameMobile"));
 		JSONSerializer serializer = new JSONSerializer();
 		String json = serializer.serialize(user);
 		return ok(json);

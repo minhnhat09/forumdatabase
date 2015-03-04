@@ -1,8 +1,10 @@
+/api
+/configuration.properties
+/controllers
 /models
 /test
+/utils
+/views
 /ApplicationTest.class
 /IntegrationTest$1.class
 /IntegrationTest.class
-/api
-/controllers
-/views

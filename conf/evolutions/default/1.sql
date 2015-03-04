@@ -217,6 +217,8 @@ create table user (
   presentation              LONGTEXT,
   hoppy                     LONGTEXT,
   signin_code               varchar(255),
+  is_premium                tinyint(1) default 0,
+  thread_count_views        integer,
   service_id_service        integer,
   permission_id_permission  integer,
   constraint pk_user primary key (user_name))

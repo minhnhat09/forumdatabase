@@ -5,12 +5,8 @@ import play.Routes;
 import play.data.DynamicForm;
 import play.data.Form;
 import play.data.validation.Constraints;
-import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Result;
-
-import com.fasterxml.jackson.databind.JsonNode;
-
 import controllers.SearchController.Search;
 
 /**
@@ -76,7 +72,7 @@ public class Application extends Controller {
 
 	/**
 	 * 
-	 * @author a073417
+	 * @author NGUYEN Nhat Minh
 	 *
 	 */
 	public static class Login {
@@ -88,7 +84,7 @@ public class Application extends Controller {
 		public String validate() {
 			if (User.authenticate(userName, password) == null) {
 				return "Identifiant ou mot de passe non valide";
-
+					
 			}
 			return null;
 		}

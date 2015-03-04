@@ -17,6 +17,7 @@ import javax.persistence.OneToOne;
 
 import play.data.validation.Constraints;
 import play.data.validation.Constraints.Email;
+import play.data.validation.Constraints.Min;
 import play.data.validation.Constraints.MinLength;
 import play.db.ebean.Model;
 import play.mvc.PathBindable;
@@ -90,6 +91,8 @@ public class User extends Model implements PathBindable<User>{
 	
 	public String signature;
 	
+	
+	
 	public String ipn;
 	public boolean isBlock;
 	public boolean isExpert;
@@ -105,6 +108,10 @@ public class User extends Model implements PathBindable<User>{
 	@Constraints.Required
 	public String signinCode;
 	
+	@Min(0)
+	public boolean isPremium;
+	
+	public int threadCountViews;
 	
 	@ManyToMany
 	public List<Application> apps = new LinkedList<Application>();

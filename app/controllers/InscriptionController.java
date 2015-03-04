@@ -103,6 +103,10 @@ public class InscriptionController extends Controller {
 		Permission permission = Permission.findById(3);
 		user.permission = permission;
 		user.dateInscription = new Date();
+		user.threadCountViews = 0;
+		user.isPremium = false;
+		user.isBlock = false;
+		user.isExpert = false;
 		user.save();
 		
 		flash("success", String.format("Inscription avec succès"));

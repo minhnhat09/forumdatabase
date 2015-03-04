@@ -7,8 +7,6 @@ import play.mvc.Result;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-import flexjson.JSONSerializer;
-
 public class ApplicationApi extends Controller{
 
 	@BodyParser.Of(BodyParser.Json.class)
@@ -26,16 +24,8 @@ public class ApplicationApi extends Controller{
 			}
 			session().clear();
 			session("userNameMobile", userName);
-			
-			User user = User.findById(userName);
-			session("permissionUser",
-					String.valueOf(user.permission.idPermission));
-			session("adminMode", "off");
-			user.title = User.showTitle(user);
-			user.update();
-			JSONSerializer serializer = new JSONSerializer();
-			String jsonReturn = serializer.serialize(user);
-			return ok(user.userName);
+			System.out.println(session("userNameMobile"));
+			return ok();
 		}
 	}
 }
