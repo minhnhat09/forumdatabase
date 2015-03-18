@@ -1,7 +1,19 @@
 @(app:models.Application,currentPage:com.avaje.ebean.Page[models.Thread], searchForm:Form[controllers.SearchController.Search], currentSortBy: String, currentOrder: String)
 
 @main(app.appName, searchForm){
-
+@if(controllers.Application.getUser != null && !controllers.Application.getUser.isPremium){
+  <div class="alert alert-danger">
+     <a href="@routes.InscriptionController.demandPremium()" class="alert-link">Vous êtes en mode "Classique". Vous avez consulté @if(ApplicationView.findByUserApp(controllers.Application.getUser, app) == null){0}else{@ApplicationView.findByUserApp(controllers.Application.getUser, app).viewCount}/@app.maxViews articles dans ce forum. Pour consulter tous les articles. Cliquez ici pour faire une demande de passer en mode "Premium"</a>
+  </div>
+}else{
+	<div class="alert alert-success alert-dismissable">
+	   <button type="button" class="close" data-dismiss="alert" 
+	      aria-hidden="true">
+	      &times;
+	   </button>
+	   Vous êtes en mode "Premium"
+	</div>
+}
 <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("css/forum.css")">
 @breadcrumbForum(app.appName)
 <div class="row">

@@ -141,7 +141,13 @@ public class User extends Model implements PathBindable<User>{
 	public List<Thread> threads;
 	@OneToMany
 	public List<Post> posts;
-	
+	@OneToMany(mappedBy="user")
+	public List<ApplicationView> appViews;
+	/**
+	 * one demandpremium for one user
+	 */
+	@OneToOne(mappedBy="user")
+	public DemandPremium demandPremium;
 	
 	public static void delUser(User user){
 		//clear app, ManytoMany

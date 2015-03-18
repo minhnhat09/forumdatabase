@@ -171,7 +171,11 @@ public class Application extends Controller {
 	public static User getUser() {
 		return User.findById(session("userName"));
 	}
-
+	
+	public static boolean getPremium(){
+		return getUser().isPremium;
+	}
+	
 	/**
 	 * 
 	 * @return

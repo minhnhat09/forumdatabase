@@ -5,6 +5,7 @@ import java.util.Date;
 
 import models.AccountValidation;
 import models.Demand;
+import models.DemandPremium;
 import models.Permission;
 import models.User;
 import play.data.Form;
@@ -17,9 +18,10 @@ import controllers.SearchController.Search;
 
 public class InscriptionController extends Controller {
 	
-	public static final Form<User>            	userForm   = Form.form(User.class);
-	public static final Form<Search> 			searchForm = Form.form(Search.class);
-	public static final Form<Demand> 			demandForm = Form.form(Demand.class);
+	public static final Form<User>            	userForm   		  = Form.form(User.class);
+	public static final Form<Search> 			searchForm 		  = Form.form(Search.class);
+	public static final Form<Demand> 			demandForm 		  = Form.form(Demand.class);
+	public static final Form<DemandPremium>     demandPremiumForm = Form.form(DemandPremium.class);
 	
 	
 	/**
@@ -47,12 +49,38 @@ public class InscriptionController extends Controller {
 		return redirect(routes.InscriptionController.inscription());
 	}
 	
+	public static Result saveDemandPremium(){
+		Form<DemandPremium> boundForm = demandPremiumForm.bindFromRequest();
+		if(boundForm.hasErrors()){
+			flash("error", String.format("Tous les champs marqués d'un astérique sont obligatoires"));
+			return badRequest(views.html.person.premiumDemand.render(demandPremiumForm, searchForm));
+		}
+		DemandPremium demandPremium = boundForm.get();
+		
+		if(demandPremium.idDemandPremium == 0){
+			demandPremium.dateApply = new Date();
+			demandPremium.user = Application.getUser();
+			Ebean.save(demandPremium);
+			
+		}else{
+			demandPremium.dateApply = new Date();
+			Ebean.update(demandPremium);
+		}
+		
+		flash("success", String.format("La demande a été envoyé"));
+		return redirect(routes.AccueilController.accueil());
+	}
+	
 	/**
 	 * 
 	 * @return
 	 */
 	public static Result newDemand(){
 		return ok(views.html.person.detailDemand.render(demandForm, searchForm));
+	}
+	
+	public static Result demandPremium(){
+		return ok(views.html.person.premiumDemand.render(demandPremiumForm, searchForm));
 	}
 	/**
 	 * 

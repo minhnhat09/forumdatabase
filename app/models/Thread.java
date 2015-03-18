@@ -73,6 +73,7 @@ public class Thread extends Model implements PathBindable<Thread>{
 	public Application application;
 	@OneToMany(mappedBy = "thread")
 	public List<Post> posts;
+	
 	@OneToMany(mappedBy = "thread")
 	public List<UserAppreciation> users;
 	

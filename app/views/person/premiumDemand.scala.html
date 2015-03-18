@@ -1,0 +1,28 @@
+@(demandPremiumForm: Form[models.DemandPremium], searchForm:Form[controllers.SearchController.Search])
+
+@import helper._
+@implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.render) } 
+
+@main("Demander Code Parrainage", searchForm) {
+    
+    <h1>Demander Code Parrainage</h1>
+    
+    @helper.form(routes.InscriptionController.saveDemandPremium(), 'class -> "form-group") {
+       
+        <fieldset>
+        	<input type="hidden" value="@demandPremiumForm("idDemandPremium").valueOr("0")" name="idDemandPremium"/>
+            
+            
+            @helper.textarea(demandPremiumForm("motif"), '_label -> "*Motif", 
+                'class -> "form-control", 'placeholder -> "", 'style ->"width:50%" )
+
+        </fieldset>
+        <div class="actions">
+            <input type="submit" value="Envoyer la demande" class="btn btn-primary"> 
+            <a href="@routes.AccueilController.accueil()" class="btn btn-danger">Annuler</a> 
+
+        </div>
+    }
+
+    
+ }

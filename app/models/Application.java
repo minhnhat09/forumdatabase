@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Min;
 
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
@@ -30,6 +31,8 @@ public class Application extends Model implements PathBindable<Application>{
 	@Constraints.Required
 	public String appDescription;
 	public String avatarApp;
+	@Min(0)
+	public int maxViews = 0;
 	
 	@ManyToMany(mappedBy = "apps")
 	List<User> listKeyUsers;
@@ -46,6 +49,8 @@ public class Application extends Model implements PathBindable<Application>{
 	@OneToMany(mappedBy = "app")
 	public List<UserPermission> userPermission;
 	
+	@OneToMany(mappedBy = "application")
+	public List<ApplicationView> users;
 	
 	public static Finder<Integer, Application> find = new Finder<Integer, Application>(Integer.class, Application.class);
 	

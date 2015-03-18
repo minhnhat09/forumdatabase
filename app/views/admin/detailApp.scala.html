@@ -15,14 +15,20 @@
 
             @helper.inputText(appForm("appName"), '_label -> "Nom de l'application", 
             	'class -> "form-control", 'placeholder -> "Nom de l'application", 'style ->"width:50%" )
+            
             @helper.textarea(appForm("appDescription"), '_label -> "Description de l'application", 
                 'class -> "form-control", 'placeholder -> "Description de l'application", 'rows -> 10, 'cols -> 60)
             @select(appForm("service.idService"), options(models.Service.options), '_label -> "Service", '_default -> "-- Choisir un service --", '_showConstraints -> false, 'class -> "form-control", 'style ->"width:50%")
+
+            @helper.inputText(appForm("maxViews"), '_label -> "Nombre d'articles maximum en mode Classique", 
+                'class -> "form-control", 'placeholder -> "Nombre d'articles maximum en mode Classique", 'style ->"width:50%" )
+
+
             @helper.inputFile(appForm("picture"), '_label -> "Image de l'application", 
                 'style ->"width:50%" ) 
         </fieldset>
         <div class="actions">
-            <input type="submit" value="Créer Nouvelle Application" class="btn btn-primary"> 
+            <input type="submit" value="Créer/Modifier Application" class="btn btn-primary"> 
             <a href="@routes.AdminController.listApps(0)" class="btn btn-danger">Annuler</a> 
         </div>
     }

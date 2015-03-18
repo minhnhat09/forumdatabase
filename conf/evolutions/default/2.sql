@@ -9,12 +9,12 @@ INSERT INTO `service` (`service_name`) VALUES ('Renault Web Services');
 INSERT INTO `service` (`service_name`,`hidden`) VALUES ('Renault Cars','1');
 
 
-INSERT INTO `application` (`app_name`, `app_description`, `service_id_service`) VALUES ('B2B', 'Site Internet vente des VO', '1');
-INSERT INTO `application` (`app_name`, `app_description`, `service_id_service`) VALUES ('Fleet Manager', 'Gestion des flottes Renault', '1');
-INSERT INTO `application` (`app_name`, `app_description`, `service_id_service`) VALUES ('Tomcat', 'Server Web Renault', '3');
-INSERT INTO `application` (`app_name`, `app_description`, `service_id_service`) VALUES ('Renault Clio 4', 'Voiture Diesel', '4');
-INSERT INTO `application` (`app_name`, `app_description`, `service_id_service`) VALUES ('Renault Zoe', 'Voiture Electrique', '4');
-INSERT INTO `application` (`app_name`, `app_description`, `service_id_service`) VALUES ('Promo Renault', 'Des promotion pendant le solde d\'été', '3');
+INSERT INTO `application` (`app_name`, `app_description`, `service_id_service`, `max_views`) VALUES ('B2B', 'Site Internet vente des VO', '1', '3');
+INSERT INTO `application` (`app_name`, `app_description`, `service_id_service`, `max_views`) VALUES ('Fleet Manager', 'Gestion des flottes Renault', '1', '3');
+INSERT INTO `application` (`app_name`, `app_description`, `service_id_service`, `max_views`) VALUES ('Tomcat', 'Server Web Renault', '3', '3');
+INSERT INTO `application` (`app_name`, `app_description`, `service_id_service`, `max_views`) VALUES ('Renault Clio 4', 'Voiture Diesel', '4', '3');
+INSERT INTO `application` (`app_name`, `app_description`, `service_id_service`, `max_views`) VALUES ('Renault Zoe', 'Voiture Electrique', '4', '3');
+INSERT INTO `application` (`app_name`, `app_description`, `service_id_service`, `max_views`) VALUES ('Promo Renault', 'Des promotion pendant le solde d\'été', '3', '3');
 
 INSERT INTO `user` (`user_name`, `password`, `bonus`, `exp`, `email`, `title`, `post_count`, `first_name`, `last_name`, `address`, `home_phone`, `mobile_phone`, `id_service_subscribe`, `postal_code`, `city`, `country`, `civilite`, `role`, `img_url`, `signature`, `service_id_service`, `thread_count_views`) VALUES ('nhatminh', '1234', '1000', '5000', 'nhatminh1809@gmail.com', 'Chevalier', '232', 'NGUYEN', 'Nhat Minh', '3 rue de l\'Yerres', '423423', '43243', '1', '94190', 'Villeneuve Saint Georges', 'France', '0', 'Admin', 'fsdfqsd', 'nhatminh skander', '1', '0');
 INSERT INTO `user` (`user_name`, `password`, `bonus`, `exp`, `email`, `title`, `post_count`, `first_name`, `last_name`, `address`, `home_phone`, `mobile_phone`, `id_service_subscribe`, `postal_code`, `city`, `country`, `civilite`, `role`, `img_url`, `signature`, `service_id_service`, `thread_count_views`) VALUES ('toto', '1234', '200', '544', 'nhatminh1809@gmail.com', 'Chevalier', '232', 'NGUYEN', 'Toto', '3 rue de l\'Yerres', '423423', '43243', '1', '94190', 'Villeneuve Saint Georges', 'France', '0', 'Admin', 'fsdfqsd', 'nhatminh skander', '1', '0');

@@ -65,7 +65,11 @@
 </div>
 }
 
-
+<!-- @if(controllers.Application.getUser != null && !controllers.Application.getUser.isPremium){
+  <div class="alert alert-danger">
+     <a href="@routes.InscriptionController.demandPremium()" class="alert-link">Vous êtes en mode Classique. Vous avez consulté @controllers.Application.getUser.threadCountViews/3 articles. Pour consulter tous les articles. Cliquez ici pour faire une demande de passer en mode premium</a>
+  </div>
+} -->
 
 @header.headerBar(searchForm)	
 <div class="container">

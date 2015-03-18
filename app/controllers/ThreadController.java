@@ -2,6 +2,7 @@ package controllers;
 
 import java.util.Date;
 
+import models.ApplicationView;
 import models.BonusRule;
 import models.Notification;
 import models.Post;
@@ -31,7 +32,7 @@ import controllers.SearchController.Search;
 public class ThreadController extends Controller {
 	private static final Form<Thread>		threadForm = Form.form(Thread.class);
 	private static final Form<Post> 		postForm   = Form.form(Post.class);
-	public static final Form<Search> searchForm = Form.form(Search.class);
+	public static final Form<Search> 		searchForm = Form.form(Search.class);
 	
 	/**
 	 * 
@@ -41,8 +42,34 @@ public class ThreadController extends Controller {
 	 */
 	public static Result threadHome(Thread thread, Integer page){
 		Page<Post> posts = Post.find(thread, page);
-		thread.viewCount += 1;
+		
+		/**
+		 * Update the article view count
+		 */
+		thread.viewCount++;
 		thread.update();
+		/**
+		 * Update user view count (mode classic or mode premium)
+		 */
+		final User user = Application.getUser();
+		user.threadCountViews++;
+		user.update();
+		
+		ApplicationView av = ApplicationView.findByUserApp(user, thread.application);
+		if(!user.isPremium){
+			if(av == null){
+				ApplicationView avNew = new ApplicationView(user, thread.application);
+				avNew.save();
+			}else{
+				if(av.viewCount >= thread.application.maxViews){
+					flash("error", String.format("Permission error"));
+					return redirect(routes.ForumController.forumHome(thread.application, 0, "publicDate", "desc"));
+				}
+			}
+			
+		}
+		
+		ApplicationView.countView(user, thread.application);
 		return ok(views.html.thread.mainPage.render(thread, posts, searchForm));
 	}
 	/**
@@ -140,7 +167,8 @@ public class ThreadController extends Controller {
 	}
 
 	/**
-	 * 
+	 * Method used to increase bonus and xp of user
+	 * It's used when user comment on thread
 	 * @param user
 	 */
 	public static void increaseBonus(User user){

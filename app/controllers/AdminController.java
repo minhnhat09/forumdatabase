@@ -11,6 +11,7 @@ import models.Application;
 import models.BonusRule;
 import models.Communication;
 import models.Demand;
+import models.DemandPremium;
 import models.Permission;
 import models.Service;
 import models.Tag;
@@ -24,6 +25,7 @@ import play.mvc.Http.MultipartFormData;
 import play.mvc.Http.MultipartFormData.FilePart;
 import play.mvc.Result;
 import play.mvc.Security;
+import views.html.defaultpages.error;
 
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Page;
@@ -45,12 +47,14 @@ public class AdminController extends Controller {
 	 * 
 	 * */
 	
-	public static Result ADMIN_HOME 		= redirect(routes.AdminController.listUsers(0, "user_name", "asc", ""));
-	public static Result GO_HOME_DEMAND		= redirect(routes.AdminController.listDemands(0));
-	public static Result GO_HOME_TITLE 		= redirect(routes.AdminController.listTitles());
-	public static Result GO_HOME_TAG 		= redirect(routes.AdminController.listTags());
-	public static Result GO_HOME_SERVICE	= redirect(routes.AdminController.listServices(0));
-	public static Result GO_HOME_APPLICATION= redirect(routes.AdminController.listApps(0));
+	public static Result ADMIN_HOME 				= redirect(routes.AdminController.listUsers(0, "user_name", "asc", ""));
+	public static Result GO_HOME_DEMAND				= redirect(routes.AdminController.listDemands(0));
+	public static Result GO_HOME_DEMAND_PREMIUM		= redirect(routes.AdminController.listDemandsPremium(0));
+	
+	public static Result GO_HOME_TITLE 				= redirect(routes.AdminController.listTitles());
+	public static Result GO_HOME_TAG 				= redirect(routes.AdminController.listTags());
+	public static Result GO_HOME_SERVICE			= redirect(routes.AdminController.listServices(0));
+	public static Result GO_HOME_APPLICATION		= redirect(routes.AdminController.listApps(0));
 	
 	/**
 	 * Attributes represent many forms in the Admin Page
@@ -248,6 +252,49 @@ public class AdminController extends Controller {
 	    
 	    return redirect(routes.AdminController.listDemands(0));
 	}
+	
+	/**
+	 * Methods manage DemandPremium Tab
+	 * */
+	/**
+	 * 
+	 * @param page
+	 * @return list of premium demand
+	 */
+	public static Result listDemandsPremium(int page){
+		Page<DemandPremium> demands = DemandPremium.find(page);
+		return ok(views.html.admin.listDemandsPremium.render(demands, searchForm));
+	}
+	/**
+	 * Method used to delete premium demand
+	 * @param idAV id Demand deleted
+	 * @return demand page
+	 */
+	public static Result deleteDemandPremium(int idAV) {
+	    final DemandPremium demandPremium = DemandPremium.findById(idAV);
+	    if(demandPremium == null) {
+	        return notFound(String.format("La demande premium %s n'existe pas", idAV));
+	    }
+	    Ebean.delete(demandPremium);
+	    return redirect(routes.AdminController.listDemandsPremium(0));
+	  }
+	
+	public static Result validateDemandPremium(int idAV){
+		final DemandPremium demandPremium = DemandPremium.findById(idAV);
+	    if(demandPremium == null) {
+	    	flash("error", String.format("Demande Premium introuvable"));
+	    	
+	        return notFound(String.format("Demand Premium %s n'existe pas", idAV));
+	    }
+	    
+		if(DemandPremium.activateDemandPremium(demandPremium))
+			flash("success", String.format("La demande premium a bien été validée"));
+		return GO_HOME_DEMAND_PREMIUM;
+	}
+	
+	
+	
+	
 	/**
 	 * Methods manage Service Tab
 	 * */
@@ -461,6 +508,7 @@ public class AdminController extends Controller {
 		}
 		
 		if(app.idApp == 0){
+			app.maxViews = 3;
 			app.save();
 		}else{
 			app.update();

@@ -75,6 +75,7 @@ public class UserAppreciation extends Model {
 				thread.dislikeCount = totalDisike(thread);
 				thread.update();
 				return true;
+				
 			}
 			//Case update
 			else{

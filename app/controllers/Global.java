@@ -16,6 +16,10 @@ import org.joda.time.Duration;
 
 import play.GlobalSettings;
 import play.Play;
+import play.libs.F.Promise;
+import play.mvc.Http.RequestHeader;
+import play.mvc.SimpleResult;
+
 
 
 public class Global extends GlobalSettings{
@@ -94,6 +98,7 @@ public class Global extends GlobalSettings{
 			  }
 		 }
 	}
-	 
+	
+	
 	
 }

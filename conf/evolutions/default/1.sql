@@ -18,8 +18,17 @@ create table application (
   app_name                  varchar(255),
   app_description           varchar(255),
   avatar_app                varchar(255),
+  max_views                 integer,
   service_id_service        integer,
   constraint pk_application primary key (id_app))
+;
+
+create table application_view (
+  id_application_view       integer auto_increment not null,
+  user_user_name            varchar(255),
+  application_id_app        integer,
+  view_count                integer,
+  constraint pk_application_view primary key (id_application_view))
 ;
 
 create table bibliography (
@@ -71,6 +80,15 @@ create table demand (
   date_apply                datetime,
   is_activated              tinyint(1) default 0,
   constraint pk_demand primary key (id_demand))
+;
+
+create table demand_premium (
+  id_demand_premium         integer auto_increment not null,
+  motif                     varchar(255),
+  date_apply                datetime,
+  user_user_name            varchar(255),
+  is_activated              tinyint(1) default 0,
+  constraint pk_demand_premium primary key (id_demand_premium))
 ;
 
 create table gift (
@@ -258,42 +276,48 @@ alter table account_validation add constraint fk_account_validation_user_1 forei
 create index ix_account_validation_user_1 on account_validation (user_user_name);
 alter table application add constraint fk_application_service_2 foreign key (service_id_service) references service (id_service) on delete restrict on update restrict;
 create index ix_application_service_2 on application (service_id_service);
-alter table bibliography add constraint fk_bibliography_thread_3 foreign key (thread_id_thread) references thread (id_thread) on delete restrict on update restrict;
-create index ix_bibliography_thread_3 on bibliography (thread_id_thread);
-alter table contact add constraint fk_contact_user_4 foreign key (user_user_name) references user (user_name) on delete restrict on update restrict;
-create index ix_contact_user_4 on contact (user_user_name);
-alter table contact add constraint fk_contact_contact_5 foreign key (contact_user_name) references user (user_name) on delete restrict on update restrict;
-create index ix_contact_contact_5 on contact (contact_user_name);
-alter table gift_user add constraint fk_gift_user_user_6 foreign key (user_user_name) references user (user_name) on delete restrict on update restrict;
-create index ix_gift_user_user_6 on gift_user (user_user_name);
-alter table gift_user add constraint fk_gift_user_gift_7 foreign key (gift_id_gift) references gift (id_gift) on delete restrict on update restrict;
-create index ix_gift_user_gift_7 on gift_user (gift_id_gift);
-alter table message add constraint fk_message_userNameFrom_8 foreign key (user_name_from_user_name) references user (user_name) on delete restrict on update restrict;
-create index ix_message_userNameFrom_8 on message (user_name_from_user_name);
-alter table notification add constraint fk_notification_user_9 foreign key (user_user_name) references user (user_name) on delete restrict on update restrict;
-create index ix_notification_user_9 on notification (user_user_name);
-alter table post add constraint fk_post_user_10 foreign key (user_user_name) references user (user_name) on delete restrict on update restrict;
-create index ix_post_user_10 on post (user_user_name);
-alter table post add constraint fk_post_thread_11 foreign key (thread_id_thread) references thread (id_thread) on delete restrict on update restrict;
-create index ix_post_thread_11 on post (thread_id_thread);
-alter table thread add constraint fk_thread_author_12 foreign key (author_user_name) references user (user_name) on delete restrict on update restrict;
-create index ix_thread_author_12 on thread (author_user_name);
-alter table thread add constraint fk_thread_application_13 foreign key (application_id_app) references application (id_app) on delete restrict on update restrict;
-create index ix_thread_application_13 on thread (application_id_app);
-alter table user add constraint fk_user_service_14 foreign key (service_id_service) references service (id_service) on delete restrict on update restrict;
-create index ix_user_service_14 on user (service_id_service);
-alter table user add constraint fk_user_permission_15 foreign key (permission_id_permission) references permission (id_permission) on delete restrict on update restrict;
-create index ix_user_permission_15 on user (permission_id_permission);
-alter table user_appreciation add constraint fk_user_appreciation_user_16 foreign key (user_user_name) references user (user_name) on delete restrict on update restrict;
-create index ix_user_appreciation_user_16 on user_appreciation (user_user_name);
-alter table user_appreciation add constraint fk_user_appreciation_thread_17 foreign key (thread_id_thread) references thread (id_thread) on delete restrict on update restrict;
-create index ix_user_appreciation_thread_17 on user_appreciation (thread_id_thread);
-alter table table_mode add constraint fk_table_mode_app_18 foreign key (app_id_app) references application (id_app) on delete restrict on update restrict;
-create index ix_table_mode_app_18 on table_mode (app_id_app);
-alter table table_mode add constraint fk_table_mode_user_19 foreign key (user_user_name) references user (user_name) on delete restrict on update restrict;
-create index ix_table_mode_user_19 on table_mode (user_user_name);
-alter table table_mode add constraint fk_table_mode_permission_20 foreign key (permission_id_permission) references permission (id_permission) on delete restrict on update restrict;
-create index ix_table_mode_permission_20 on table_mode (permission_id_permission);
+alter table application_view add constraint fk_application_view_user_3 foreign key (user_user_name) references user (user_name) on delete restrict on update restrict;
+create index ix_application_view_user_3 on application_view (user_user_name);
+alter table application_view add constraint fk_application_view_application_4 foreign key (application_id_app) references application (id_app) on delete restrict on update restrict;
+create index ix_application_view_application_4 on application_view (application_id_app);
+alter table bibliography add constraint fk_bibliography_thread_5 foreign key (thread_id_thread) references thread (id_thread) on delete restrict on update restrict;
+create index ix_bibliography_thread_5 on bibliography (thread_id_thread);
+alter table contact add constraint fk_contact_user_6 foreign key (user_user_name) references user (user_name) on delete restrict on update restrict;
+create index ix_contact_user_6 on contact (user_user_name);
+alter table contact add constraint fk_contact_contact_7 foreign key (contact_user_name) references user (user_name) on delete restrict on update restrict;
+create index ix_contact_contact_7 on contact (contact_user_name);
+alter table demand_premium add constraint fk_demand_premium_user_8 foreign key (user_user_name) references user (user_name) on delete restrict on update restrict;
+create index ix_demand_premium_user_8 on demand_premium (user_user_name);
+alter table gift_user add constraint fk_gift_user_user_9 foreign key (user_user_name) references user (user_name) on delete restrict on update restrict;
+create index ix_gift_user_user_9 on gift_user (user_user_name);
+alter table gift_user add constraint fk_gift_user_gift_10 foreign key (gift_id_gift) references gift (id_gift) on delete restrict on update restrict;
+create index ix_gift_user_gift_10 on gift_user (gift_id_gift);
+alter table message add constraint fk_message_userNameFrom_11 foreign key (user_name_from_user_name) references user (user_name) on delete restrict on update restrict;
+create index ix_message_userNameFrom_11 on message (user_name_from_user_name);
+alter table notification add constraint fk_notification_user_12 foreign key (user_user_name) references user (user_name) on delete restrict on update restrict;
+create index ix_notification_user_12 on notification (user_user_name);
+alter table post add constraint fk_post_user_13 foreign key (user_user_name) references user (user_name) on delete restrict on update restrict;
+create index ix_post_user_13 on post (user_user_name);
+alter table post add constraint fk_post_thread_14 foreign key (thread_id_thread) references thread (id_thread) on delete restrict on update restrict;
+create index ix_post_thread_14 on post (thread_id_thread);
+alter table thread add constraint fk_thread_author_15 foreign key (author_user_name) references user (user_name) on delete restrict on update restrict;
+create index ix_thread_author_15 on thread (author_user_name);
+alter table thread add constraint fk_thread_application_16 foreign key (application_id_app) references application (id_app) on delete restrict on update restrict;
+create index ix_thread_application_16 on thread (application_id_app);
+alter table user add constraint fk_user_service_17 foreign key (service_id_service) references service (id_service) on delete restrict on update restrict;
+create index ix_user_service_17 on user (service_id_service);
+alter table user add constraint fk_user_permission_18 foreign key (permission_id_permission) references permission (id_permission) on delete restrict on update restrict;
+create index ix_user_permission_18 on user (permission_id_permission);
+alter table user_appreciation add constraint fk_user_appreciation_user_19 foreign key (user_user_name) references user (user_name) on delete restrict on update restrict;
+create index ix_user_appreciation_user_19 on user_appreciation (user_user_name);
+alter table user_appreciation add constraint fk_user_appreciation_thread_20 foreign key (thread_id_thread) references thread (id_thread) on delete restrict on update restrict;
+create index ix_user_appreciation_thread_20 on user_appreciation (thread_id_thread);
+alter table table_mode add constraint fk_table_mode_app_21 foreign key (app_id_app) references application (id_app) on delete restrict on update restrict;
+create index ix_table_mode_app_21 on table_mode (app_id_app);
+alter table table_mode add constraint fk_table_mode_user_22 foreign key (user_user_name) references user (user_name) on delete restrict on update restrict;
+create index ix_table_mode_user_22 on table_mode (user_user_name);
+alter table table_mode add constraint fk_table_mode_permission_23 foreign key (permission_id_permission) references permission (id_permission) on delete restrict on update restrict;
+create index ix_table_mode_permission_23 on table_mode (permission_id_permission);
 
 
 
@@ -315,6 +339,8 @@ drop table application;
 
 drop table user_application;
 
+drop table application_view;
+
 drop table bibliography;
 
 drop table bonus_rule;
@@ -324,6 +350,8 @@ drop table communication;
 drop table contact;
 
 drop table demand;
+
+drop table demand_premium;
 
 drop table gift;
 

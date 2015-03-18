@@ -1,8 +1,11 @@
 package api;
 
+import java.util.Date;
 import java.util.List;
 
+import models.Post;
 import models.Thread;
+import models.User;
 import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -41,15 +44,23 @@ public class ThreadControllerApi extends Controller {
 		if(json == null){
 			return badRequest();
 		}else{
-			System.out.println("comment thread");
-			String userName = session("userNameMobile");
+			
 			String content = json.get("content").asText();
 			String idThread = json.get("currentThreadId").asText();
 			
-			System.out.println(userName + " " + content + " " + idThread);
+			Post comment = new Post();
+			User user = User.findById(session("userNameMobile"));
+			Thread thread = Thread.findById(Integer.parseInt(idThread));
+			
+			comment.user = user;
+			comment.postContent = content;
+			comment.postTime = new Date();
+			comment.thread = thread;
+			comment.save();
+			ThreadController.increaseBonus(comment.user);
 					
 			
-			return ok();
+			return ok("toi di ia");
 		}
 	}
 	
