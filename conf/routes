@@ -173,7 +173,9 @@ GET		/forum/api/findThreads							api.ThreadControllerApi.threadJson()
 GET		/forum/api/findThread							api.ThreadControllerApi.threadById()
 #Page Service Json
 GET	 	/forum/api/findAllForums						api.ForumControllerApi.findAllForums()
-GET		/forum/api/forum/:idForum						api.ForumControllerApi.findForumById(idForum: String)
+GET		/forum/api/forum/getThreads/f=:idForum			api.ForumControllerApi.findThreadsByForumId(idForum: String)
+GET		/forum/api/forum/getForum/f=:idForum			api.ForumControllerApi.findForumById(idForum: String)
+
 GET		/forum/api/forum/thread/:idThread				api.ThreadControllerApi.findThreadById(idThread: Integer)
 #Page Thread
 POST	/forum/api/thread/commentThread					api.ThreadControllerApi.commentThread()

@@ -25,7 +25,9 @@ $(function(){
 			
 
 			@select(threadForm("tags[0].idTag"), options(models.Tag.countryOptions), '_label -> "Ajouter une étiquette pays", '_default -> "-- Choisir un pays --", '_showConstraints -> false, 'class -> "form-control" ) 
+
 			@select(threadForm("tags[1].idTag"), options(models.Tag.moduleOptions), '_label -> "Ajouter une étiquette module", '_default -> "-- Choisir un module --", '_showConstraints -> false, 'class -> "form-control" ) 
+			
 			@helper.inputText(threadForm("threadName"), 'class -> "form-control", 'placeholder -> "Saisir le titre",'_label -> "Saisir un titre")
 			
 		</div>
@@ -71,7 +73,7 @@ $(function(){
 $(document).ready(function(){
 
 	$("#addBibli").click(function(){
-		alert("caca");
+		
 	});
 
 });

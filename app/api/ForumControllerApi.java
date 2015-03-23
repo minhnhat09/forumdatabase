@@ -2,6 +2,7 @@ package api;
 
 import java.util.List;
 
+import models.Application;
 import models.Service;
 import models.Thread;
 import play.mvc.Controller;
@@ -28,10 +29,18 @@ public class ForumControllerApi extends Controller {
 	
 	
 	
-	public static Result findForumById(String idForum){
-		List<Thread> threads = Thread.findByApp(Integer.parseInt(idForum));
+	public static Result findThreadsByForumId(String idForum){
+		List<Thread> threads      = Thread.findByApp(Integer.parseInt(idForum));
 		JSONSerializer serializer = new JSONSerializer();
-		String json = serializer.serialize(threads);
+		String json               = serializer.serialize(threads);
 		return ok(json);
 	}
+	
+	public static Result findForumById(String idForum){
+		Application app 		  = Application.findById(idForum);
+		JSONSerializer serializer = new JSONSerializer();
+		String json               = serializer.serialize(app);
+		return ok(json);
+	}
+	
 }

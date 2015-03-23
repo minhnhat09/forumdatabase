@@ -60,7 +60,7 @@ public class ThreadControllerApi extends Controller {
 			ThreadController.increaseBonus(comment.user);
 					
 			
-			return ok("toi di ia");
+			return ok("Success");
 		}
 	}
 	
