@@ -14,7 +14,7 @@ $(function(){
 });
 </script>
 
-@form(routes.EditorController.postThread(app)) {
+@form(routes.EditorController.postThread(app), 'name -> "commentForm") {
 <div class='row'>
 
 	
@@ -24,11 +24,11 @@ $(function(){
 		<div class='row'>
 			
 
-			@select(threadForm("tags[0].idTag"), options(models.Tag.countryOptions), '_label -> "Ajouter une étiquette pays", '_default -> "-- Choisir un pays --", '_showConstraints -> false, 'class -> "form-control" ) 
+			@select(threadForm("tags[0].idTag"), options(models.Tag.countryOptions), '_label -> "Ajouter une étiquette pays", '_default -> "-- Choisir un pays --", '_showConstraints -> false, 'class -> "form-control",'required -> "" ) 
 
-			@select(threadForm("tags[1].idTag"), options(models.Tag.moduleOptions), '_label -> "Ajouter une étiquette module", '_default -> "-- Choisir un module --", '_showConstraints -> false, 'class -> "form-control" ) 
+			@select(threadForm("tags[1].idTag"), options(models.Tag.moduleOptions), '_label -> "Ajouter une étiquette module", '_default -> "-- Choisir un module --", '_showConstraints -> false, 'class -> "form-control",'required -> "" ) 
 			
-			@helper.inputText(threadForm("threadName"), 'class -> "form-control", 'placeholder -> "Saisir le titre",'_label -> "Saisir un titre")
+			@helper.inputText(threadForm("threadName"), 'class -> "form-control", 'placeholder -> "Saisir le titre",'_label -> "Saisir un titre",'required -> "")
 			
 		</div>
 		<h3>Contenu</h3>
@@ -60,7 +60,8 @@ $(function(){
 
 </div><br>
 <div class='row'>
-	<input type="submit" value="Poster" class="btn btn-primary">
+	<input type="submit" value="Poster" class="btn btn-primary" ng-disabled="commentForm.$invalid">
+
 	<a href="@routes.ThreadController.threadHome(thread, 0)" class="btn btn-danger">Annuler</a> 
 </div>
 </div>

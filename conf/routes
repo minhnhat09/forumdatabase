@@ -179,7 +179,10 @@ GET		/forum/api/forum/getForum/f=:idForum			api.ForumControllerApi.findForumById
 GET		/forum/api/forum/thread/:idThread				api.ThreadControllerApi.findThreadById(idThread: Integer)
 #Page Thread
 POST	/forum/api/thread/commentThread					api.ThreadControllerApi.commentThread()
-
+POST	/forum/api/thread/createThread					api.ThreadControllerApi.createThread()
+#Page Create Thread
+GET		/forum/api/forum/getCountryTags					api.ForumControllerApi.countryOptionsJson()
+GET		/forum/api/forum/getModuleTags					api.ForumControllerApi.moduleOptionsJson()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/js/routes             					controllers.Application.jsRoutes()

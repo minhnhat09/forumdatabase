@@ -77,7 +77,7 @@ public class AccountValidation extends Model implements PathBindable<AccountVali
 		// Bonus Rule for Sponsor User
 		BonusRule bonusForSponsor = BonusRule.findByID("1");
 		if (account != null) {
-			
+			System.out.println("Co code trong bd");
 			if (!account.isActivated) {
 				if(!account.personActivate.equals("admin")){
 					account.isActivated = true;
@@ -86,12 +86,20 @@ public class AccountValidation extends Model implements PathBindable<AccountVali
 					account.update();
 				}
 				else{
+					System.out.println("admin ko dc activate code");
 					account.isActivated = true;
 					account.update();
 				}
-			} 
-			else return false;
-		}else return false;
+			}else{
+				System.out.println("Account da activate");
+				return false;
+			}
+		}
+		
+		else{
+			System.out.println("KO tim thay code trong bd");
+			return false;
+		}
 		
 		return true;
 	}

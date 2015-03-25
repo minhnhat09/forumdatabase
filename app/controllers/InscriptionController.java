@@ -8,6 +8,7 @@ import models.Demand;
 import models.DemandPremium;
 import models.Permission;
 import models.User;
+import play.data.DynamicForm;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -31,7 +32,7 @@ public class InscriptionController extends Controller {
 	public static Result saveDemand(){
 		Form<Demand> boundForm = demandForm.bindFromRequest();
 		if(boundForm.hasErrors()){
-			flash("error", String.format("Tous les champs marqués d'un astérique sont obligatoires"));
+			flash("error", String.format("Formulaire de la demande a des erreurs"));
 			return badRequest(views.html.person.detailDemand.render(demandForm, searchForm));
 		}
 		Demand demand = boundForm.get();
@@ -93,6 +94,7 @@ public class InscriptionController extends Controller {
 	 * 
 	 * @return
 	 */
+	
 	public static Result saveUser(){
 		Form<User> boundForm = userForm.bindFromRequest();
 		
@@ -128,6 +130,8 @@ public class InscriptionController extends Controller {
 			return badRequest(views.html.person.inscriptionPage.render(userForm, searchForm));
 		
 		}
+		
+		
 		Permission permission = Permission.findById(3);
 		user.permission = permission;
 		user.dateInscription = new Date();
@@ -137,7 +141,7 @@ public class InscriptionController extends Controller {
 		user.isExpert = false;
 		user.save();
 		
-		flash("success", String.format("Inscription avec succès"));
+		flash("success", String.format("L'utilisateur a bien été créé"));
 		return redirect(routes.AccueilController.accueil());
 	}
 	

@@ -3,7 +3,10 @@ package api;
 import java.util.Date;
 import java.util.List;
 
+import models.Application;
+import models.BonusRule;
 import models.Post;
+import models.Tag;
 import models.Thread;
 import models.User;
 import play.mvc.BodyParser;
@@ -25,7 +28,7 @@ import flexjson.JSONSerializer;
 
 
 public class ThreadControllerApi extends Controller {
-	
+	public static final String THREAD_CAT_NORMAL  = "normal";
 	
 	
 	/**
@@ -45,7 +48,7 @@ public class ThreadControllerApi extends Controller {
 			return badRequest();
 		}else{
 			
-			String content = json.get("content").asText();
+			String content  = json.get("content").asText();
 			String idThread = json.get("currentThreadId").asText();
 			
 			Post comment = new Post();
@@ -62,6 +65,51 @@ public class ThreadControllerApi extends Controller {
 			
 			return ok("Success");
 		}
+	}
+	
+	public static Result createThread(){
+		JsonNode json = request().body().asJson();
+		if(json == null){
+			return badRequest();
+		}else{
+			String content 	  = json.get("content").asText();
+			String idApp      = json.get("currentForumId").asText();
+			String title      = json.get("title").asText();
+			String tagCountry = json.get("tagCountry").asText();
+			String tagModule  = json.get("tagModule").asText();
+			
+			System.out.println(content + " " + idApp + " " + title + " " + tagCountry + " " + tagModule);
+			
+			Thread thread  = new Thread();
+			User author = User.findById(session("userNameMobile"));
+			Application app = Application.findById(idApp);
+			
+			//affect thread to many attributes
+			
+			thread.author = author;
+			thread.application  = app;
+			thread.publicDate = new Date();
+			thread.lastUpdate = new Date();
+			thread.category = THREAD_CAT_NORMAL;
+			thread.threadName = title;
+			thread.content = content;
+			
+			
+			//add tag to thread tag list
+			Tag tagC = Tag.findById(Integer.parseInt(tagCountry));
+			Tag tagM = Tag.findById(Integer.parseInt(tagModule));
+			
+			thread.tags.add(tagC);
+			thread.tags.add(tagM);
+			thread.save();
+			
+			//update bonus and exp for thread author
+			thread.author.exp   += BonusRule.findByID("2").xp;
+			thread.author.bonus += BonusRule.findByID("2").bonus;
+			thread.author.update();
+			
+		}
+		return ok("Success");
 	}
 	
 	

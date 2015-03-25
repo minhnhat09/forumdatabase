@@ -25,6 +25,8 @@ public class EditorController extends Controller {
 	private static final Form<Thread> threadForm 		= Form.form(Thread.class);
 	public static final Form<Search> searchForm 		= Form.form(Search.class);
 	
+	public static final String THREAD_CAT_NORMAL  = "normal";
+	
 	/**
 	 * 
 	 * @param app
@@ -63,7 +65,7 @@ public class EditorController extends Controller {
 			thread.application = app;
 			thread.publicDate = new Date();
 			thread.lastUpdate = new Date();
-			thread.category = "normal";
+			thread.category = THREAD_CAT_NORMAL;
 			thread.save();
 			//b1.save();
 			for (Bibliography bibli : thread.biblios) {

@@ -66,7 +66,7 @@ function addBibliFunc (count) {
 	color: #191970;
 }
 </style>
-@form(routes.EditorController.postThread(app)) {
+@form(routes.EditorController.postThread(app), 'name -> "commentForm") {
 <div class='row'>
 	<input type="hidden" value="@threadForm("idThread").valueOr("0")" name="idThread"/>
 	<div class="col-md-1"></div>
@@ -74,44 +74,29 @@ function addBibliFunc (count) {
 		<div class='row'>
 			<div class="row col-md-12">
 				<div class="col-md-6">
-					@select(threadForm("tags[0].idTag"), options(models.Tag.countryOptions), '_label -> "Ajouter une étiquette pays", '_default -> "-- Choisir un pays --", '_showConstraints -> false, 'class -> "form-control" ) 
+					@select(threadForm("tags[0].idTag"), options(models.Tag.countryOptions), '_label -> "Ajouter une étiquette pays", '_default -> "-- Choisir un pays --", '_showConstraints -> false, 'class -> "form-control",'required -> "" ) 
 				</div>
 				<div class="col-md-6">
-					@select(threadForm("tags[1].idTag"), options(models.Tag.moduleOptions), '_label -> "Ajouter une étiquette module", '_default -> "-- Choisir un module --", '_showConstraints -> false, 'class -> "form-control" ) 
+					@select(threadForm("tags[1].idTag"), options(models.Tag.moduleOptions), '_label -> "Ajouter une étiquette module", '_default -> "-- Choisir un module --", '_showConstraints -> false, 'class -> "form-control",'required -> "" ) 
 				</div>
 			</div>
-			@helper.inputText(threadForm("threadName"), 'class -> "form-control", 'placeholder -> "Saisir le titre",'_label -> "Saisir un titre")
+			@helper.inputText(threadForm("threadName"), 'class -> "form-control", 'placeholder -> "Saisir le titre",'_label -> "Saisir un titre",'required -> "")
 		</div>
 		<h3>Contenu</h3>
 		<div class='row'>
-			@textarea(threadForm("content"), '_label -> "", 'placeholder -> "Any notes you want to add", 'rows -> 20, 'cols -> 60, 'class ->"editor" )
+			@textarea(threadForm("content"), '_label -> "", 'placeholder -> "Any notes you want to add", 'rows -> 20, 'cols -> 60, 'class ->"editor",'required -> "" )
 		</div>
 		
 		<div class="zoneBibli">
 			<h3>Bibliographie</h3>
 			
-			<!-- <div class="row">
-				<div class="col-md-12" id="bibli1">
-					<h4>Bibliographie 1</h4>
-					<div class="col-md-4">
-						<label >Auteur</label>
-						<input class="form-control" type="text" name="biblios[1].author">
-					</div>
-					<div class="col-md-4">
-						<label >Titre</label>
-						<input class="form-control" type="text" name="biblios[1].content">
-					</div>
-					<div class="col-md-4">
-						<label >Lien</label>
-						<input class="form-control" type="text" name="biblios[1].lien">
-					</div>
-				</div>
-			</div> -->
 		</div>
 		<br>
 		<div class='row'>
-			<input type="submit" value="Poster" class="btn btn-primary">
+			<input type="submit" value="Poster" class="btn btn-primary" ng-disabled="commentForm.$invalid">
+
 			<a href="@routes.ForumController.forumHome(app,0, "publicDate", "desc")" class="btn btn-danger">Annuler</a> 
+			
 			<div class="btn btn-success" id="addBibli">Ajouter une bibliographie</div>
 		</div>
 	</div>

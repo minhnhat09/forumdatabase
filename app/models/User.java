@@ -46,11 +46,11 @@ public class User extends Model implements PathBindable<User>{
 	
 	public int exp;
 	
-	@Email
+	
 	@Constraints.Required
 	public String email;
 	
-	@Email
+	
 	@Constraints.Required
 	public String confirmEmail;
 	
@@ -82,7 +82,7 @@ public class User extends Model implements PathBindable<User>{
 	@Constraints.Required
 	public String country;
 	
-	@Constraints.Required
+	
 	public boolean civilite;
 	
 	public String role;
@@ -105,10 +105,11 @@ public class User extends Model implements PathBindable<User>{
 	public String presentation;
 	@Column(columnDefinition = "LONGTEXT")
 	public String hoppy;
+	
 	@Constraints.Required
 	public String signinCode;
 	
-	@Min(0)
+	
 	public boolean isPremium;
 	
 	public int threadCountViews;
@@ -303,6 +304,8 @@ public class User extends Model implements PathBindable<User>{
 	            .eq("password", password)
 	            .findUnique();
 	    }
+	 
+	 
 	
 	
 }

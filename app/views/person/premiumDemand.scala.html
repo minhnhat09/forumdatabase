@@ -7,18 +7,26 @@
     
     <h1>Demander Code Parrainage</h1>
     
-    @helper.form(routes.InscriptionController.saveDemandPremium(), 'class -> "form-group") {
+    @helper.form(routes.InscriptionController.saveDemandPremium(), 'class -> "form-group", 'name -> "demandForm") {
        
         <fieldset>
         	<input type="hidden" value="@demandPremiumForm("idDemandPremium").valueOr("0")" name="idDemandPremium"/>
             
             
-            @helper.textarea(demandPremiumForm("motif"), '_label -> "*Motif", 
-                'class -> "form-control", 'placeholder -> "", 'style ->"width:50%" )
+            
+
+            <div class="clearfix ">
+                <label for="motif">*Motif</label>
+                <div class="input">
+                <textarea id="motif" class="form-control" style="width:50%" placeholder="" name="motif" required ng-model="motif"></textarea>
+                <span class="help-inline">Required</span>
+                </div>
+            </div>
 
         </fieldset>
         <div class="actions">
-            <input type="submit" value="Envoyer la demande" class="btn btn-primary"> 
+            <input type="submit" value="Envoyer la demande" class="btn btn-primary" ng-disabled="demandForm.$invalid"> 
+
             <a href="@routes.AccueilController.accueil()" class="btn btn-danger">Annuler</a> 
 
         </div>

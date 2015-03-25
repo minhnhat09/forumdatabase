@@ -28,7 +28,8 @@ public class Tag extends Model implements PathBindable<Tag>{
 	public String category;
 	
 	
-	
+	private static final String COUNTRY_TAG = "pays";
+	private static final String MODULE_TAG  = "modules";
 	
 	@ManyToMany(mappedBy = "tags")
 	List<Thread> threads;
@@ -51,18 +52,16 @@ public class Tag extends Model implements PathBindable<Tag>{
 	}
 	
 	public static List<Tag> findByCountry(){
-		String category = "pays";
 		return find
 				.where()
-				.eq("category", category)
+				.eq("category", COUNTRY_TAG)
 				.findList();
 	}
 	
 	public static List<Tag> findByModule(){
-		String category = "modules";
 		return find
 				.where()
-				.eq("category", category)
+				.eq("category", MODULE_TAG)
 				.findList();
 	}
 	

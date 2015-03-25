@@ -1,9 +1,11 @@
 package api;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import models.Application;
 import models.Service;
+import models.Tag;
 import models.Thread;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -20,6 +22,8 @@ import flexjson.JSONSerializer;
 
 
 public class ForumControllerApi extends Controller {
+	
+	
 	public static Result findAllForums(){
 		List<Service> services = Service.findAllServices();
 		JSONSerializer serializer = new JSONSerializer().include("apps");
@@ -42,5 +46,21 @@ public class ForumControllerApi extends Controller {
 		String json               = serializer.serialize(app);
 		return ok(json);
 	}
+	
+	
+	public static Result countryOptionsJson() {
+        List<Tag> listCountry = Tag.findByCountry();
+        JSONSerializer serializer = new JSONSerializer();
+		String json               = serializer.serialize(listCountry);
+		return ok(json);
+        
+    }
+	
+	public static Result moduleOptionsJson() {
+		List<Tag> listModule = Tag.findByModule();
+        JSONSerializer serializer = new JSONSerializer();
+		String json               = serializer.serialize(listModule);
+		return ok(json);
+    }
 	
 }

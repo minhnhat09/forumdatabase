@@ -68,3 +68,18 @@ table.computers .header a {
 .help-inline{
 	color: red;
 }
+input.ng-invalid.ng-dirty {
+    background-color: pink
+}
+
+input.ng-valid.ng-dirty {
+    background-color: #43D856; color: white
+}
+
+textarea.ng-invalid.ng-dirty {
+    background-color: pink
+}
+
+textarea.ng-valid.ng-dirty {
+    background-color: #43D856; color: white
+}
