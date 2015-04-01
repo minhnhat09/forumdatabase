@@ -8,27 +8,37 @@
     
     <h1>Ajouter/Modifier Application</h1>
     
-    @helper.form(routes.AdminController.saveApp(), 'class -> "form-group", 'enctype -> "multipart/form-data") {
+    @helper.form(routes.AdminController.saveApp(), 'class -> "form-group", 'enctype -> "multipart/form-data", 'name -> "detailForm") {
        
         <fieldset>
         	<input type="hidden" value="@appForm("idApp").valueOr("0")" name="idApp"/>
 
             @helper.inputText(appForm("appName"), '_label -> "Nom de l'application", 
-            	'class -> "form-control", 'placeholder -> "Nom de l'application", 'style ->"width:50%" )
+            	'class -> "form-control", 'placeholder -> "Nom de l'application", 'style ->"width:50%", 'required -> "")
             
             @helper.textarea(appForm("appDescription"), '_label -> "Description de l'application", 
-                'class -> "form-control", 'placeholder -> "Description de l'application", 'rows -> 10, 'cols -> 60)
-            @select(appForm("service.idService"), options(models.Service.options), '_label -> "Service", '_default -> "-- Choisir un service --", '_showConstraints -> false, 'class -> "form-control", 'style ->"width:50%")
+                'class -> "form-control", 'placeholder -> "Description de l'application", 'rows -> 10, 'cols -> 60, 'required -> "")
+            
+            @select(appForm("service.idService"), options(models.Service.options), '_label -> "Service", '_default -> "-- Choisir un service --", '_showConstraints -> false, 'class -> "form-control", 'style ->"width:50%", 'required -> "")
 
-            @helper.inputText(appForm("maxViews"), '_label -> "Nombre d'articles maximum en mode Classique", 
-                'class -> "form-control", 'placeholder -> "Nombre d'articles maximum en mode Classique", 'style ->"width:50%" )
+            
 
-
+            <div id="maxViews_field" class="clearfix">
+                <label for="maxViews">Nombre d'articles maximum en mode Classique</label>
+                <div class="input">
+                <input id="maxViews" class="form-control" type="number" style="width:50%" placeholder="Nombre d'articles maximum en mode Classique" name="maxViews" ng-model="maxViews" required min="3">
+                <span class="help-inline"></span>
+                <span class="help-block"></span>
+                </div>
+            </div>
+            
             @helper.inputFile(appForm("picture"), '_label -> "Image de l'application", 
                 'style ->"width:50%" ) 
         </fieldset>
         <div class="actions">
-            <input type="submit" value="Créer/Modifier Application" class="btn btn-primary"> 
+
+            <input type="submit" value="Créer/Modifier Application" class="btn btn-primary" ng-disabled="detailForm.$invalid"> 
+
             <a href="@routes.AdminController.listApps(0)" class="btn btn-danger">Annuler</a> 
         </div>
     }

@@ -1,4 +1,7 @@
-@(form: Form[controllers.Application.Login], searchForm:Form[controllers.SearchController.Search]) @main("Welcome to BEF - YOU ROCK", searchForm){ @helper.form(routes.Application.authenticate) {
+@(form: Form[controllers.Application.Login], searchForm:Form[controllers.SearchController.Search]) @main("Welcome to BEF - YOU ROCK", searchForm){ 
+
+
+@helper.form(routes.Application.authenticate, 'name -> "authenticateForm") {
 
 <h1>Se Connecter</h1>
 
@@ -13,13 +16,13 @@
 }
 
 <p>
-	<input class="form-control" type="text" name="userName" placeholder="Nom d'utilisateur" value="@form("userName").value" style="width:50%">
+	<input class="form-control" type="text" name="userName" placeholder="Nom d'utilisateur" value="@form("userName").value" style="width:50%" required ng-model="userName" ng-minlength="6">
 </p>
 <p>
-	<input class="form-control" type="password" name="password" placeholder="Mot de passe" style="width:50%">
+	<input class="form-control" type="password" name="password" placeholder="Mot de passe" style="width:50%" required ng-model="password">
 </p>
 <p>
-	<button type="submit" class="btn btn-success">Login</button style="width:50%">
+	<button type="submit" class="btn btn-success" ng-disabled="authenticateForm.$invalid">Login</button style="width:50%">
 </p>
 
 }

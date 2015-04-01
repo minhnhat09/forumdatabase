@@ -3,18 +3,14 @@
 @import helper._
 @implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.render) } 
 
-@main("Demander Code Parrainage", searchForm) {
+@main("Demander Compte Premium", searchForm) {
     
-    <h1>Demander Code Parrainage</h1>
+    <h1>Demander Compte Premium</h1>
     
     @helper.form(routes.InscriptionController.saveDemandPremium(), 'class -> "form-group", 'name -> "demandForm") {
        
         <fieldset>
         	<input type="hidden" value="@demandPremiumForm("idDemandPremium").valueOr("0")" name="idDemandPremium"/>
-            
-            
-            
-
             <div class="clearfix ">
                 <label for="motif">*Motif</label>
                 <div class="input">
@@ -26,9 +22,7 @@
         </fieldset>
         <div class="actions">
             <input type="submit" value="Envoyer la demande" class="btn btn-primary" ng-disabled="demandForm.$invalid"> 
-
             <a href="@routes.AccueilController.accueil()" class="btn btn-danger">Annuler</a> 
-
         </div>
     }
 

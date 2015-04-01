@@ -6,32 +6,71 @@
 @main("Demander Code Parrainage", searchForm) {
     
     <h1>Demander Code Parrainage</h1>
+    <div ng-controller="DemandCodeController">
     
-    @helper.form(routes.InscriptionController.saveDemand(), 'class -> "form-group") {
+
+    @helper.form(routes.InscriptionController.saveDemand(), 'class -> "form-group", 'name -> "demandForm") {
        
         <fieldset>
         	<input type="hidden" value="@demandForm("idDemand").valueOr("0")" name="idDemand"/>
-            @helper.inputText(demandForm("name"), '_label -> "*Nom et Prénom", 
-                'class -> "form-control", 'placeholder -> "", 'style ->"width:50%" )
+            <!-- @helper.inputText(demandForm("name"), '_label -> "*Nom et Prénom", 
+                'class -> "form-control", 'placeholder -> "", 'style ->"width:50%") -->
+            <div class="clearfix ">
+                <label for="name">*Nom et Prénom</label>
+                <div class="input">
+                <input id="name" class="form-control" type="text" style="width:50%" placeholder="" value="" name="name" required ng-model="name" ng-minlength="4">
+                
+                </div>
+            </div>
+            <div class="clearfix ">
+                <label for="ipn">*IPN</label>
+                <div class="input">
+                <input id="ipn" class="form-control" type="text" required style="width:50%" placeholder="" value="" name="ipn" ng-model="ipn" >
+                
+                </div>
+            </div>
+
+
+           <!--  @helper.inputText(demandForm("ipn"), '_label -> "*IPN", 
+            	'class -> "form-control", 'placeholder -> "", 'style ->"width:50%", 'required -> "" )
+            -->
+            @select(demandForm("idService"), options(models.Service.options), '_label -> "Service Inscrite",'class -> "form-control", '_default -> "-- Choisir un service --", '_showConstraints -> false, 'style ->"width:50%" )  
             
-            @helper.inputText(demandForm("ipn"), '_label -> "*IPN", 
-            	'class -> "form-control", 'placeholder -> "", 'style ->"width:50%" )
-            
-            @select(demandForm("idService"), options(models.Service.options), '_label -> "Service Inscrite",'class -> "form-control", '_default -> "-- Choisir un service --", '_showConstraints -> false, 'style ->"width:50%" ) 
-            
-            @helper.inputText(demandForm("email"), '_label -> "*Email", 
-                'class -> "form-control", 'placeholder -> "", 'style ->"width:50%" )
+
+            <div class="clearfix ">
+                <label for="email">*Email</label>
+                <div class="input">
+                <input id="email" class="form-control" type="email" required="" style="width:50%" placeholder="" value="" name="email" ng-model="email">
+                
+                </div>
+            </div>
+            <div class="clearfix ">
+                <label for="motif">*Motif</label>
+                <div class="input">
+                <textarea id="motif" class="form-control" required style="width:50%" placeholder="" name="motif" ng-model="motif"></textarea>
+                
+                </div>
+            </div>
+            <!-- @helper.inputText(demandForm("email"), '_label -> "*Email", 
+                'class -> "form-control", 'placeholder -> "", 'style ->"width:50%", 'required -> "", 'type -> "email"  )
             
             @helper.textarea(demandForm("motif"), '_label -> "*Motif", 
-                'class -> "form-control", 'placeholder -> "", 'style ->"width:50%" )
+                'class -> "form-control", 'placeholder -> "", 'style ->"width:50%", 'required -> "" ) -->
 
         </fieldset>
         <div class="actions">
-            <input type="submit" value="Envoyer la demande" class="btn btn-primary"> 
+            <input type="submit" value="Envoyer la demande" class="btn btn-primary" ng-disabled="demandForm.$invalid"> 
+
+
             <a href="@routes.InscriptionController.inscription()" class="btn btn-danger">Annuler</a> 
 
         </div>
+
+
     }
+    </div>
+    
 
     
  }
+ <script src="@routes.Assets.at("angular/custom/DemandCodeController.js")"></script>

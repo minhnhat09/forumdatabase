@@ -168,6 +168,7 @@ GET		/forum/api/user/bookmarks/currentUser			api.UserControllerApi.findBookmarks
 #Notification
 GET		/forum/api/user/messages/currentUser			api.NotificationControllerApi.findMessagesByUser()
 GET		/forum/api/user/notis/currentUser				api.NotificationControllerApi.findNotisByUser()
+POST	/forum/api/user/notis/sendMessage				api.NotificationControllerApi.sendMessage()
 #Page Forum Json
 GET		/forum/api/findThreads							api.ThreadControllerApi.threadJson()
 GET		/forum/api/findThread							api.ThreadControllerApi.threadById()
@@ -179,6 +180,10 @@ GET		/forum/api/forum/getForum/f=:idForum			api.ForumControllerApi.findForumById
 GET		/forum/api/forum/thread/:idThread				api.ThreadControllerApi.findThreadById(idThread: Integer)
 #Page Thread
 POST	/forum/api/thread/commentThread					api.ThreadControllerApi.commentThread()
+POST	/forum/api/thread/likeThread					api.ThreadControllerApi.likeThread()
+POST	/forum/api/thread/dislikeThread					api.ThreadControllerApi.dislikeThread()
+POST	/forum/api/thread/bookmarkThread				api.ThreadControllerApi.bookmarkThread()
+POST	/forum/api/thread/noteThread					api.ThreadControllerApi.noteThread()
 POST	/forum/api/thread/createThread					api.ThreadControllerApi.createThread()
 #Page Create Thread
 GET		/forum/api/forum/getCountryTags					api.ForumControllerApi.countryOptionsJson()

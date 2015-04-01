@@ -25,7 +25,6 @@ import play.mvc.Http.MultipartFormData;
 import play.mvc.Http.MultipartFormData.FilePart;
 import play.mvc.Result;
 import play.mvc.Security;
-import views.html.defaultpages.error;
 
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Page;
@@ -514,7 +513,7 @@ public class AdminController extends Controller {
 			app.update();
 		}
 		
-		flash("success", String.format("L'application a bien été ajoutée"));
+		flash("success", String.format("L'application a bien été ajoutée/changée"));
 		return GO_HOME_APPLICATION;
 	}
 	

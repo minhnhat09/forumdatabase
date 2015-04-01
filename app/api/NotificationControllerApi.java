@@ -2,8 +2,11 @@ package api;
 
 import java.util.List;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 import models.Message;
 import models.Notification;
+import models.User;
 import play.mvc.Controller;
 import play.mvc.Result;
 import flexjson.JSONSerializer;
@@ -34,6 +37,30 @@ public class NotificationControllerApi extends Controller{
 		JSONSerializer serializer = new JSONSerializer();
 		String json = serializer.serialize(notis);
 		return ok(json);
+	}
+	
+	public static Result sendMessage(){
+		JsonNode json = request().body().asJson();
+		if(json == null){
+			return badRequest();
+		}else{
+			String content = json.get("content").asText();
+			String receiverString = json.get("receiver").asText();
+			User sender = User.findById(session("userNameMobile"));
+			User receiver = User.findById(receiverString);
+			if(receiver == null){
+				return badRequest("Utilisateur introuvable");
+			}else{
+				Message message = new Message();
+				message.userNameFrom = sender;
+				message.userNameTo = receiverString;
+				message.content = content;
+				message.save();
+			}
+			
+		}
+		
+		return ok("Success");
 	}
 	
 	

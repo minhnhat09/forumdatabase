@@ -7,8 +7,8 @@ import models.AccountValidation;
 import models.Demand;
 import models.DemandPremium;
 import models.Permission;
+import models.Service;
 import models.User;
-import play.data.DynamicForm;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -133,6 +133,10 @@ public class InscriptionController extends Controller {
 		
 		
 		Permission permission = Permission.findById(3);
+		//Get idService from form and process to affect service to user
+		user.service = Service.findById(String.valueOf(user.idServiceSubscribe));
+		
+		
 		user.permission = permission;
 		user.dateInscription = new Date();
 		user.threadCountViews = 0;

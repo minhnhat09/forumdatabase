@@ -30,11 +30,11 @@
 </div>
 
 
-<script>
+<script type="text/javascript">
 	$(document).ready(function(){
 
 		//Behavior block subject
-		@if(thread.isBlocked){
+		if(@thread.isBlocked){
 			$(".comment").hide();
 			$(".paneauBlock").show();
 		}else{
@@ -150,46 +150,49 @@
 		});
 	
 		$("button#addContactPost").each(function(){
-		$(this).click(function(){
-			var idReceiver = $(this).attr("value");
-			
-			var data = {
-					'idSender':"@controllers.Application.getSessionUser",
-					'idReceiver':idReceiver
-				}
-				appRoutes.controllers.PersonController.sendRequest().ajax({
-						data:JSON.stringify(data),
-						contentType:'application/json',
-						type:'POST',
-						success:function(resultats){
-							alert("Demande envoyé");
-						},
-						error:function(resultats){
-							alert("Erreur!");
-						}
-				});
+
+			$(this).click(function(){
+				var idReceiver = $(this).attr("value");
+				
+				var data = {
+						'idSender':"@controllers.Application.getSessionUser",
+						'idReceiver':idReceiver
+					}
+					appRoutes.controllers.PersonController.sendRequest().ajax({
+							data:JSON.stringify(data),
+							contentType:'application/json',
+							type:'POST',
+							success:function(resultats){
+								alert("Demande envoyé");
+							},
+							error:function(resultats){
+								alert("Erreur!");
+							}
+					});
+			});
 		});
-	});
 	
 
 
-	$("#popupFB").click(function(){
-		var url = $(this).attr("href");
-			MyWindow=window.open(url,'MyWindow','toolbar=yes,location=yes,directories=yes,status=yes,menubar=yes,scrollbars=yes,resizable=yes,width=800,height=300'); return false;
-	});
-	
-	$("#popupLK").click(function(){
-		var url = $(this).attr("href");
-			MyWindow=window.open(url,'MyWindow','toolbar=yes,location=yes,directories=yes,status=yes,menubar=yes,scrollbars=yes,resizable=yes,width=800,height=300'); return false;
-	});
-	$("#popupTW").click(function(){
-		var url = $(this).attr("href");
-			MyWindow=window.open(url,'MyWindow','toolbar=yes,location=yes,directories=yes,status=yes,menubar=yes,scrollbars=yes,resizable=yes,width=800,height=300'); return false;
-	});
+		$("#popupFB").click(function(){
+			var url = $(this).attr("href");
+				MyWindow=window.open(url,'MyWindow','toolbar=yes,location=yes,directories=yes,status=yes,menubar=yes,scrollbars=yes,resizable=yes,width=800,height=300'); return false;
+		});
+		
+		$("#popupLK").click(function(){
+			var url = $(this).attr("href");
+				MyWindow=window.open(url,'MyWindow','toolbar=yes,location=yes,directories=yes,status=yes,menubar=yes,scrollbars=yes,resizable=yes,width=800,height=300'); return false;
+		});
+		$("#popupTW").click(function(){
+			var url = $(this).attr("href");
+				MyWindow=window.open(url,'MyWindow','toolbar=yes,location=yes,directories=yes,status=yes,menubar=yes,scrollbars=yes,resizable=yes,width=800,height=300'); return false;
+		});
 		$("#popupGG").click(function(){
-		var url = $(this).attr("href");
-			MyWindow=window.open(url,'MyWindow','toolbar=yes,location=yes,directories=yes,status=yes,menubar=yes,scrollbars=yes,resizable=yes,width=800,height=300'); return false;
-	});
+			var url = $(this).attr("href");
+				MyWindow=window.open(url,'MyWindow','toolbar=yes,location=yes,directories=yes,status=yes,menubar=yes,scrollbars=yes,resizable=yes,width=800,height=300'); return false;
+		});
+
+
 	});
 	
 </script>

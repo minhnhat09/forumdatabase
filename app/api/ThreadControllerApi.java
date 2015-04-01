@@ -9,6 +9,7 @@ import models.Post;
 import models.Tag;
 import models.Thread;
 import models.User;
+import models.UserAppreciation;
 import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -61,11 +62,73 @@ public class ThreadControllerApi extends Controller {
 			comment.thread = thread;
 			comment.save();
 			ThreadController.increaseBonus(comment.user);
-					
-			
 			return ok("Success");
 		}
 	}
+	
+	public static Result likeThread(){
+		JsonNode json = request().body().asJson();
+		if(json == null){
+			return badRequest();
+		}else{
+			String idThread = json.get("currentThreadId").asText();
+			String idUser = session("userNameMobile");
+			
+			System.out.println("user" + idUser);
+			System.out.println("thread " + idThread);
+			
+			if(UserAppreciation.likeThread(idUser, idThread))
+				return ok("Success");
+			else return badRequest();
+	
+		}
+	}
+		
+		
+	public static Result dislikeThread(){
+		JsonNode json = request().body().asJson();
+		if(json == null){
+			return badRequest();
+		}else{
+			String idThread = json.get("currentThreadId").asText();
+			String idUser   = session("userNameMobile");
+			if(UserAppreciation.dislikeThread(idUser, idThread))
+				return ok();
+			else return forbidden();
+	
+		}
+	}
+	
+	public static Result bookmarkThread(){
+		JsonNode json = request().body().asJson();
+		if(json == null){
+			return badRequest();
+		}else{
+			String idThread = json.get("currentThreadId").asText();
+			String idUser   = session("userNameMobile");
+			if(UserAppreciation.bookmarkThread(idUser, idThread))
+				return ok();
+			else return forbidden();
+		}
+	}
+	
+	public static Result noteThread(){
+		JsonNode json = request().body().asJson();
+		if(json == null){
+			return badRequest();
+		}else{
+			String idThread = json.get("currentThreadId").asText();
+			String idUser 	= session("userNameMobile");
+			String note 	= json.get("note").textValue();
+			
+			if(UserAppreciation.noteThread(idUser, idThread,Integer.parseInt(note)))
+				return ok();
+			else return forbidden();
+		}
+	}
+	
+		
+		
 	
 	public static Result createThread(){
 		JsonNode json = request().body().asJson();
