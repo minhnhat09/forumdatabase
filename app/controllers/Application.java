@@ -106,9 +106,14 @@ public class Application extends Controller {
 	 */
 	public static Result authenticate() {
 		Form<Login> loginForm = Form.form(Login.class).bindFromRequest();
+		
 		if (loginForm.hasErrors()) {
+			
+			
+			//System.out.println(loginForm.get().userName + " " + loginForm.get().password);
+			
 			System.out.println(loginForm.error("userName"));
-			return badRequest(views.html.login.render(loginForm, searchForm));
+			return ok(views.html.login.render(loginForm, searchForm));
 		} else {
 			session().clear();
 			session("userName", loginForm.get().userName);

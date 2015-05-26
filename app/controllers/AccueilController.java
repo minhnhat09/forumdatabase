@@ -22,7 +22,5 @@ public class AccueilController extends Controller {
 	 */
 	public static Result accueil(){
 		return ok(views.html.accueil.render(SEARCHFORM));
-	}
-	
-	
+	}	
 }

@@ -83,12 +83,19 @@ public class PersonController extends Controller {
 		FilePart picture = body.getFile("picture");
 		if (picture != null) {
 			
-			//String contentType = picture.getContentType();
+			String contentType = picture.getContentType();
 			//String str[] = contentType.split("/");
 			//String fileType = str[1];
-
+			if(contentType != "jpg" || contentType != "jpeg" || contentType != "bmp" || contentType != "gif"){
+				flash("error", String.format("La photo doit être en format jpg, jpeg, bmp, gif"));
+				return redirect(routes.PersonController.person(user));
+			}
+				
 			File content = picture.getFile();
-
+			if(content == null){
+				flash("error", String.format("Aucun fichier selectionné"));
+				return redirect(routes.PersonController.person(user));
+			}
 			FileOutputStream fop = null;
 			File file;
 			String path = "public\\imgs\\users\\" + user.userName + "\\avatar\\";
@@ -136,8 +143,8 @@ public class PersonController extends Controller {
 			flash("success", String.format("Changement avatar"));
 			return redirect(routes.PersonController.person(user));
 		} else {
-			flash("error", "Missing file");
-			return redirect(routes.Application.index());
+			flash("error", "Aucun fichier a été selectionné");
+			return redirect(routes.PersonController.person(user));
 		}
 	}
 
