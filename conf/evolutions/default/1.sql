@@ -126,6 +126,7 @@ create table notification (
   content                   LONGTEXT,
   note_date                 datetime,
   un_read                   tinyint(1) default 0,
+  id_thread_response        integer,
   constraint pk_notification primary key (id_notification))
 ;
 

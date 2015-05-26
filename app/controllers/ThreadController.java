@@ -155,6 +155,19 @@ public class ThreadController extends Controller {
 			comment.thread = thread;
 			comment.save();
 			
+			
+			//create notification to thread author
+			Notification noti = new Notification();
+			noti.user = thread.author;
+			noti.noteDate = new Date();
+			noti.content = comment.user.firstName + " " + comment.user.lastName +  " " + Messages.get("responseThread") + " " + comment.thread.threadName;
+			noti.idThreadResponse = comment.thread.idThread;
+			
+			
+			noti.save();
+			
+			
+			
 			increaseBonus(comment.user);
 			
 		}else{
@@ -164,18 +177,6 @@ public class ThreadController extends Controller {
 		}
 		flash("success", String.format("Poster le commentaire avec succès"));
 		return redirect(routes.ThreadController.threadHome(thread, 0));
-	}
-
-	/**
-	 * Method used to increase bonus and xp of user
-	 * It's used when user comment on thread
-	 * @param user
-	 */
-	public static void increaseBonus(User user){
-		user.exp += BonusRule.findByID("3").xp;
-		user.bonus += BonusRule.findByID("3").bonus;
-		user.update();
-		
 	}
 	
 	/**
@@ -194,8 +195,9 @@ public class ThreadController extends Controller {
 		
 		Post comment = boundForm.get();
 		comment.postContent = comment.postContent.replace("<img", "<img class='img-thumbnail' ");
+		//user who post comment
 		User user = User.findById(Application.getSessionUser());
-		
+		//Save comment to database
 		comment.user = user;
 		comment.postTime = new Date();
 		comment.thread = thread;
@@ -208,16 +210,34 @@ public class ThreadController extends Controller {
 		noti.user = post.user;
 		noti.noteDate = new Date();
 		noti.content = comment.user.firstName + " " + comment.user.lastName +  " " + Messages.get("notiwithquote") + " " + comment.thread.threadName;
+		noti.idThreadResponse = comment.thread.idThread;
+		
+		
 		noti.save();
 		pq.post = comment.idPost;
 		pq.quotes = post.idPost;
 		pq.save();
 		
+		//Increase bonuse for user who post comment
 		increaseBonus(comment.user);
 		
 		flash("success", String.format("Le commentaire a bien été ajouté"));
 		return redirect(routes.ThreadController.threadHome(thread, 0));
 	}
+
+	/**
+	 * Method used to increase bonus and xp of user
+	 * It's used when user comment on thread
+	 * @param user who comment on a thread
+	 */
+	public static void increaseBonus(User user){
+		user.exp += BonusRule.findByID("3").xp;
+		user.bonus += BonusRule.findByID("3").bonus;
+		user.update();
+		
+	}
+	
+	
 	
 	/**
 	 * 

@@ -29,6 +29,10 @@ public class MessageController extends Controller {
 	public static Result message(){
 		return ok(views.html.message.messageMainPage.render(searchForm));
 	}
+	
+	public static Result notis(){
+		return ok(views.html.message.messageMainPage.render(searchForm));
+	}
 	/**
 	 * 
 	 * @param user

@@ -1,4 +1,4 @@
-@(currentPage:com.avaje.ebean.Page[models.Thread], searchForm:Form[controllers.SearchController.Search])
+@(currentPage:List[models.Thread], searchForm:Form[controllers.SearchController.Search])
 @main("Résultat de Recherche", searchForm){
 
 
@@ -28,7 +28,7 @@
 								Note
 							</th>
 						</tr>
-						@for(thread <- currentPage.getList()){
+						@for(thread <- currentPage){
 						<tr>
 							<td>
 								<span class="glyphicon glyphicon-lock" id="glyphicon"></span>

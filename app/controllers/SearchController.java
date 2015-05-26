@@ -1,5 +1,7 @@
 package controllers;
 
+import java.util.List;
+
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -49,12 +51,12 @@ public class SearchController extends Controller{
 	 * Method used to search both application and author
 	 * @param page for example there are lots of results. We have to divide it by many pages
 	 * @param content search content put by user
-	 * @return search page with approprite result
+	 * @return search page with appropriate result
 	 */
 	public static Result searchAll(Integer page, String content){
-		Page<models.Thread> threads = models.Thread.findByName(page, content);
-		
-		return ok(views.html.search.searchResultAll.render(threads, searchForm));
+		//Page<models.Thread> threads = models.Thread.findByName(page, content);
+		List<models.Thread> threads = models.Thread.findByName(page, content);
+		return ok(views.html.search.searchResultForum.render(threads, searchForm));
 	}
 	/**
 	 * Method used to search content by author

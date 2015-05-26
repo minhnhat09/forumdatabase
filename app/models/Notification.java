@@ -27,6 +27,7 @@ public class Notification extends Model {
 	public String content;
 	public Date noteDate;
 	public boolean unRead;
+	public int idThreadResponse;
 	
 	
 	public static Finder<Integer, Notification> find = new Finder<Integer, Notification>(Integer.class, Notification.class);

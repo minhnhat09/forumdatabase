@@ -432,14 +432,12 @@ public class Thread extends Model implements PathBindable<Thread>{
 	 * 
 	 * */
 	
-	public static Page<Thread> findByName(int page, String nameThread){
+	public static List<Thread> findByName(int page, String nameThread){
 		
 		return find.where()
 				.ilike("thread_name", "%" + nameThread + "%")
 				.orderBy("id_thread asc")
-				.findPagingList(4)
-				.setFetchAhead(false)
-				.getPage(page);
+				.findList();
 	}
 	
 	/**

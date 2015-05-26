@@ -1,3 +1,2 @@
-
-
 notiwithquote= a répondu à votre commentaire dans l\'article
+responseThread= a répondu dans votre l\'article
