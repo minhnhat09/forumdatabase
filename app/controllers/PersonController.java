@@ -84,9 +84,17 @@ public class PersonController extends Controller {
 		if (picture != null) {
 			
 			String contentType = picture.getContentType();
-			//String str[] = contentType.split("/");
-			//String fileType = str[1];
-			if(contentType != "jpg" || contentType != "jpeg" || contentType != "bmp" || contentType != "gif"){
+			
+			String str[] = contentType.split("/");
+			String fileType = str[1];
+			System.out.println(fileType);
+			
+			/**
+			 * if filetype not equal jpg, jpeg, bmp, gif (image format) return error
+			 */
+			if(!fileType.equalsIgnoreCase("jpg") && !fileType.equalsIgnoreCase("jpeg")&& !fileType.equalsIgnoreCase("bmp")
+					&& !fileType.equalsIgnoreCase("gif")){
+				
 				flash("error", String.format("La photo doit être en format jpg, jpeg, bmp, gif"));
 				return redirect(routes.PersonController.person(user));
 			}
@@ -110,7 +118,7 @@ public class PersonController extends Controller {
 								.println("Failed to create multiple directories!");
 					}
 				}
-				String fileName = "avatarUser";
+				String fileName = "avatarUser." + fileType;
 				
 				file = new File(path +  fileName);
 				fop = new FileOutputStream(file);
@@ -140,7 +148,7 @@ public class PersonController extends Controller {
 					e.printStackTrace();
 				}
 			}
-			flash("success", String.format("Changement avatar"));
+			flash("success", String.format("L'avatar a bien été changé"));
 			return redirect(routes.PersonController.person(user));
 		} else {
 			flash("error", "Aucun fichier a été selectionné");
@@ -349,13 +357,14 @@ public class PersonController extends Controller {
 	 */
 	public static Result changePassword(User user) {
 		DynamicForm form = Form.form().bindFromRequest();
+		
 		String actualPass = form.get("actualPass");
 		String newPass = form.get("newPass");
 		String confirmPass = form.get("confirmPass");
 
 		String passFromDB = user.password;
 		if (!actualPass.equals(passFromDB)) {
-			flash("error", String.format("Wrong Password"));
+			flash("error", String.format("Mot de passe incorrect"));
 			return ok(views.html.person.infoPerson.render(user, sendGiftForm,
 					searchForm));
 		} else {

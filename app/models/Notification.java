@@ -23,6 +23,7 @@ public class Notification extends Model {
 	public int idNotification;
 	@ManyToOne
 	public User user;
+	public User userResponse;
 	@Column(columnDefinition = "LONGTEXT")
 	public String content;
 	public Date noteDate;

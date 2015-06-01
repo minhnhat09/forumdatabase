@@ -188,6 +188,9 @@ POST	/forum/api/thread/createThread					api.ThreadControllerApi.createThread()
 #Page Create Thread
 GET		/forum/api/forum/getCountryTags					api.ForumControllerApi.countryOptionsJson()
 GET		/forum/api/forum/getModuleTags					api.ForumControllerApi.moduleOptionsJson()
+#Page Inscription
+POST	/forum/api/demandCode							api.InscriptionControllerApi.demandCodeMobile()
+
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/js/routes             					controllers.Application.jsRoutes()

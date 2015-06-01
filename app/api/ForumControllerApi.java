@@ -1,6 +1,5 @@
 package api;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import models.Application;

@@ -119,7 +119,11 @@ public class ThreadControllerApi extends Controller {
 		}else{
 			String idThread = json.get("currentThreadId").asText();
 			String idUser 	= session("userNameMobile");
-			String note 	= json.get("note").textValue();
+			String note 	= json.get("note").asText();
+			
+			System.out.println(idThread + " "  + idUser + " " + note);
+			
+			
 			
 			if(UserAppreciation.noteThread(idUser, idThread,Integer.parseInt(note)))
 				return ok();

@@ -115,7 +115,7 @@ public class Application extends Controller {
 			System.out.println(loginForm.error("userName"));
 			return ok(views.html.login.render(loginForm, searchForm));
 		} else {
-			session().clear();
+			//session().clear();
 			session("userName", loginForm.get().userName);
 			User user = User.findById(loginForm.get().userName);
 			session("permissionUser",

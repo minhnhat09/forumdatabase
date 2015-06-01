@@ -1,5 +1,7 @@
 package api;
 
+import java.util.Date;
+
 import models.Demand;
 
 import com.avaje.ebean.Ebean;
@@ -28,6 +30,7 @@ public class InscriptionControllerApi extends Controller{
 			//Serivce missing
 			demand.email = email;
 			demand.motif = motif;
+			demand.dateApply = new Date();
 			Ebean.save(demand);
 			return ok();
 		}
