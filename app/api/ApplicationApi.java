@@ -1,7 +1,6 @@
 package api;
 
 import models.User;
-import play.api.mvc.Session;
 import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -30,7 +29,7 @@ public class ApplicationApi extends Controller{
 				session("userNameMobile", userName);
 				System.out.println(session("userNameMobile"));
 				
-				return ok();
+				return ok(userName);
 			}
 			
 		}

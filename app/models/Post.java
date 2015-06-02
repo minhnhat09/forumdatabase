@@ -85,6 +85,13 @@ public class Post extends Model implements PathBindable<Post>{
 				.getPage(page);
 	}
 	
+	public static void updateCommentCount(Thread thread){
+		thread.responseCount = find.where()
+								   .eq("thread_id_thread", thread.idThread)
+								   .findRowCount();
+		thread.update();
+	}
+	
 	public static Post findById(int idPost){
 		return find.where().eq("id_post", idPost).findUnique();
 	}

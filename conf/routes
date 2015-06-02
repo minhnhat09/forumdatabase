@@ -177,7 +177,7 @@ GET	 	/forum/api/findAllForums						api.ForumControllerApi.findAllForums()
 GET		/forum/api/forum/getThreads/f=:idForum			api.ForumControllerApi.findThreadsByForumId(idForum: String)
 GET		/forum/api/forum/getForum/f=:idForum			api.ForumControllerApi.findForumById(idForum: String)
 
-GET		/forum/api/forum/thread/:idThread				api.ThreadControllerApi.findThreadById(idThread: Integer)
+GET		/forum/api/forum/thread/:idThread				api.ThreadControllerApi.findThreadById(idThread: String)
 #Page Thread
 POST	/forum/api/thread/commentThread					api.ThreadControllerApi.commentThread()
 POST	/forum/api/thread/likeThread					api.ThreadControllerApi.likeThread()

@@ -27,6 +27,7 @@ public class Notification extends Model {
 	@Column(columnDefinition = "LONGTEXT")
 	public String content;
 	public Date noteDate;
+	@Column(nullable=false, columnDefinition="boolean default true")
 	public boolean unRead;
 	public int idThreadResponse;
 	
@@ -39,13 +40,13 @@ public class Notification extends Model {
 	
 
 	public static int notificationsUnread(String userName){
-		return find.where().eq("un_read", 0)
+		return find.where().eq("un_read", 1)
 				  .eq("user_user_name", userName)
 				.findRowCount();
 	}
 	
 	public static List<Notification> listNotificationsUnread(String userName){
-		return find.where().eq("un_read", 0)
+		return find.where().eq("un_read", 1)
 				  .eq("user_user_name", userName)
 				.findList();
 	}

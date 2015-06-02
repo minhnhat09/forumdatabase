@@ -175,6 +175,7 @@ public class ThreadController extends Controller {
 			comment.lastUpdate = new Date();
 			comment.update();
 		}
+		Post.updateCommentCount(thread);
 		flash("success", String.format("Poster le commentaire avec succès"));
 		return redirect(routes.ThreadController.threadHome(thread, 0));
 	}

@@ -36,8 +36,8 @@ import controllers.SearchController.Search;
 @Security.Authenticated(Secured.class)
 public class PersonController extends Controller {
 	public static final Form<SendGift> sendGiftForm = Form.form(SendGift.class);
-	public static final Form<Search> searchForm = Form.form(Search.class);
-	public static final Form<User> personForm = Form.form(User.class);
+	public static final Form<Search>   searchForm = Form.form(Search.class);
+	public static final Form<User>     personForm = Form.form(User.class);
 	
 	
 	

@@ -125,7 +125,7 @@ create table notification (
   user_user_name            varchar(255),
   content                   LONGTEXT,
   note_date                 datetime,
-  un_read                   tinyint(1) default 0,
+  un_read                   boolean default true not null,
   id_thread_response        integer,
   constraint pk_notification primary key (id_notification))
 ;

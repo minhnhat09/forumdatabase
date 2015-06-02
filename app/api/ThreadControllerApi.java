@@ -36,8 +36,8 @@ public class ThreadControllerApi extends Controller {
 	 * 
 	 * @return thread by id
 	 */
-	public static Result findThreadById(int idThread){
-		Thread thread = Thread.findById(idThread);
+	public static Result findThreadById(String idThread){
+		Thread thread = Thread.findById(Integer.parseInt(idThread));
 		JSONSerializer serializer = new JSONSerializer().include("posts", "biblios");
 		String json = serializer.serialize(thread);
 		return ok(json);
@@ -62,6 +62,7 @@ public class ThreadControllerApi extends Controller {
 			comment.thread = thread;
 			comment.save();
 			ThreadController.increaseBonus(comment.user);
+			Post.updateCommentCount(thread);
 			return ok("Success");
 		}
 	}
