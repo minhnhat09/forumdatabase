@@ -165,6 +165,7 @@ GET		/forum/api/currentUser							api.UserControllerApi.findUserInfo()
 GET		/forum/api/user/gifts/currentUser				api.UserControllerApi.findGiftsByUser()
 GET		/forum/api/user/contacts/currentUser			api.UserControllerApi.findContactsByUser()
 GET		/forum/api/user/bookmarks/currentUser			api.UserControllerApi.findBookmarksByUser()
+POST	/forum/api/profile/changePassword				api.UserControllerApi.changePassword()
 #Notification
 GET		/forum/api/user/messages/currentUser			api.NotificationControllerApi.findMessagesByUser()
 GET		/forum/api/user/notis/currentUser				api.NotificationControllerApi.findNotisByUser()

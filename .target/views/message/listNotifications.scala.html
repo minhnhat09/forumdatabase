@@ -16,10 +16,11 @@
 				<tr>
 				<td class="col-md-7">
 					<input id="@notis.idNotification" type='checkbox' class="noti_check_box" /><tt><pre>@notis.content</pre></tt></td>
-				<td class="col-md-2">@("%1$td/%1$tm/%1$tY".format(notis.noteDate))</td>
+				<td class="col-md-2">@("%1$td/%1$tm/%1$tY %1$tH:%1$tM:%1$tS".format(notis.noteDate))</td>
 				<!-- <td class="col-md-2"><button class="btn btn-primary btn-md" data-toggle="modal" data-target="#noti@notis.idNotification">
 							Consulter
 						</button></td> -->
+						<td><a href="@routes.ThreadController.threadHome(models.Thread.findById(notis.idThreadResponse))" class="btn btn-primary">Consulter</a></td>
 						<td><a href="" onclick="javascript:del('@routes.MessageController.deleteNoti(notis.idNotification)')">Supprimer</a></td>
 			</tr>
 

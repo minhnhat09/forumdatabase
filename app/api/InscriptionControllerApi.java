@@ -27,6 +27,7 @@ public class InscriptionControllerApi extends Controller{
 			Demand demand = new Demand();
 			demand.name = userName;
 			demand.ipn = ipn;
+			
 			//Serivce missing
 			demand.email = email;
 			demand.motif = motif;

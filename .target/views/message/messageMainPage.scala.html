@@ -1,5 +1,6 @@
 @(searchForm:Form[controllers.SearchController.Search])
 @main("Page Messagerie", searchForm){
+
 <div class="container">
 	<!-- Service 1 -->
 	<div class='row'>
@@ -35,22 +36,35 @@
 	</div>
 </div>
 <script type="text/javascript">
+
+			
+		
 	$(document).ready(function(){
+	    
 
+	     function() {
+	    	$("#select_all_mess").click(function(){
+	    		$('.mess_check_box').attr('checked',this.checked);
+	    		console.log("parent checked");
+	    	});
 
-		$("#select_all_mess").click(function(){
-			if(this.checked){
-				$(".mess_check_box").each(function(){
-					this.checked = true;
-				})
-			}else{
-				$(".mess_check_box").each(function(){
-					this.checked = false;
-				})
+	    	$(".mess_check_box").click(function(){
+	    		if($(".mess_check_box").length == $(".mess_check_box:checked").length){
+	    			$("#select_all_mess").attr('checked', true);
+	    			console.log("child checked true");
+	    			console.log($(".mess_check_box").length);
+	    			console.log($(".mess_check_box:checked").length);
+	    		}
+	    		else{
+	    			console.log("child checked false");
+	    			$("#select_all_mess").attr('checked', false);
+	    	}});
+	    
+    	}
+			
+	
 
-			}
-		});
-
+		
 
 		
 		$("#select_all_notis").click(function(){
@@ -68,7 +82,9 @@
 
 		$("#deleteListMess").click(function(){
 			var data = findCheckedMess();
-
+			if(data === undefined || data.length == 0){
+				alert("Sélectionnez au moin un message");
+			}
 			appRoutes.controllers.MessageController.deleteListMess().ajax({
 					data:JSON.stringify(data),
 					contentType:'application/json',

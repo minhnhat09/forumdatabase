@@ -383,7 +383,7 @@ public class PersonController extends Controller {
 					user.password = newPass;
 					user.update();
 					flash("success",
-							String.format("Changement du mot de passe"));
+							String.format("Votre mot de passe a bien été changé"));
 
 					return ok(views.html.person.infoPerson.render(user,
 							sendGiftForm, searchForm));

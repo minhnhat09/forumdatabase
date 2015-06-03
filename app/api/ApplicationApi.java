@@ -18,9 +18,6 @@ public class ApplicationApi extends Controller{
 			if(json.hasNonNull("username") && json.hasNonNull("password")){
 				String userName = json.get("username").asText();
 				String password = json.get("password").asText();
-				
-				
-				
 				if(User.authenticate(userName, password) == null){
 					return forbidden("invalid password");
 				}

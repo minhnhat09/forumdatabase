@@ -3,7 +3,7 @@
 <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("css/forum.css")">
 @breadcrumbForum(app.appName)
 <div class="row">
-	<div class="col-xs-12 col-md-10">
+	
 		@zoneModerator(app) @zoneSearch(app)  @zoneTag(app)
 		<div class="panel-body">
 			<div class="row">
@@ -21,6 +21,8 @@
 		</div>
 		@zonePagination(app, currentPage)
 	</div>
-	@zoneCommunication()
-</div>
+	<div class="row">
+		@zoneCommunication()
+	</div>
+
 }
