@@ -49,6 +49,7 @@ GET		/admin/apps/newapp								controllers.AdminController.newApp()
 GET		/admin/apps/modifyapp/:app						controllers.AdminController.modifyApp(app:models.Application)
 POST	/admin/apps/saveapp								controllers.AdminController.saveApp()
 DELETE  /admin/apps/:idApp							    controllers.AdminController.deleteApp(idApp:String)
+GET 	/admin/apps/search								controllers.AdminController.searchApp(page: Integer ?=0, appName: String ?="")
 #Tab Admin Bonus Rule
 GET		/admin/bonusrules/								controllers.AdminController.listBonusRules(page: Integer ?= 0)
 GET		/admin/bonusrules/newbonusrule					controllers.AdminController.newBonusRule()
