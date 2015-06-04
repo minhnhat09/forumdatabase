@@ -5,9 +5,9 @@
 <!-- Button -->
 <div class='row' align="right">
 	<div class="col-md-12" style="padding-top:10px;">
-		<form class="form-inline" role="form">
+		<form class="form-inline" role="form" method="get" action="@routes.AdminController.searchApp()">
 			<div class="form-group">
-				<input type="text" class='form-control' placeholder="Taper une application">
+				<input type="text" name="appName" class='form-control' placeholder="Taper une application">
 			</div>
 			<button class='btn btn-info'>Rechercher</button>
 		</form>

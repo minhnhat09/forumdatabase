@@ -442,6 +442,17 @@ public class AdminController extends Controller {
 		Form<Application> filledForm =  appForm.fill(app);
 		return ok(views.html.admin.detailApp.render(filledForm, searchForm));
 	}
+
+	/**
+	 * Method used to search an app by her name
+	 * @param String for the app's name
+	 * @return application form
+	 */
+	public static Result searchApp(Integer page, String appName){
+		Page<Application> apps =  Application.findByAppName(page, appName);
+		return ok(views.html.admin.listApps.render(apps, searchForm));
+	}
+	
 	
 	/**
 	 * Method used to save application into database. It used for both creation and modification use case
