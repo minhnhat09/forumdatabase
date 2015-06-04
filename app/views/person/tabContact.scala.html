@@ -6,7 +6,8 @@
 
 	<div class="row rowpadding">
 		<h4>Vos Contacts</h4>
-		<table class="col-md-12">
+		@if(Contact.findContacts(person).size() != 0){
+			<table class="col-md-12">
 			<tr>
 				<th>Utilisateur</th>
 				<th>Nom</th>
@@ -21,7 +22,10 @@
 		}
 
 		</table>
+	}
+		
 		<h4>Contacts à confimer</h4>
+		@if(Contact.findContactsUnconfirmed(person).size() != 0){
 		<table class="col-md-12">
 			<tr>
 				<th>Utilisateur</th>
@@ -37,6 +41,8 @@
 		}
 
 		</table>
+	}
+		
 		
 	</div>
 	<br>

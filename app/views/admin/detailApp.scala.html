@@ -26,7 +26,9 @@
             <div id="maxViews_field" class="clearfix">
                 <label for="maxViews">Nombre d'articles maximum en mode Classique</label>
                 <div class="input">
-                <input id="maxViews" class="form-control" type="number" style="width:50%" placeholder="Nombre d'articles maximum en mode Classique" name="maxViews" ng-model="maxViews" required min="3">
+                    
+                <input id="maxViews" class="form-control" type="number" style="width:50%" placeholder="Nombre d'articles maximum en mode Classique" name="maxViews" value="@appForm("maxViews").valueOr("3")" required min="3">
+
                 <span class="help-inline"></span>
                 <span class="help-block"></span>
                 </div>
@@ -37,7 +39,12 @@
         </fieldset>
         <div class="actions">
 
+            
             <input type="submit" value="Créer/Modifier Application" class="btn btn-primary" ng-disabled="detailForm.$invalid"> 
+        
+       
+    
+            
 
             <a href="@routes.AdminController.listApps(0)" class="btn btn-danger">Annuler</a> 
         </div>

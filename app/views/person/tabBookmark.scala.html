@@ -6,6 +6,7 @@
 
 	<div class="row rowpadding">
 		<h4>Articles préférés</h4>
+		@if(UserAppreciation.findBookmark(person).size() != 0){
 		<table class="col-md-12">
 			<tr>
 				<th></th>
@@ -23,6 +24,8 @@
 		}
 
 		</table>
+	}
+		
 	</div>
 	<br>
 	<br>

@@ -42,41 +42,47 @@
 	$(document).ready(function(){
 	    
 
-	     function() {
-	    	$("#select_all_mess").click(function(){
-	    		$('.mess_check_box').attr('checked',this.checked);
-	    		console.log("parent checked");
-	    	});
+	   //change tab according to url hash
+		if(window.location.hash != "") {
+			$('a[href="' + window.location.hash + '"]').click()
+		}
 
-	    	$(".mess_check_box").click(function(){
-	    		if($(".mess_check_box").length == $(".mess_check_box:checked").length){
-	    			$("#select_all_mess").attr('checked', true);
-	    			console.log("child checked true");
-	    			console.log($(".mess_check_box").length);
-	    			console.log($(".mess_check_box:checked").length);
-	    		}
-	    		else{
-	    			console.log("child checked false");
-	    			$("#select_all_mess").attr('checked', false);
-	    	}});
-	    
-    	}
-			
-	
+		// Change hash for page-reload
+		$('.nav-pills a').click(function (e) {
+   			 //$(this).tab('show');
+   			 var scrollmem = $('body').scrollTop();
+   			 window.location.hash = this.hash;    		 
+   			 $('html,body').scrollTop(scrollmem);
+   		});
 
-		
-
-		
-		$("#select_all_notis").click(function(){
+		$("#select_all_mess").click(function(){
+			$('.mess_check_box').prop('checked',false);
 			if(this.checked){
-				$(".noti_check_box").each(function(){
-					this.checked = true;
-				})
-			}else{
-				$(".noti_check_box").each(function(){
-					this.checked = false;
-				})
+				$('.mess_check_box').prop('checked',true);
 
+			}
+		});
+
+		$(".mess_check_box").click(function(){
+			$("#select_all_mess").prop('checked', false);
+			if($(".mess_check_box").length == $(".mess_check_box:checked").length){
+				$("#select_all_mess").prop('checked', true);
+			}
+		});
+
+
+
+		$("#select_all_notis").click(function(){
+			$(".noti_check_box").prop("checked",false);
+			if(this.checked){
+				$(".noti_check_box").prop("checked",true);
+			}
+		});
+
+		$(".noti_check_box").click(function(){
+			$("#select_all_notis").prop('checked', false);
+			if($(".noti_check_box").length == $(".noti_check_box:checked").length){
+				$("#select_all_notis").prop('checked', true);
 			}
 		});
 
@@ -113,9 +119,6 @@
 					}
 			});
 		});
-
-		
-
 	});
 
 		

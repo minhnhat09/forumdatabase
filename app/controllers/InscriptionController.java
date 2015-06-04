@@ -104,6 +104,7 @@ public class InscriptionController extends Controller {
 			flash("error", String.format(error));
 			return badRequest(views.html.person.inscriptionPage.render(userForm, searchForm));
 		}
+		
 		User user = boundForm.get();
 		String signInCode = user.signinCode;
 		if(!user.email.equals(user.confirmEmail)  || !user.password.equals(user.confirmPassword)){

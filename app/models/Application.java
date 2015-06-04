@@ -58,7 +58,6 @@ public class Application extends Model implements PathBindable<Application>{
 		return find
 				.byId(idApp)
 				.appDescription;
-				
 	}
 	
 	public static void delApp(Application app){
@@ -71,6 +70,11 @@ public class Application extends Model implements PathBindable<Application>{
 			up.delete();
 		}
 		app.userPermission.clear();
+		
+		for(ApplicationView av: app.users){
+			av.delete();
+		}
+		app.users.clear();
 		
 		for(User user: app.listKeyUsers){
 			
@@ -97,6 +101,14 @@ public class Application extends Model implements PathBindable<Application>{
 		return find.byId(Integer.parseInt(idApp));
 	}
 	
+	public static Page<Application> findByAppName(int page,String appName){
+		return find.where()
+		.ilike("app_name", "%" + appName + "%")
+		.orderBy("id_app asc")
+		.findPagingList(10)
+		.setFetchAhead(false)
+		.getPage(page);
+	}
 	
 	public static List<Application> findByService(Service service){
 		return find.where()
