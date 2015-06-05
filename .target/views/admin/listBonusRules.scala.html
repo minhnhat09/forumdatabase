@@ -17,7 +17,7 @@
 					<!-- <a class="btn btn-success" href="@routes.AdminController.newBonusRule()">Nouveau règlement</a> -->
 				</div>
 				<div class="col-md-6" align="right">
-					<a href="@routes.GiftController.giftHomeAdmin()" target="_blank">
+					<a href="@routes.GiftController.giftHomeAdmin()">
 						<button type="submit" class="btn btn-primary">Mise à jour des cadeaux</button>
 					</a>
 					<!-- <div class="btn-group">
@@ -43,7 +43,7 @@
 			<table class="table table-striped">
 				<thead>
 					<tr>
-						<th></th>
+						
 						<th>Règlement</th>
 						<th>Points Experiences</th>
 						<th>Bonus</th>
@@ -53,9 +53,7 @@
 				<tbody>
 					@for(bonusRule
 					<- currentPage.getList()){ <tr>
-						<td>
-							<input class="recompense_check_box" type='checkbox' />
-						</td>
+						
 						<td>@bonusRule.name</td>
 						<td>@bonusRule.xp</td>
 						<td>@bonusRule.bonus</td>

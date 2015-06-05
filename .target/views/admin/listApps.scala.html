@@ -5,9 +5,9 @@
 <!-- Button -->
 <div class='row' align="right">
 	<div class="col-md-12" style="padding-top:10px;">
-		<form class="form-inline" role="form">
+		<form class="form-inline" role="form" method="get" action="@routes.AdminController.searchApp()">
 			<div class="form-group">
-				<input type="text" class='form-control' placeholder="Taper une application">
+				<input type="text" name="appName" class='form-control' placeholder="Taper une application">
 			</div>
 			<button class='btn btn-info'>Rechercher</button>
 		</form>
@@ -34,6 +34,7 @@
 			<thead>
 				<tr>
 					<th></th>
+					<th></th>
 					<th>Nom de l'application</th>
 					<th>Description</th>
 					<th>Service</th>
@@ -44,6 +45,7 @@
 				@for(app <- currentPage.getList()){
 				<tr>
 					<td><input class="app_check_box" type='checkbox'/></td>
+					<td><img src="@routes.Assets.at("imgs/" + "applications/app" + app.idApp+ "/avatar/" + app.avatarApp)" alt="..." class="img-thumbnail" width="100" height="100" /></td>
 					<td>
 						@app.appName
 					</td>

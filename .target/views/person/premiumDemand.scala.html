@@ -1,0 +1,30 @@
+@(demandPremiumForm: Form[models.DemandPremium], searchForm:Form[controllers.SearchController.Search])
+
+@import helper._
+@implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.render) } 
+
+@main("Demander Compte Premium", searchForm) {
+    
+    <h1>Demander Compte Premium</h1>
+    
+    @helper.form(routes.InscriptionController.saveDemandPremium(), 'class -> "form-group", 'name -> "demandForm") {
+       
+        <fieldset>
+        	<input type="hidden" value="@demandPremiumForm("idDemandPremium").valueOr("0")" name="idDemandPremium"/>
+            <div class="clearfix ">
+                <label for="motif">*Motif</label>
+                <div class="input">
+                <textarea id="motif" class="form-control" style="width:50%" placeholder="" name="motif" required ng-model="motif" ng-minlength="10"></textarea>
+                <span class="help-inline">Required</span>
+                </div>
+            </div>
+
+        </fieldset>
+        <div class="actions">
+            <input type="submit" value="Envoyer la demande" class="btn btn-primary" ng-disabled="demandForm.$invalid"> 
+            <a href="@routes.AccueilController.accueil()" class="btn btn-danger">Annuler</a> 
+        </div>
+    }
+
+    
+ }

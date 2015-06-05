@@ -6,6 +6,7 @@
 
 	<div class="row rowpadding">
 		<h1>Vos cadeaux</h1>
+		@if(GiftUser.findByUser(person.userName).size() != 0){
 		<table class="col-md-12">
 			<tr>
 
@@ -39,6 +40,8 @@
 	</tr>
 }
 </table>
+	}
+		
 <div class="modal fade" id="sendGiftModal" tabindex="-1" role="dialog" aria-labelledby="myModelLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">

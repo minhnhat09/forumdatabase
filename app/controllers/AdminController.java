@@ -80,11 +80,13 @@ public class AdminController extends Controller {
 		if(controllers.Application.isAdmin()){
 			return ADMIN_HOME;
 		}else{
-			flash("error", String.format("No Permission"));
+			flash("error", String.format("Vous n'avez pas le droit de consulter cette page"));
 			return redirect(routes.AccueilController.accueil());
 		}
 			
 	}
+	
+	
 	
 	/**
 	 * method used to switch between to mode: admin mod allow to change forum's settings and normal mode
@@ -118,8 +120,16 @@ public class AdminController extends Controller {
 	 * @return
 	 */
 	public static Result listUsers(Integer page, String sortBy, String order, String filter){
-		Page<User> users = User.find(page, 10, sortBy, order, filter);
-		return ok(views.html.admin.listUsers.render(users, searchForm, sortBy, order, filter));
+		
+		if(controllers.Application.isAdmin()){
+			Page<User> users = User.find(page, 10, sortBy, order, filter);
+			return ok(views.html.admin.listUsers.render(users, searchForm, sortBy, order, filter));
+		}else{
+			flash("error", String.format("Vous n'avez pas le droit de consulter cette page"));
+			return redirect(routes.AccueilController.accueil());
+		}
+		
+		
 		
 	}
 	
@@ -213,8 +223,16 @@ public class AdminController extends Controller {
 	 * @return list of inscription demand
 	 */
 	public static Result listDemands(int page){
-		Page<Demand> demands = Demand.find(page);
-		return ok(views.html.admin.listDemands.render(demands, searchForm));
+		if(controllers.Application.isAdmin()){
+			Page<Demand> demands = Demand.find(page);
+			return ok(views.html.admin.listDemands.render(demands, searchForm));
+		}else{
+			flash("error", String.format("Vous n'avez pas le droit de consulter cette page"));
+			return redirect(routes.AccueilController.accueil());
+		}
+		
+		
+		
 	}
 	/**
 	 * Method used to delete inscription demand
@@ -261,8 +279,16 @@ public class AdminController extends Controller {
 	 * @return list of premium demand
 	 */
 	public static Result listDemandsPremium(int page){
-		Page<DemandPremium> demands = DemandPremium.find(page);
-		return ok(views.html.admin.listDemandsPremium.render(demands, searchForm));
+		if(controllers.Application.isAdmin()){
+
+			Page<DemandPremium> demands = DemandPremium.find(page);
+			return ok(views.html.admin.listDemandsPremium.render(demands, searchForm));
+		}else{
+			flash("error", String.format("Vous n'avez pas le droit de consulter cette page"));
+			return redirect(routes.AccueilController.accueil());
+		}
+		
+		
 	}
 	/**
 	 * Method used to delete premium demand
@@ -303,8 +329,16 @@ public class AdminController extends Controller {
 	 * @return return list of services
 	 */
 	public static Result listServices(int page){
-		Page<Service> services = Service.find(page);
-		return ok(views.html.admin.listServices.render(services, searchForm));
+		if(controllers.Application.isAdmin()){
+			Page<Service> services = Service.find(page);
+			return ok(views.html.admin.listServices.render(services, searchForm));
+		}else{
+			flash("error", String.format("Vous n'avez pas le droit de consulter cette page"));
+			return redirect(routes.AccueilController.accueil());
+		}
+		
+		
+		
 		
 	}
 	/**
@@ -312,7 +346,15 @@ public class AdminController extends Controller {
 	 * @return new service form
 	 */
 	public static Result newService(){
-		return ok(views.html.admin.detailService.render(serviceForm, searchForm));
+		if(controllers.Application.isAdmin()){
+			return ok(views.html.admin.detailService.render(serviceForm, searchForm));
+		}else{
+			flash("error", String.format("Vous n'avez pas le droit de consulter cette page"));
+			return redirect(routes.AccueilController.accueil());
+		}
+		
+		
+		
 	}
 	/**
 	 * Method used to modify an exist service
@@ -320,8 +362,16 @@ public class AdminController extends Controller {
 	 * @return service form
 	 */
 	public static Result modifyService(Service service){
-		Form<Service> filledForm =  serviceForm.fill(service);
-		return ok(views.html.admin.detailService.render(filledForm, searchForm));
+		if(controllers.Application.isAdmin()){
+			Form<Service> filledForm =  serviceForm.fill(service);
+			return ok(views.html.admin.detailService.render(filledForm, searchForm));
+		}else{
+			flash("error", String.format("Vous n'avez pas le droit de consulter cette page"));
+			return redirect(routes.AccueilController.accueil());
+		}
+		
+		
+		
 	}
 	/**
 	 * Method used to save Service, it receive arguments from http post from client
@@ -422,15 +472,30 @@ public class AdminController extends Controller {
 	 * @return lists of applications in forum and its services
 	 */
 	public static Result listApps(int page){
-		Page<Application> apps = Application.find(page);
-		return ok(views.html.admin.listApps.render(apps, searchForm));
+		if(controllers.Application.isAdmin()){
+			Page<Application> apps = Application.find(page);
+			return ok(views.html.admin.listApps.render(apps, searchForm));
+		}else{
+			flash("error", String.format("Vous n'avez pas le droit de consulter cette page"));
+			return redirect(routes.AccueilController.accueil());
+		}
+		
+		
+		
 	}
 	/**
 	 * Method used to serve new application form
 	 * @return application form 
 	 */
 	public static Result newApp(){
-		return ok(views.html.admin.detailApp.render(appForm, searchForm));
+		if(controllers.Application.isAdmin()){
+			return ok(views.html.admin.detailApp.render(appForm, searchForm));
+		}else{
+			flash("error", String.format("Vous n'avez pas le droit de consulter cette page"));
+			return redirect(routes.AccueilController.accueil());
+		}
+		
+		
 	}
 	
 	/**
@@ -439,9 +504,15 @@ public class AdminController extends Controller {
 	 * @return application form
 	 */
 	public static Result modifyApp(models.Application app){
-		Form<Application> filledForm =  appForm.fill(app);
+		if(controllers.Application.isAdmin()){
+			Form<Application> filledForm =  appForm.fill(app);
+			return ok(views.html.admin.detailApp.render(filledForm, searchForm));
+		}else{
+			flash("error", String.format("Vous n'avez pas le droit de consulter cette page"));
+			return redirect(routes.AccueilController.accueil());
+		}
 		
-		return ok(views.html.admin.detailApp.render(filledForm, searchForm));
+		
 	}
 
 	/**
@@ -450,8 +521,15 @@ public class AdminController extends Controller {
 	 * @return application form
 	 */
 	public static Result searchApp(Integer page, String appName){
-		Page<Application> apps =  Application.findByAppName(page, appName);
-		return ok(views.html.admin.listApps.render(apps, searchForm));
+		if(controllers.Application.isAdmin()){
+			Page<Application> apps =  Application.findByAppName(page, appName);
+			return ok(views.html.admin.listApps.render(apps, searchForm));
+		}else{
+			flash("error", String.format("Vous n'avez pas le droit de consulter cette page"));
+			return redirect(routes.AccueilController.accueil());
+		}
+		
+		
 	}
 	
 	
@@ -559,8 +637,15 @@ public class AdminController extends Controller {
 	 * @return bonus rule admin page
 	 */
 	public static Result listBonusRules(Integer page){
-		Page<BonusRule> bonusRules = BonusRule.find(page);
-		return ok(views.html.admin.listBonusRules.render(bonusRules, searchForm));
+		if(controllers.Application.isAdmin()){
+			Page<BonusRule> bonusRules = BonusRule.find(page);
+			return ok(views.html.admin.listBonusRules.render(bonusRules, searchForm));
+		}else{
+			flash("error", String.format("Vous n'avez pas le droit de consulter cette page"));
+			return redirect(routes.AccueilController.accueil());
+		}
+		
+		
 	}
 
 	/**
@@ -568,7 +653,14 @@ public class AdminController extends Controller {
 	 * @return form to create bonus rule
 	 */
 	public static Result newBonusRule(){
-		return ok(views.html.admin.detailBonusRule.render(bonusRuleForm, searchForm));
+		if(controllers.Application.isAdmin()){
+			return ok(views.html.admin.detailBonusRule.render(bonusRuleForm, searchForm));
+		}else{
+			flash("error", String.format("Vous n'avez pas le droit de consulter cette page"));
+			return redirect(routes.AccueilController.accueil());
+		}
+		
+		
 	}
 	
 	/**
@@ -577,9 +669,15 @@ public class AdminController extends Controller {
 	 * @return render bonus rule form
 	 */
 	public static Result modifyBonusRule(BonusRule bonusRule){
-		Form<BonusRule> filledForm =  bonusRuleForm.fill(bonusRule);
+		if(controllers.Application.isAdmin()){
+			Form<BonusRule> filledForm =  bonusRuleForm.fill(bonusRule);
+			return ok(views.html.admin.detailBonusRule.render(filledForm, searchForm));
+		}else{
+			flash("error", String.format("Vous n'avez pas le droit de consulter cette page"));
+			return redirect(routes.AccueilController.accueil());
+		}
 		
-		return ok(views.html.admin.detailBonusRule.render(filledForm, searchForm));
+		
 		
 	}
 	
@@ -628,7 +726,14 @@ public class AdminController extends Controller {
 	 * @return tag admin page
 	 */
 	public static Result listTags(){
-		return ok(views.html.admin.listTags.render(searchForm));
+		if(controllers.Application.isAdmin()){
+			return ok(views.html.admin.listTags.render(searchForm));
+		}else{
+			flash("error", String.format("Vous n'avez pas le droit de consulter cette page"));
+			return redirect(routes.AccueilController.accueil());
+		}
+		
+		
 	}
 	
 	/**
@@ -636,7 +741,14 @@ public class AdminController extends Controller {
 	 * @return render tag form page
 	 */
 	public static Result newTag(){
-		return ok(views.html.admin.detailTag.render(tagForm, searchForm));
+		if(controllers.Application.isAdmin()){
+			return ok(views.html.admin.detailTag.render(tagForm, searchForm));
+		}else{
+			flash("error", String.format("Vous n'avez pas le droit de consulter cette page"));
+			return redirect(routes.AccueilController.accueil());
+		}
+		
+		
 	}
 	
 	/**
@@ -645,8 +757,15 @@ public class AdminController extends Controller {
 	 * @return render tag form to modify tag
 	 */
 	public static Result modifyTag(Tag tag){
-		Form<Tag> filledForm =  tagForm.fill(tag);
-		return ok(views.html.admin.detailTag.render(filledForm, searchForm));
+		if(controllers.Application.isAdmin()){
+			Form<Tag> filledForm =  tagForm.fill(tag);
+			return ok(views.html.admin.detailTag.render(filledForm, searchForm));
+		}else{
+			flash("error", String.format("Vous n'avez pas le droit de consulter cette page"));
+			return redirect(routes.AccueilController.accueil());
+		}
+		
+		
 	}
 	
 	/**
@@ -680,6 +799,7 @@ public class AdminController extends Controller {
 	}
 	
 	public static Result deleteTag(int idTag) {
+		System.out.println("Del tag");
 	    final Tag tag = Tag.findById(idTag);
 	    if(tag == null) {
 	        return notFound(String.format("Tag %s does not exists.", idTag));
@@ -698,7 +818,14 @@ public class AdminController extends Controller {
 	 * @return reporting admin page
 	 */
 	public static Result listReports(){
-		return ok(views.html.admin.listReports.render(searchForm));
+		if(controllers.Application.isAdmin()){
+			return ok(views.html.admin.listReports.render(searchForm));
+		}else{
+			flash("error", String.format("Vous n'avez pas le droit de consulter cette page"));
+			return redirect(routes.AccueilController.accueil());
+		}
+		
+		
 	}
 	/**
 	 * Methods manage Communication Tab
@@ -708,7 +835,14 @@ public class AdminController extends Controller {
 	 * @return communication form page
 	 */
 	public static Result newCommunication(){
-		return ok(views.html.admin.detailCommunication.render(communicationForm, searchForm));
+		if(controllers.Application.isAdmin()){
+			return ok(views.html.admin.detailCommunication.render(communicationForm, searchForm));
+		}else{
+			flash("error", String.format("Vous n'avez pas le droit de consulter cette page"));
+			return redirect(routes.AccueilController.accueil());
+		}
+		
+		
 	}
 	/**
 	 * Method used to render communication form page
@@ -716,8 +850,15 @@ public class AdminController extends Controller {
 	 * @return communication form page
 	 */
 	public static Result modifyCommunication(Communication com){
-		Form<Communication> filledForm =  communicationForm.fill(com);
-		return ok(views.html.admin.detailCommunication.render(filledForm, searchForm));
+		if(controllers.Application.isAdmin()){
+			Form<Communication> filledForm =  communicationForm.fill(com);
+			return ok(views.html.admin.detailCommunication.render(filledForm, searchForm));
+		}else{
+			flash("error", String.format("Vous n'avez pas le droit de consulter cette page"));
+			return redirect(routes.AccueilController.accueil());
+		}
+		
+		
 	}
 	
 	/**
@@ -726,8 +867,15 @@ public class AdminController extends Controller {
 	 * @return render communication page
 	 */
 	public static Result listCommunications(int page){
-		Page<Communication> coms = Communication.find(page);
-		return ok(views.html.admin.listCommunications.render(coms, searchForm));
+		if(controllers.Application.isAdmin()){
+			Page<Communication> coms = Communication.find(page);
+			return ok(views.html.admin.listCommunications.render(coms, searchForm));
+		}else{
+			flash("error", String.format("Vous n'avez pas le droit de consulter cette page"));
+			return redirect(routes.AccueilController.accueil());
+		}
+		
+		
 	}
 	/**
 	 * Method used to save a communication into database. It used for both creation and modification use case
@@ -774,14 +922,28 @@ public class AdminController extends Controller {
 	 * @return titles admin page
 	 */
 	public static Result listTitles(){
-		return ok(views.html.admin.listTitles.render(searchForm));
+		if(controllers.Application.isAdmin()){
+			return ok(views.html.admin.listTitles.render(searchForm));
+		}else{
+			flash("error", String.format("Vous n'avez pas le droit de consulter cette page"));
+			return redirect(routes.AccueilController.accueil());
+		}
+		
+		
 	}
 	/**
 	 * Method used to create new title
 	 * @return new title form page
 	 */
 	public static Result newTitle(){
-		return ok(views.html.admin.detailTitle.render(titleForm, searchForm));
+		if(controllers.Application.isAdmin()){
+			return ok(views.html.admin.detailTitle.render(titleForm, searchForm));
+		}else{
+			flash("error", String.format("Vous n'avez pas le droit de consulter cette page"));
+			return redirect(routes.AccueilController.accueil());
+		}
+		
+		
 	}
 	/**
 	 * Method used to modify title
@@ -789,8 +951,15 @@ public class AdminController extends Controller {
 	 * @return
 	 */
 	public static Result modifyTitle(Title title){
-		Form<Title> filledForm =  titleForm.fill(title);
-		return ok(views.html.admin.detailTitle.render(filledForm, searchForm));
+		if(controllers.Application.isAdmin()){
+			Form<Title> filledForm =  titleForm.fill(title);
+			return ok(views.html.admin.detailTitle.render(filledForm, searchForm));
+		}else{
+			flash("error", String.format("Vous n'avez pas le droit de consulter cette page"));
+			return redirect(routes.AccueilController.accueil());
+		}
+		
+		
 	}
 	/**
 	 * Method used to save title into database. It used for both creation and modification use case

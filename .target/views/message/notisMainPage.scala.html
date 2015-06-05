@@ -1,6 +1,5 @@
 @(searchForm:Form[controllers.SearchController.Search])
 @main("Page Messagerie", searchForm){
-
 <div class="container">
 	<!-- Service 1 -->
 	<div class='row'>
@@ -36,53 +35,35 @@
 	</div>
 </div>
 <script type="text/javascript">
-
-			
-		
 	$(document).ready(function(){
-	    
 
-	   //change tab according to url hash
-		if(window.location.hash != "") {
-			$('a[href="' + window.location.hash + '"]').click()
-		}
-
-		// Change hash for page-reload
-		$('.nav-pills a').click(function (e) {
-   			 //$(this).tab('show');
-   			 var scrollmem = $('body').scrollTop();
-   			 window.location.hash = this.hash;    		 
-   			 $('html,body').scrollTop(scrollmem);
-   		});
 
 		$("#select_all_mess").click(function(){
-			$('.mess_check_box').prop('checked',false);
 			if(this.checked){
-				$('.mess_check_box').prop('checked',true);
+				$(".mess_check_box").each(function(){
+					this.checked = true;
+				})
+			}else{
+				$(".mess_check_box").each(function(){
+					this.checked = false;
+				})
 
 			}
 		});
 
-		$(".mess_check_box").click(function(){
-			$("#select_all_mess").prop('checked', false);
-			if($(".mess_check_box").length == $(".mess_check_box:checked").length){
-				$("#select_all_mess").prop('checked', true);
-			}
-		});
+		
 
-
-
+		
 		$("#select_all_notis").click(function(){
-			$(".noti_check_box").prop("checked",false);
 			if(this.checked){
-				$(".noti_check_box").prop("checked",true);
-			}
-		});
+				$(".noti_check_box").each(function(){
+					this.checked = true;
+				})
+			}else{
+				$(".noti_check_box").each(function(){
+					this.checked = false;
+				})
 
-		$(".noti_check_box").click(function(){
-			$("#select_all_notis").prop('checked', false);
-			if($(".noti_check_box").length == $(".noti_check_box:checked").length){
-				$("#select_all_notis").prop('checked', true);
 			}
 		});
 
@@ -119,6 +100,9 @@
 					}
 			});
 		});
+
+		
+
 	});
 
 		

@@ -43,7 +43,17 @@ public class GiftController extends Controller {
 	 * @return
 	 */
 	public static Result giftHomeAdmin(){
-		return ok(views.html.gifts.listGiftsAdmin.render("Gestion des cadeaux", searchForm));
+		/**
+		 * Check if the user is admin or not
+		 * if he is not admin, he dont have permission to view this page
+		 */
+		
+		if(controllers.Application.isAdmin()){
+			return ok(views.html.gifts.listGiftsAdmin.render("Gestion des cadeaux", searchForm));
+		}else{
+			flash("error", String.format("Vous n'avez pas le droit de consulter cette page"));
+			return redirect(routes.AccueilController.accueil());
+		}
 	}
 	/**
 	 * 
@@ -71,20 +81,43 @@ public class GiftController extends Controller {
 		
 		if(boundForm.hasErrors()){
 			flash("error", String.format("Erreur"));
-			return badRequest(views.html.gifts.detailGift.render(giftForm, searchForm));
+			return ok(views.html.gifts.detailGift.render(giftForm, searchForm));
 		}
 		Gift gift = boundForm.get();
+		
+		if(gift.idGift == 0){
+			Ebean.save(gift);
+		}else{
+			Ebean.update(gift);
+		}
+		
 		
 		MultipartFormData body = request().body().asMultipartFormData();
 		FilePart picture = body.getFile("picture");
 		if (picture != null) {
 			
-			//String contentType = picture.getContentType();
-			//String str[] = contentType.split("/");
-			//String fileType = str[1];
-
+			String contentType = picture.getContentType();
+			String str[] = contentType.split("/");
+			String fileType = str[1];
+			System.out.println(fileType);
+			
+			/**
+			 * if filetype not equal jpg, jpeg, bmp, gif (image format) return error
+			 */
+			if(!fileType.equalsIgnoreCase("jpg") && !fileType.equalsIgnoreCase("jpeg")&& !fileType.equalsIgnoreCase("bmp")
+					&& !fileType.equalsIgnoreCase("gif")){
+				
+				flash("error", String.format("La photo doit être en format jpg, jpeg, bmp, gif"));
+				return ok(views.html.gifts.detailGift.render(giftForm, searchForm));
+			}
+			
+			
 			File content = picture.getFile();
-
+			if(content == null){
+				flash("error", String.format("Aucun fichier selectionné"));
+				return ok(views.html.gifts.detailGift.render(giftForm, searchForm));
+			}
+			
 			FileOutputStream fop = null;
 			File file;
 			String path = "public\\imgs\\gifts\\" + gift.idGift + "\\avatar\\";
@@ -99,7 +132,7 @@ public class GiftController extends Controller {
 								.println("Failed to create multiple directories!");
 					}
 				}
-				String fileName = "avatarGift";
+				String fileName = "avatarGift" + fileType;
 				
 				file = new File(path +  fileName);
 				fop = new FileOutputStream(file);
@@ -133,11 +166,7 @@ public class GiftController extends Controller {
 		}
 		
 		
-		if(gift.idGift == 0){
-			Ebean.save(gift);
-		}else{
-			Ebean.update(gift);
-		}
+		
 		flash("success", String.format("Le cadeau a bien été enregistré"));
 		return GIFT_HOME_ADMIN;
 	}

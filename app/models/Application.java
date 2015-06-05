@@ -41,10 +41,8 @@ public class Application extends Model implements PathBindable<Application>{
 	@ManyToOne
 	public Service service;
 	
-	
 	@OneToMany
 	public List<Thread> threads;
-	
 	
 	@OneToMany(mappedBy = "app")
 	public List<UserPermission> userPermission;

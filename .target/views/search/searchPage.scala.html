@@ -1,0 +1,32 @@
+@(form: Form[controllers.Application.Login], searchForm:Form[controllers.SearchController.Search]) @main("Business Expert Forum", searchForm){ 
+
+
+@helper.form(routes.Application.authenticate, 'name -> "authenticateForm") {
+
+<h1>Se Connecter</h1>
+
+@if(form.hasGlobalErrors) {
+<p class="alert alert-danger" style="width:50%">
+	@form.globalError.message
+</p>
+} @if(flash.contains("success")) {
+<p class="alert alert-success" style="width:50%">
+	@flash.get("success")
+</p>
+}
+
+<p>
+	<input class="form-control" type="text" name="userName" placeholder="Nom d'utilisateur" value="@form("userName").value" style="width:50%" required ng-model="userName" ng-minlength="6">
+</p>
+<p>
+	<input class="form-control" type="password" name="password" placeholder="Mot de passe" style="width:50%" required ng-model="password">
+</p>
+<p>
+	<button type="submit" class="btn btn-success" ng-disabled="authenticateForm.$invalid">Login</button style="width:50%">
+</p>
+
+}
+<a class="btn btn-primary" href="@routes.Application.forgetPassPage()">Oublier le mot de pass</a>
+}
+
+

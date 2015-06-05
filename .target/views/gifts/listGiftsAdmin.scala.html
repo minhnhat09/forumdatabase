@@ -1,0 +1,210 @@
+@(message:String, searchForm:Form[controllers.SearchController.Search]) @main("Gestion des cadeaux", searchForm){
+<!-- Service 1 -->
+<div class='row'>
+	<div class="col-md-12" align="center">
+		<button class="btn btn-warning"><h3>@message</h3></button>
+	</div>
+</div>
+	
+	
+<div class="alert alert-info">
+	<div class="col-md-12">
+		<div class='row'>
+			<div class="col-md-6">
+				<input type='checkbox' id="select_all_cadeaux" />
+				<b>Tous Choisir</b>
+			</div>
+			<div class="col-md-6" align="right" id="adminBar">
+				<a class="btn btn-primary" href="@routes.GiftController.newGift()">Nouveau cadeau</a>
+				<div class="btn-group">
+					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+						Opération
+						<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" role="menu">
+						
+						<li>
+							<a href="" id="delete_cadeaux">Supprimer</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+<!-- <br>
+<div class="row">
+	<h1>Votre Bonus: @User.findById(controllers.Application.getSessionUser()).bonus</h1>
+	<h1 id="total">Total:</h1>
+	<button class="btn btn-primary active" id="showTotal">Total</button>
+
+	<button class="btn btn-success" id="buyGift">Acheter Cadeaux</button>
+
+
+</div> -->
+<div class='row total'>
+	<div class="col-md-1"></div>
+	<div class="col-md-10 ">
+		<div class="row">
+			<!-- Information -->
+			@for(cats
+			<- Gift.findCategory()){ <div class="panel panel-success">
+				<div class="panel-heading">
+					<h3 class="panel-title" align="left">Category @cats</h3>
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						@for(gift
+						<- Gift.findGiftsByCategory(cats)){ <div class="col-md-6" align="center">
+							<div class="row">
+								<input type="checkbox" id="@gift.idGift" class="cadeaux_check_box" />&nbsp;
+								<a href="#">
+								<img data-toggle="modal" data-target="#giftDescription@gift.idGift" src="@routes.Assets.at("imgs/gifts/" + gift.idGift + "/avatar/avatarGift")" alt="..." width="50" height="50">
+								</a>
+
+								
+									<a href="@routes.GiftController.modifyGift(gift.idGift)"><button class="btn btn-danger"><span class="glyphicon glyphicon-wrench"></span></button></a>
+								
+
+							</div>
+							<div class="row">
+								<b>@gift.name</b>
+								<br/>
+								<span class="@gift.idGift">@gift.bonus</span>
+							</div>
+					</div>
+
+					<div class="modal fade" id="giftDescription@gift.idGift" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Description du cadeau</h4>
+      </div>
+      <div class="modal-body">
+        @gift.description
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        
+      </div>
+    </div>
+  </div>
+</div>
+					}
+
+				</div>
+
+		</div>
+	</div>
+	}
+</div>
+</div>
+<div class="col-md-1"></div>
+</div>
+}
+
+<script>
+	$(document).ready(function() {
+
+		//show and hide button
+		/*	$("#showAdminBar").click(function(){
+		$("#adminBar").show();
+	});
+	$("#hideAdminBar").click(function(){
+		$("#adminBar").hide();
+	});*/
+
+		
+
+		//function checkbox tous choisir
+		$("#select_all_cadeaux").click(function(event) {
+			if (this.checked) {
+				$(".cadeaux_check_box").each(function() {
+					this.checked = true;
+				})
+			} else {
+				$(".cadeaux_check_box").each(function() {
+					this.checked = false;
+				})
+			}
+
+		});
+
+		function deleteListGift(urlToDelete) {
+			event.preventeDefault();
+			$.ajax({
+				url: urlToDelete,
+				type: 'POST',
+				success: function(results) {
+					location.reload();
+				}
+			});
+		}
+
+		//show total in total zone
+		$("#showTotal").click(function(event) {
+			var total = 0;
+
+			$(".cadeaux_check_box").each(function() {
+				if (this.checked) {
+					var classItem = "." + this.id;
+					total += parseInt($("span").filter(classItem).text());
+				}
+			});
+
+			//function calcul total 
+			$("#total").text("Total: " + total);
+			//Chú ý kiểu text và value, trong trường hợp này là text, trường hợp value thường là input
+			if (total > @User.findById(controllers.Application.getSessionUser()).bonus) {
+				$("#total").css("color", "red");
+				$("#buyGift").attr("disabled", "disabled");
+			} else {
+				$("#total").css("color", "green");
+				$("#buyGift").removeAttr("disabled", "disabled");
+			}
+
+
+		});
+
+		//function find list gifts checked
+		function findCheckedGifts() {
+			var cadeaux_list = [];
+			$(".cadeaux_check_box").each(function() {
+				if (this.checked) {
+					cadeaux_list.push(this.id);
+				}
+			});
+			return cadeaux_list.toString();
+		}
+
+		//function send list gift to db to delete
+		$("#delete_cadeaux").click(function(event) {
+
+			var listGift = findCheckedGifts();
+			appRoutes.controllers.GiftController.deleteListGift(listGift).ajax({
+				type: 'DELETE',
+				success: function(resultats) {
+					location.reload();
+				}
+			});
+
+		});
+		$("#testBuyGift").click(function(event) {});
+
+		$("#buyGift").click(function(event) {
+			var listGift = findCheckedGifts();
+			appRoutes.controllers.GiftController.buyListGift(listGift).ajax({
+				type: 'POST',
+				success: function(resultats) {
+					location.reload();
+				},
+				error: function  (argument) {
+					alert("Erreur!");
+				}
+			});
+		});
+	});
+</script>

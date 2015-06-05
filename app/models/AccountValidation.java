@@ -97,7 +97,7 @@ public class AccountValidation extends Model implements PathBindable<AccountVali
 		}
 		
 		else{
-			System.out.println("KO tim thay code trong bd");
+			System.out.println("Code parrainage Introuvable");
 			return false;
 		}
 		
