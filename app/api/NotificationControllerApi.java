@@ -19,6 +19,8 @@ public class NotificationControllerApi extends Controller{
 	 * @return list user messages
 	 */
 	public static Result findMessagesByUser(){
+
+		System.out.println(session("userNameMobile"));
 		String userName = session("userNameMobile");
 		List<Message> messages = Message.findMessagesToByUser(userName);
 		JSONSerializer serializer = new JSONSerializer();
