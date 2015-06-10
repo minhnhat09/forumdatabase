@@ -84,17 +84,28 @@
      
 <script type="text/javascript">
 	$(document).ready(function(){
+
+
+
+
+
 		$("#select_all_tags").click(function(){
+			$('.tag_check_box').prop('checked',false);
 			if(this.checked){
-				$(".tag_check_box").each(function(){
-					this.checked = true;
-				})
-			}else{
-				$(".tag_check_box").each(function(){
-					this.checked = false;
-				})
+				$('.tag_check_box').prop('checked',true);
+
 			}
 		});
+
+		$(".tag_check_box").click(function(){
+			$("#select_all_tags").prop('checked', false);
+			if($(".tag_check_box").length == $(".tag_check_box:checked").length){
+				$("#select_all_tags").prop('checked', true);
+			}
+		});
+
+		
+
 	});
 
 	

@@ -72,16 +72,20 @@
 	$(document).ready(function(){
 
 
-		$("#select_all_coms").click(function(){
-			if(this.checked){
-				$(".com_check_box").each(function(){
-					this.checked = true;
-				})
-			}else{
-				$(".com_check_box").each(function(){
-					this.checked = false;
-				})
+		
 
+		$("#select_all_coms").click(function(){
+			$('.com_check_box').prop('checked',false);
+			if(this.checked){
+				$('.com_check_box').prop('checked',true);
+
+			}
+		});
+
+		$(".com_check_box").click(function(){
+			$("#select_all_coms").prop('checked', false);
+			if($(".com_check_box").length == $(".com_check_box:checked").length){
+				$("#select_all_coms").prop('checked', true);
 			}
 		});
 

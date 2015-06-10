@@ -43,7 +43,7 @@
 			<table class="table table-striped">
 				<thead>
 					<tr>
-						<th></th>
+						
 						<th>Règlement</th>
 						<th>Points Experiences</th>
 						<th>Bonus</th>
@@ -53,9 +53,7 @@
 				<tbody>
 					@for(bonusRule
 					<- currentPage.getList()){ <tr>
-						<td>
-							<input class="recompense_check_box" type='checkbox' />
-						</td>
+						
 						<td>@bonusRule.name</td>
 						<td>@bonusRule.xp</td>
 						<td>@bonusRule.bonus</td>
@@ -88,17 +86,21 @@
 $(document).ready(function(){
 
 		$("#select_all_recompenses").click(function(){
+			$('.recompense_check_box').prop('checked',false);
 			if(this.checked){
-				$(".recompense_check_box").each(function(){
-					this.checked = true;
-				})
-			}else{
-				$(".recompense_check_box").each(function(){
-					this.checked = false;
-				})
+				$('.recompense_check_box').prop('checked',true);
 
 			}
 		});
+
+		$(".recompense_check_box").click(function(){
+			$("#select_all_recompenses").prop('checked', false);
+			if($(".recompense_check_box").length == $(".recompense_check_box:checked").length){
+				$("#select_all_recompenses").prop('checked', true);
+			}
+		});
+
+
 	});
 
 	function del(urlToDelete) {

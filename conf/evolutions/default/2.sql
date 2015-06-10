@@ -36,15 +36,15 @@ INSERT INTO `gift` (`name`, `bonus`, `category`) VALUES ('Télévision', '200', 
 
 
 
-INSERT INTO `message` (`user_name_from_user_name`, `user_name_to`, `content`) VALUES ('patrick', 'nhatminh', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod');
-INSERT INTO `message` (`user_name_from_user_name`, `user_name_to`, `content`) VALUES ('christine', 'nhatminh', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod');
-INSERT INTO `message` (`user_name_from_user_name`, `user_name_to`, `content`) VALUES ('veronique', 'nhatminh', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod');
-INSERT INTO `message` (`user_name_from_user_name`, `user_name_to`, `content`) VALUES ('frederic', 'nhatminh', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod');
-INSERT INTO `message` (`user_name_from_user_name`, `user_name_to`, `content`) VALUES ('patrick', 'nhatminh', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod');
-INSERT INTO `message` (`user_name_from_user_name`, `user_name_to`, `content`) VALUES ('roger', 'nhatminh', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod');
-INSERT INTO `message` (`user_name_from_user_name`, `user_name_to`, `content`) VALUES ('patrick', 'nhatminh', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod');
-INSERT INTO `message` (`user_name_from_user_name`, `user_name_to`, `content`) VALUES ('patrick', 'nhatminh', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod');
-INSERT INTO `message` (`user_name_from_user_name`, `user_name_to`, `content`) VALUES ('patrick', 'nhatminh', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod');
+INSERT INTO `message` (`user_name_from_user_name`, `user_name_to`,`title`, `content`) VALUES ('patrick', 'nhatminh','World Cup 2014', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod');
+INSERT INTO `message` (`user_name_from_user_name`, `user_name_to`,`title`, `content`) VALUES ('christine', 'nhatminh','World Cup 2014', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod');
+INSERT INTO `message` (`user_name_from_user_name`, `user_name_to`,`title`, `content`) VALUES ('veronique', 'nhatminh','World Cup 2014', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod');
+INSERT INTO `message` (`user_name_from_user_name`, `user_name_to`,`title`, `content`) VALUES ('frederic', 'nhatminh','World Cup 2014', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod');
+INSERT INTO `message` (`user_name_from_user_name`, `user_name_to`,`title`, `content`) VALUES ('patrick', 'nhatminh','World Cup 2014', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod');
+INSERT INTO `message` (`user_name_from_user_name`, `user_name_to`,`title`, `content`) VALUES ('roger', 'nhatminh','World Cup 2014', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod');
+INSERT INTO `message` (`user_name_from_user_name`, `user_name_to`,`title`, `content`) VALUES ('patrick', 'nhatminh','World Cup 2014', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod');
+INSERT INTO `message` (`user_name_from_user_name`, `user_name_to`,`title`, `content`) VALUES ('patrick', 'nhatminh','World Cup 2014', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod');
+INSERT INTO `message` (`user_name_from_user_name`, `user_name_to`,`title`, `content`) VALUES ('patrick', 'nhatminh','World Cup 2014', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod');
 
 
 INSERT INTO `notification` (`user_user_name`, `content`, `id_thread_response`) VALUES ('nhatminh', 'NGUYEN Nhat Minh a répondu dans votre article Refonte du B2B', '1');

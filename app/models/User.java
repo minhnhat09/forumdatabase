@@ -267,20 +267,25 @@ public class User extends Model implements PathBindable<User>{
 		return find.where().ilike("user_name", userName).findUnique();
 	}
 
+	/**
+	 * Check if experience point of user is greater than the experience point of the title
+	 * If yes, update the user title
+	 * @param user
+	 * @return
+	 */
 	public static String showTitle(User user){
 		List<Title> listTitle = Title.findListTitles();
 		
 		for (Title title : listTitle) {
 			
 			if(user.exp >= title.exp){
+				
 				return title.titleName;
+				
 			}
 		}
 		return "Titre inconnu";
 	}
-	
-	
-	
 	
 	
 	@Override
@@ -304,8 +309,5 @@ public class User extends Model implements PathBindable<User>{
 	            .eq("password", password)
 	            .findUnique();
 	    }
-	 
-	 
-	
-	
+
 }

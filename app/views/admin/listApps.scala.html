@@ -64,6 +64,9 @@
 								<li>
 									<a href="@routes.AdminController.modifyApp(app)">Modifier</a>
 								</li>
+								<li>
+									<a href="@routes.AdminController.modifyApp(app)">Modifier</a>
+								</li>
 							</ul>
 						</div>
 					</td>
@@ -76,18 +79,24 @@
 </div>
 <script type="text/javascript">
 $(document).ready(function(){
-	$("#select_all_apps").click(function(){
-		if(this.checked){
-			$(".app_check_box").each(function(){
-				this.checked = true;
-			})
-		}else{
-			$(".app_check_box").each(function(){
-				this.checked = false;
-			})
 
-		}
-	});
+
+	$("#select_all_apps").click(function(){
+			$('.app_check_box').prop('checked',false);
+			if(this.checked){
+				$('.app_check_box').prop('checked',true);
+
+			}
+		});
+
+		$(".app_check_box").click(function(){
+			$("#select_all_apps").prop('checked', false);
+			if($(".app_check_box").length == $(".app_check_box:checked").length){
+				$("#select_all_apps").prop('checked', true);
+			}
+		});
+
+
 });
 
 function del(urlToDelete) {

@@ -9,14 +9,14 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import controllers.SearchController.Search;
 
-/**
- * Main controller manage authentication, login, forget password
- * @author NGUYEN Nhat Minh
- * @version 1.0.0
- * @category Controller
- * @see {@link Object}
- */
-public class Application extends Controller {
+	/**
+	 * Main controller manage authentication, login, forget password
+	 * @author NGUYEN Nhat Minh
+	 * @version 1.0.0
+	 * @category Controller
+	 * @see {@link Object}
+	 */
+	public class Application extends Controller {
 	
 	public static String userName;
 	public static User user;
@@ -84,7 +84,6 @@ public class Application extends Controller {
 		public String validate() {
 			if (User.authenticate(userName, password) == null) {
 				return "Identifiant ou mot de passe non valide";
-					
 			}
 			return null;
 		}
@@ -108,23 +107,22 @@ public class Application extends Controller {
 		Form<Login> loginForm = Form.form(Login.class).bindFromRequest();
 		
 		if (loginForm.hasErrors()) {
-			
-			
-			//System.out.println(loginForm.get().userName + " " + loginForm.get().password);
-			
-			System.out.println(loginForm.error("userName"));
 			return ok(views.html.login.render(loginForm, searchForm));
 		} else {
 			//session().clear();
-			session("userName", loginForm.get().userName);
 			User user = User.findById(loginForm.get().userName);
-			session("permissionUser",
-					String.valueOf(user.permission.idPermission));
-			session("adminMode", "off");
-			user.title = User.showTitle(user);
-			user.update();
-			return redirect(routes.AccueilController.accueil());
-			
+			if(user.isBlock){
+				flash("error", String.format("Vous êtes bloqué du forum"));
+				return ok(views.html.login.render(loginForm, searchForm));
+			}else{
+				session("userName", loginForm.get().userName);
+				session("permissionUser",
+						String.valueOf(user.permission.idPermission));
+				session("adminMode", "off");
+				user.title = User.showTitle(user);
+				user.update();
+				return redirect(routes.AccueilController.accueil());
+			}
 		}
 	}
 	
@@ -198,7 +196,7 @@ public class Application extends Controller {
 	 */
 	public static Result logout() {
 		session().clear();
-		flash("success", "You've been logged out");
+		flash("success", "Vous vous êtes déconnecté");
 		return redirect(routes.Application.login());
 	}
 
@@ -238,7 +236,7 @@ public class Application extends Controller {
 				routes.javascript.PersonController.postCode(),
 				routes.javascript.PersonController.sendRequest(),
 				routes.javascript.PersonController.confirmContact(),
-
+				//Message Page
 				routes.javascript.MessageController.deleteListMess(),
 				routes.javascript.MessageController.deleteListNotis(),
 

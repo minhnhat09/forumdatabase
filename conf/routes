@@ -118,7 +118,7 @@ POST  	/infoperson/postcode/:code						controllers.PersonController.postCode(cod
 POST	/infoperson/contact/:idContact					controllers.PersonController.confirmContact(idContact: String)
 POST 	/infoperson/changepass/:person					controllers.PersonController.changePassword(person:models.User)
 GET 	/infoperson/changepicturepage/:person			controllers.PersonController.changePicturePage(person:models.User)
-POST 	/infoperson/changepicture/:person				controllers.PersonController.changePicture(person:models.User)
+POST 	/infoperson/changepictureuser/:person			controllers.PersonController.changePictureUser(person:models.User)
 DELETE  /infoperson/bookmark/:idUa						controllers.PersonController.deleteBookmark(idUa:Integer)
 
 #Page User

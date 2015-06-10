@@ -11,7 +11,10 @@
     	<fieldset>
         	
             @helper.inputText(messageForm("userNameTo"), '_label -> "Nom du destinataire",
-            	'class -> "form-control", 'placeholder -> "Nom du destinataire"
+            	'class -> "form-control", 'placeholder -> "Nom du destinataire", 'style -> "width:50%"
+            )
+            @helper.inputText(messageForm("title"), '_label -> "Objet",
+                'class -> "form-control", 'placeholder -> "Objet", 'style -> "width:50%"
             )
             @helper.textarea(messageForm("content"), '_label -> "Contenu du message",
             	'class -> "form-control", 'placeholder -> "Contenu du message", 'rows -> 5)

@@ -36,8 +36,8 @@ import controllers.SearchController.Search;
 @Security.Authenticated(Secured.class)
 public class PersonController extends Controller {
 	public static final Form<SendGift> sendGiftForm = Form.form(SendGift.class);
-	public static final Form<Search>   searchForm = Form.form(Search.class);
-	public static final Form<User>     personForm = Form.form(User.class);
+	public static final Form<Search>   searchForm   = Form.form(Search.class);
+	public static final Form<User>     personForm   = Form.form(User.class);
 	
 	
 	
@@ -58,6 +58,7 @@ public class PersonController extends Controller {
 		}
 		
 	}
+	
 	/**
 	 * 
 	 * @param idUserAppreciation
@@ -76,9 +77,9 @@ public class PersonController extends Controller {
 	/**
 	 * 
 	 * @param user
-	 * @return
+	 * @return 
 	 */
-	public static Result changePicture(User user) {
+	public static Result changePictureUser(User user) {
 		MultipartFormData body = request().body().asMultipartFormData();
 		FilePart picture = body.getFile("picture");
 		if (picture != null) {
@@ -107,6 +108,7 @@ public class PersonController extends Controller {
 			FileOutputStream fop = null;
 			File file;
 			String path = "public\\imgs\\users\\" + user.userName + "\\avatar\\";
+			System.out.println(path);
 			try {
 
 				File folderUser = new File(path);

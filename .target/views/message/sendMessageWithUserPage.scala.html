@@ -7,21 +7,34 @@
 @main("Envoyer un message", searchForm) {
     
     <h1>Envoyer un message</h1>
-    @form(routes.MessageController.sendMessage(),'class -> "form-group"){
+    @form(routes.MessageController.sendMessage(),'class -> "form-group", 'name -> "sendMessageForm"){
     	<fieldset>
         	
             @helper.inputText(messageForm("userNameTo"), '_label -> "Nom du destinataire",
-            	'class -> "form-control"
+                'class -> "form-control", 'placeholder -> "Nom du destinataire", 'style -> "width:50%"
             )
-            
-            @helper.textarea(messageForm("content"), '_label -> "Contenu du message",
-            	'class -> "form-control", 'placeholder -> "Contenu du message", 'rows -> 5)
+            <div id="title_field" class="clearfix ">
+                <label for="title">Objet</label>
+                <div class="input">
+                    <input id="title" class="form-control" type="text" style="width:50%" placeholder="Objet" value="" name="title" ng-model="title" required ng-minlength="5">
+                    <span class="help-inline"></span>
+                    <span class="help-block">Required</span>
+                </div>
+            </div>
+            <div id="content_field" class="clearfix ">
+                <label for="content">Contenu du message</label>
+                <div class="input">
+                    <textarea id="content" class="form-control" rows="5" placeholder="Contenu du message" name="content" ng-model="content" required></textarea>
+                    <span class="help-inline"></span>
+                    <span class="help-block">Required</span>
+                </div>
+            </div>
                         
 
         </fieldset>
         
         <div class="actions">
-           <input type="submit" value="Envoyer" class="btn btn-primary"> 
+           <input type="submit" value="Envoyer" class="btn btn-primary" ng-disabled="sendMessageForm.$invalid"> 
             <a href="@routes.MessageController.message()" class="btn btn-danger">Annuler</a> 
         </div>
 <script type="text/javascript">

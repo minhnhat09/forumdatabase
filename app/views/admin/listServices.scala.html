@@ -69,18 +69,24 @@
 </div>
 <script type="text/javascript">
 		$(document).ready(function(){
+
+
 		$("#select_all_services").click(function(){
+			$('.service_check_box').prop('checked',false);
 			if(this.checked){
-				$(".service_check_box").each(function(){
-					this.checked = true;
-				})
-			}else{
-				$(".service_check_box").each(function(){
-					this.checked = false;
-				})
+				$('.service_check_box').prop('checked',true);
 
 			}
 		});
+
+		$(".service_check_box").click(function(){
+			$("#select_all_services").prop('checked', false);
+			if($(".service_check_box").length == $(".service_check_box:checked").length){
+				$("#select_all_services").prop('checked', true);
+			}
+		});
+
+
 	});
 		function del(urlToDelete) {
 		$.ajax({

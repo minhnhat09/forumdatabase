@@ -79,16 +79,20 @@
 </div>
 <script type="text/javascript">
 	$(document).ready(function(){
-		$("#select_all_titles").click(function(){
-			if(this.checked){
-				$(".title_check_box").each(function(){
-					this.checked = true;
-				})
-			}else{
-				$(".title_check_box").each(function(){
-					this.checked = false;
-				})
 
+
+		$("#select_all_titles").click(function(){
+			$('.title_check_box').prop('checked',false);
+			if(this.checked){
+				$('.title_check_box').prop('checked',true);
+
+			}
+		});
+
+		$(".title_check_box").click(function(){
+			$("#select_all_titles").prop('checked', false);
+			if($(".title_check_box").length == $(".title_check_box:checked").length){
+				$("#select_all_titles").prop('checked', true);
 			}
 		});
 

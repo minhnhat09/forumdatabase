@@ -132,6 +132,8 @@ public class ThreadController extends Controller {
 	public static Result newCommentWithQuote(Thread thread, Post post){
 		return ok(views.html.thread.commentWithQuotePage.render(thread, post, postForm, searchForm));
 	}
+	
+	
 	/**
 	 * 
 	 * @param thread
@@ -148,28 +150,15 @@ public class ThreadController extends Controller {
 		Post comment = boundForm.get();
 		if(comment.idPost == 0){
 			comment.postContent = comment.postContent.replace("<img", "<img class='img-thumbnail' ");
-			
 			User user = User.findById(Application.getSessionUser());
 			comment.user = user;
 			comment.postTime = new Date();
 			comment.thread = thread;
 			comment.save();
-			
-			
 			//create notification to thread author
-			Notification noti = new Notification();
-			noti.user = thread.author;
-			noti.noteDate = new Date();
-			noti.content = comment.user.firstName + " " + comment.user.lastName +  " " + Messages.get("responseThread") + " " + comment.thread.threadName;
-			noti.idThreadResponse = comment.thread.idThread;
-			
-			
-			noti.save();
-			
-			
-			
+			notificationForComment(thread, comment);
+			//increase bonus for user who created thread
 			increaseBonus(comment.user);
-			
 		}else{
 			comment.postContent = comment.postContent.replace("<img", "<img class='img-thumbnail' ");
 			comment.lastUpdate = new Date();
@@ -212,9 +201,8 @@ public class ThreadController extends Controller {
 		noti.noteDate = new Date();
 		noti.content = comment.user.firstName + " " + comment.user.lastName +  " " + Messages.get("notiwithquote") + " " + comment.thread.threadName;
 		noti.idThreadResponse = comment.thread.idThread;
-		
-		
 		noti.save();
+		//Attach precedent post to quote for this comment
 		pq.post = comment.idPost;
 		pq.quotes = post.idPost;
 		pq.save();
@@ -238,7 +226,20 @@ public class ThreadController extends Controller {
 		
 	}
 	
-	
+	/**
+	 * Method used to create notification for comment use case
+	 * 
+	 * @param thread
+	 * @param comment
+	 */
+	public static void notificationForComment(Thread thread, Post comment){
+		Notification noti = new Notification();
+		noti.user     = thread.author;
+		noti.noteDate = new Date();
+		noti.content  = comment.user.firstName + " " + comment.user.lastName +  " " + Messages.get("responseThread") + " " + comment.thread.threadName;
+		noti.idThreadResponse = comment.thread.idThread;
+		noti.save();
+	}
 	
 	/**
 	 * 

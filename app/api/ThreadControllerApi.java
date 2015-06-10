@@ -5,11 +5,13 @@ import java.util.List;
 
 import models.Application;
 import models.BonusRule;
+import models.Notification;
 import models.Post;
 import models.Tag;
 import models.Thread;
 import models.User;
 import models.UserAppreciation;
+import play.i18n.Messages;
 import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -42,7 +44,13 @@ public class ThreadControllerApi extends Controller {
 		String json = serializer.serialize(thread);
 		return ok(json);
 	}
-	
+	/**
+	 * Method used to save comment to database
+	 * Increase user bonus
+	 * Create notification
+	 * 
+	 * @return
+	 */
 	public static Result commentThread(){
 		JsonNode json = request().body().asJson();
 		if(json == null){
@@ -62,7 +70,13 @@ public class ThreadControllerApi extends Controller {
 			comment.thread = thread;
 			comment.save();
 			ThreadController.increaseBonus(comment.user);
+			//update comment counter
 			Post.updateCommentCount(thread);
+			//save notification for thread 's user
+			ThreadController.notificationForComment(thread, comment);
+			//increase bonus for user who created thread
+			ThreadController.increaseBonus(user);
+			
 			return ok("Success");
 		}
 	}

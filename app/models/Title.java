@@ -25,7 +25,7 @@ public class Title extends Model implements PathBindable<Title>{
 	public static Finder<Integer, Title> find = new Finder<Integer, Title>(Integer.class, Title.class);
 	
 	public static List<Title> findListTitles(){
-		return find.orderBy("exp asc")
+		return find.orderBy("exp desc")
 				.findList();
 	}
 	

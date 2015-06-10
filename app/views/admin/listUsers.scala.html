@@ -169,18 +169,22 @@ routes.AdminController.listUsers(newPage, sortBy, order, currentFilter)
 
 <script type="text/javascript">
 $(document).ready(function(){
-	$("#select_all_users").click(function(){
-		if(this.checked){
-			$(".user_check_box").each(function(){
-				this.checked = true;
-			})
-		}else{
-			$(".user_check_box").each(function(){
-				this.checked = false;
-			})
 
-		}
-	});
+
+	$("#select_all_users").click(function(){
+			$('.user_check_box').prop('checked',false);
+			if(this.checked){
+				$('.user_check_box').prop('checked',true);
+
+			}
+		});
+
+		$(".user_check_box").click(function(){
+			$("#select_all_users").prop('checked', false);
+			if($(".user_check_box").length == $(".user_check_box:checked").length){
+				$("#select_all_users").prop('checked', true);
+			}
+		});
 
 
 });

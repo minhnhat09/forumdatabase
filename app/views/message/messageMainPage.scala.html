@@ -59,7 +59,6 @@
 			$('.mess_check_box').prop('checked',false);
 			if(this.checked){
 				$('.mess_check_box').prop('checked',true);
-
 			}
 		});
 
@@ -88,6 +87,7 @@
 
 		$("#deleteListMess").click(function(){
 			var data = findCheckedMess();
+
 			if(data === undefined || data.length == 0){
 				alert("Sélectionnez au moin un message");
 			}
@@ -106,7 +106,9 @@
 
 		$("#deleteListNotis").click(function(){
 			var data = findCheckedNotis();
-
+			if(data === undefined || data.length == 0){
+				alert("Sélectionnez au moin une notification");
+			}
 			appRoutes.controllers.MessageController.deleteListNotis().ajax({
 					data:JSON.stringify(data),
 					contentType:'application/json',
@@ -176,5 +178,7 @@
 		});
 		return notis_list;
 	}
+
+	
 </script>
 }

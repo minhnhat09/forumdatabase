@@ -114,6 +114,7 @@ create table message (
   id_message                integer auto_increment not null,
   user_name_from_user_name  varchar(255),
   user_name_to              varchar(255),
+  title                     varchar(255),
   send_date                 datetime,
   content                   LONGTEXT,
   un_read                   tinyint(1) default 0,

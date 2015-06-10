@@ -74,7 +74,8 @@ function addBibliFunc (count) {
 		<div class='row'>
 			<div class="row col-md-12">
 				<div class="col-md-6">
-					@select(threadForm("tags[0].idTag"), options(models.Tag.countryOptions), '_label -> "Ajouter une étiquette pays", '_default -> "-- Choisir un pays --", '_showConstraints -> false, 'class -> "form-control",'required -> "" ) 
+					@select(threadForm("tags[0].idTag"), options(models.Tag.countryOptions), '_label -> "Ajouter une étiquette pays", '_default -> "-- Choisir un pays --", '_showConstraints -> false, 'class -> "form-control",'required -> "" )
+					
 				</div>
 				<div class="col-md-6">
 					@select(threadForm("tags[1].idTag"), options(models.Tag.moduleOptions), '_label -> "Ajouter une étiquette module", '_default -> "-- Choisir un module --", '_showConstraints -> false, 'class -> "form-control",'required -> "" ) 

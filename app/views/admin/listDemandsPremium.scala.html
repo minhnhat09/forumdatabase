@@ -87,15 +87,17 @@
 
 
 		$("#select_all_demands").click(function(){
+			$('.demand_check_box').prop('checked',false);
 			if(this.checked){
-				$(".demand_check_box").each(function(){
-					this.checked = true;
-				})
-			}else{
-				$(".demand_check_box").each(function(){
-					this.checked = false;
-				})
+				$('.demand_check_box').prop('checked',true);
 
+			}
+		});
+
+		$(".demand_check_box").click(function(){
+			$("#select_all_demands").prop('checked', false);
+			if($(".demand_check_box").length == $(".demand_check_box:checked").length){
+				$("#select_all_demands").prop('checked', true);
 			}
 		});
 

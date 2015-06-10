@@ -87,9 +87,39 @@
             </div>
         </div>
     </div>
+
+    
+
 <script type="text/javascript">
 $(document).ready(function(){
-		
+
+		$('#confirm-delete').on('show.bs.modal', function(e) {
+
+            $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+            
+            $('.debug-url').html('Delete URL: <strong>' + $(this).find('.btn-ok').attr('href') + '</strong>');
+
+
+        });
+
+
+
+		$('button.btn-ok').click(function(){
+			del($(this).attr("href"));
+		});
+
 });
+
+function del(urlToDelete) {
+		$.ajax({
+			url: urlToDelete,
+			type: 'DELETE',
+			success: function(results) { 
+				// Refresh the page
+				location.reload();
+				
+			}
+		});
+	}
 </script>
 }

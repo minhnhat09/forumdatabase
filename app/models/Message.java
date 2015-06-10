@@ -26,7 +26,8 @@ public class Message extends Model {
 	
 	@Constraints.Required
 	public String userNameTo;
-	
+	@Constraints.Required
+	public String title;
 	public Date sendDate = new Date();
 	@Column(columnDefinition = "LONGTEXT")
 	@Constraints.Required

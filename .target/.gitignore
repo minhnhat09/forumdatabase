@@ -1,8 +1,2 @@
-/models
-/test
-/utils
 /controllers
-/ApplicationTest.class
-/IntegrationTest$1.class
-/IntegrationTest.class
-/api
+/models

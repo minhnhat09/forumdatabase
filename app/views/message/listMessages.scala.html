@@ -18,16 +18,28 @@
 			<tr>
 				<td class="col-md-1"><a href="@routes.UserController.userHome(messages.userNameFrom)">@messages.userNameFrom.firstName @messages.userNameFrom.lastName</a></td>
 				<td class="col-md-2">
+					
 					<img src="@routes.Assets.at("imgs/" + "users/" + messages.userNameFrom.userName + "/avatar/" + messages.userNameFrom.avatar)" alt="..." width="70" height="70">
 				</td>
 				
-				<td class="col-md-5">
-					<input id="@messages.idMessage" type='checkbox' class="mess_check_box"/><tt><pre style="height:50px;overflow: hidden; text-overflow:ellipsis;">@messages.content</pre></tt></td>
-					<td class="col-md-1">@{if(messages.sendDate == null)"" else("%1$tH:%1$tM:%1$tS %1$td/%1$tm/%1$tY".format(messages.sendDate))}</td>
-					<td class="col-md-2">
-						<button class="btn btn-primary btn-md" data-toggle="modal" data-target="#mess@messages.idMessage" onclick="javascript:viewMess('@routes.MessageController.viewMess(messages.idMessage)')">
-							Consulter
-						</button>
+				<td class="col-md-4">
+					<input id="@messages.idMessage" type='checkbox' class="mess_check_box"/>
+					<b>@messages.title</b>
+					<tt>
+						<pre style="height:50px;overflow: hidden; text-overflow:ellipsis;">@messages.content</pre>
+					</tt>
+				</td>
+				<td class="col-md-1">@{if(messages.sendDate == null)"" else("%1$tH:%1$tM:%1$tS %1$td/%1$tm/%1$tY".format(messages.sendDate))}
+				</td>
+				<td class="col-md-1">
+
+					<a href="@routes.MessageController.writeMessageWithUser(messages.userNameFrom)" class='btn btn-success'>Répondre</a>
+				</td>
+				<td class="col-md-2">
+
+					<button class="btn btn-primary btn-md" data-toggle="modal" data-target="#mess@messages.idMessage" onclick="javascript:viewMess('@routes.MessageController.viewMess(messages.idMessage)')">
+						Consulter
+					</button>
 					<a href="" onclick="javascript:del('@routes.MessageController.deleteMess(messages.idMessage)')">Supprimer</a>
 				</td>
 			</tr>
@@ -37,7 +49,7 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" >Close</span></button>
-					<h4 class="modal-title" id="myModalLabel">From: @messages.userNameFrom.firstName @messages.userNameFrom.lastName</h4>
+					<h4 class="modal-title" id="myModalLabel"><b>@messages.title</b> </h4>
 				</div>
 				<div class="modal-body">
 					@messages.content
