@@ -8,6 +8,16 @@
 									<div class="col-md-6">@person.userName</div>
 								</div>
 								<div class='row rowpadding'>
+									<div class="col-md-6">Compte</div>
+									<div class="col-md-6">@person.permission.permissionDescription</div>
+								</div>
+
+								<div class='row rowpadding'>
+									<div class="col-md-6">Date Inscription</div>
+									<div class="col-md-6">@if(person.dateInscription != null ){@("%1$td/%1$tm/%1$tY".format(person.dateInscription))} else {Inconnue}</div>
+								</div>
+								
+								<div class='row rowpadding'>
 									<div class="col-md-6">Civilité</div>
 									<div class="col-md-6">@if(person.civilite == true){Madame} else {Monsieur}
 									</div>
@@ -42,7 +52,15 @@
 									<div class="col-md-6">Email</div>
 									<div class="col-md-6">@person.email</div>
 								</div>
-								
+								<div class='row rowpadding'>
+				<div class="col-md-6">Nombre Articles</div>
+				<div class="col-md-6">@models.Thread.countThreadsByUser(person.userName)</div>
+			</div>
+
+			<div class='row rowpadding'>
+				<div class="col-md-6">Nombre Posts</div>
+				<div class="col-md-6">@Post.countPostsByUser(person)</div>
+			</div>
 								<div class='row rowpadding'>
 				<div class="col-md-6">Presentation</div>
 				<div class="col-md-6">@person.presentation</div>

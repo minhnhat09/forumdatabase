@@ -17,6 +17,7 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
 
+import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Page;
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -42,7 +43,7 @@ public class ThreadController extends Controller {
 	 */
 	public static Result threadHome(Thread thread, Integer page){
 		Page<Post> posts = Post.find(thread, page);
-		
+		System.out.println("thread home");
 		/**
 		 * Update the article view count
 		 */
@@ -61,8 +62,9 @@ public class ThreadController extends Controller {
 				ApplicationView avNew = new ApplicationView(user, thread.application);
 				avNew.save();
 			}else{
-				if(av.viewCount >= thread.application.maxViews){
-					flash("error", String.format("Permission error"));
+				
+				if(av.viewCount > thread.application.maxViews){
+					flash("error", String.format("Vous n'avez plus d'accès à ce forum"));
 					return redirect(routes.ForumController.forumHome(thread.application, 0, "publicDate", "desc"));
 				}
 			}
@@ -72,6 +74,53 @@ public class ThreadController extends Controller {
 		ApplicationView.countView(user, thread.application);
 		return ok(views.html.thread.mainPage.render(thread, posts, searchForm));
 	}
+	
+	
+	public static Result threadHomeFromNotiPage(int idNoti, Thread thread, Integer page){
+		final Notification noti = Notification.findById(idNoti);
+		System.out.println(noti.idNotification);
+		noti.viewed = true;
+		noti.update();
+		
+		
+		Page<Post> posts = Post.find(thread, page);
+		
+		/**
+		 * Update the article view count
+		 */
+		thread.viewCount++;
+		thread.update();
+		/**
+		 * Update user view count (mode classic or mode premium)
+		 */
+		final User user = Application.getUser();
+		user.threadCountViews++;
+		user.update();
+		
+		
+		
+		
+		
+		
+		ApplicationView av = ApplicationView.findByUserApp(user, thread.application);
+		if(!user.isPremium){
+			if(av == null){
+				ApplicationView avNew = new ApplicationView(user, thread.application);
+				avNew.save();
+			}else{
+				if(av.viewCount > thread.application.maxViews){
+					flash("error", String.format("Vous n'avez plus d'accès à ce forum"));
+					return redirect(routes.ForumController.forumHome(thread.application, 0, "publicDate", "desc"));
+				}
+			}
+			
+		}
+		
+		ApplicationView.countView(user, thread.application);
+		return ok(views.html.thread.mainPage.render(thread, posts, searchForm));
+	}
+	
+	
 	/**
 	 * 
 	 * @param thread
@@ -153,19 +202,27 @@ public class ThreadController extends Controller {
 			User user = User.findById(Application.getSessionUser());
 			comment.user = user;
 			comment.postTime = new Date();
+			comment.lastUpdate = new Date();
 			comment.thread = thread;
+			
 			comment.save();
 			//create notification to thread author
 			notificationForComment(thread, comment);
 			//increase bonus for user who created thread
-			increaseBonus(comment.user);
+			increaseBonusPostComment(comment.user);
 		}else{
 			comment.postContent = comment.postContent.replace("<img", "<img class='img-thumbnail' ");
 			comment.lastUpdate = new Date();
+			
 			comment.update();
 		}
+		
+		
+		//update lastUpdate Thread
+		thread.lastUpdate = new Date();
+		
 		Post.updateCommentCount(thread);
-		flash("success", String.format("Poster le commentaire avec succès"));
+		flash("success", String.format("Votre commentaire a bien été créé"));
 		return redirect(routes.ThreadController.threadHome(thread, 0));
 	}
 	
@@ -208,20 +265,42 @@ public class ThreadController extends Controller {
 		pq.save();
 		
 		//Increase bonuse for user who post comment
-		increaseBonus(comment.user);
-		
+		increaseBonusPostComment(comment.user);
+		//update lastUpdate Thread
+		thread.lastUpdate = new Date();
+		thread.update();
+		//Send success message
 		flash("success", String.format("Le commentaire a bien été ajouté"));
 		return redirect(routes.ThreadController.threadHome(thread, 0));
 	}
 
 	/**
 	 * Method used to increase bonus and xp of user
+	 * And update the date of final activity of the user
+	 * And increase postCount user 
 	 * It's used when user comment on thread
 	 * @param user who comment on a thread
 	 */
-	public static void increaseBonus(User user){
+	public static void increaseBonusPostComment(User user){
 		user.exp += BonusRule.findByID("3").xp;
 		user.bonus += BonusRule.findByID("3").bonus;
+		user.dateFinalPost = new Date();
+		user.postCount = Post.countPostsByUser(user);
+		user.update();
+		
+	}
+	
+	/**
+	 * Method used to increase bonus and xp of user
+	 * And update the date of final activity of the user
+	 * It's used when user comment on thread
+	 * @param user who comment on a thread
+	 */
+	public static void increaseBonusPostThread(User user){
+		user.exp += BonusRule.findByID("2").xp;
+		user.bonus += BonusRule.findByID("2").bonus;
+		user.dateFinalPost = new Date();
+		user.threadCount = Thread.countThreadsByUser(user.userName);
 		user.update();
 		
 	}

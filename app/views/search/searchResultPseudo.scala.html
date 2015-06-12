@@ -1,0 +1,55 @@
+@(currentPage:com.avaje.ebean.Page[User], searchForm:Form[controllers.SearchController.Search], content: String)
+@main("Résultat de Recherche", searchForm){
+<div class="row">
+	<div class="col-xs-12 col-md-10">
+		<div class="panel-body">
+			<div class="row">
+				<div class="alert alert-success" style="margin:0">
+					<span class="glyphicon glyphicon-star"></span>Sujet</div>
+					<table class="threadlayout table table-bordered">
+						<tr>
+							<th>Pseudo</th>
+							<th>Nom</th>
+							<th>Service</th>
+							<th>Status</th>
+						</tr>
+						@for(user <- currentPage.getList()){
+						<tr>
+							<td>@user.userName</td>
+							<td>
+								<a href="@routes.UserController.userHome(user)">
+									<div>@user.firstName @user.lastName</div>
+								</a>
+							</td>
+							<td>@user.service.serviceName</td>
+							<td>@user.permission.permissionDescription</td>
+						</tr> }
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+	  <div class='col-md-6'>
+	  </div>
+	  <div class='col-md-6' align='right'>
+	    <div class="btn-group">
+	        @if(currentPage.hasPrev){
+	    <a class="btn btn-primary" href="@routes.SearchController.searchByAuthorUserName(currentPage.getPageIndex - 1, content)"><span class='glyphicon glyphicon-chevron-left'>
+	        </span>Page precedente</a>
+
+	        }else{
+	    <a class="btn btn-primary" disabled="disabled"><span class='glyphicon glyphicon-chevron-left'>
+	        </span>Page precedente</a>
+	        }
+	    <a class="btn btn-primary">@currentPage.getDisplayXtoYofZ(" - ", " / ")</a>
+	        @if(currentPage.hasNext){
+	          <a class="btn btn-primary" href="@routes.SearchController.searchByAuthorUserName(currentPage.getPageIndex + 1, content)">Page suivante<span class='glyphicon glyphicon-chevron-right'></span></a>
+	        }else{
+	          <a class="btn btn-primary" disabled="disabled">Page suivante<span class='glyphicon glyphicon-chevron-right'></span></a>
+	        }
+	    </div>
+	  </div>
+	</div>
+}

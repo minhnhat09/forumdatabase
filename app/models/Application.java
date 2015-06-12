@@ -103,7 +103,7 @@ public class Application extends Model implements PathBindable<Application>{
 		return find.where()
 		.ilike("app_name", "%" + appName + "%")
 		.orderBy("id_app asc")
-		.findPagingList(10)
+		.findPagingList(100)
 		.setFetchAhead(false)
 		.getPage(page);
 	}

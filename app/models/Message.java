@@ -32,7 +32,7 @@ public class Message extends Model {
 	@Column(columnDefinition = "LONGTEXT")
 	@Constraints.Required
 	public String content;
-	public boolean unRead;
+	public boolean viewed;
 	
 	
 	public static Finder<Integer, Message> find = new Finder<Integer, Message>(Integer.class, Message.class);
@@ -45,10 +45,17 @@ public class Message extends Model {
 	}
 	
 	public static int messagesUnread(String userName){
-		return find.where().eq("un_read", 0)
+		return find.where().eq("viewed", 0)
 				  .eq("user_name_to", userName)
 				  
 				.findRowCount();
+	}
+	
+	public static List<Message> findMessagesFromByUser(String userName){
+		return find.where()
+				.ilike("user_name_from_user_name", "%" + userName + "%")
+				.orderBy().desc("sendDate")
+				.findList();
 	}
 	
 	public static Message findById(int idMess){

@@ -25,4 +25,16 @@ public class PostQuote extends Model{
 				   .eq("post", idPost)
 				   .findList();
 	}
+	/**
+	 * Method used to find post by quote
+	 * For delete purpose
+	 * 
+	 * @param idPost id of the quote field in postquote table
+	 * @return
+	 */
+	public static List<PostQuote> findQuotesByQuote(int idPost){
+		return find.where()
+				   .eq("quotes", idPost)
+				   .findList();
+	}
 }

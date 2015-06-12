@@ -1,5 +1,13 @@
 package controllers;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import com.google.common.io.Files;
+
+import models.Post;
+import models.Thread;
 import models.User;
 import play.Routes;
 import play.data.DynamicForm;
@@ -7,6 +15,8 @@ import play.data.Form;
 import play.data.validation.Constraints;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.Http.MultipartFormData;
+import play.mvc.Http.MultipartFormData.FilePart;
 import controllers.SearchController.Search;
 
 	/**
@@ -24,6 +34,8 @@ import controllers.SearchController.Search;
 	public static Result FORGET_PASS_HOME = redirect(routes.Application
 			.forgetPassPage());
 
+	private static final Form<Login> loginForm = Form.form(Login.class);
+	
 	/**
 	 * 
 	 * @return
@@ -63,7 +75,7 @@ import controllers.SearchController.Search;
 	}
 
 	/**
-	 * 
+	 * Send forget password page html
 	 * @return
 	 */
 	public static Result forgetPassPage() {
@@ -72,7 +84,9 @@ import controllers.SearchController.Search;
 
 	/**
 	 * 
-	 * @author NGUYEN Nhat Minh
+	 * @author a073417
+	 * Class Login have 2 field userName and Password
+	 * 
 	 *
 	 */
 	public static class Login {
@@ -83,6 +97,7 @@ import controllers.SearchController.Search;
 
 		public String validate() {
 			if (User.authenticate(userName, password) == null) {
+				System.out.println("3");
 				return "Identifiant ou mot de passe non valide";
 			}
 			return null;
@@ -104,25 +119,37 @@ import controllers.SearchController.Search;
 	 * @return
 	 */
 	public static Result authenticate() {
-		Form<Login> loginForm = Form.form(Login.class).bindFromRequest();
+		Form<Login> boundForm = loginForm.bindFromRequest();
 		
-		if (loginForm.hasErrors()) {
-			return ok(views.html.login.render(loginForm, searchForm));
+		if (boundForm.hasErrors()) {
+			
+			return ok(views.html.login.render(boundForm, searchForm));
 		} else {
-			//session().clear();
-			User user = User.findById(loginForm.get().userName);
-			if(user.isBlock){
-				flash("error", String.format("Vous êtes bloqué du forum"));
-				return ok(views.html.login.render(loginForm, searchForm));
+			Login login = boundForm.get();
+			
+			if(login.validate() == null){
+				//session().clear();
+				User user = User.findById(boundForm.get().userName);
+				if(user.isBlock){
+					flash("error", String.format("Vous êtes bloqué du forum"));
+					return ok(views.html.login.render(loginForm, searchForm));
+				}else{
+					session("userName", boundForm.get().userName);
+					session("permissionUser",
+							String.valueOf(user.permission.idPermission));
+					session("adminMode", "off");
+					user.title = User.showTitle(user);
+					user.threadCount = Thread.countThreadsByUser(user.userName);
+					user.postCount = Post.countPostsByUser(user);
+					user.update();
+					return redirect(routes.AccueilController.accueil());
+				}
 			}else{
-				session("userName", loginForm.get().userName);
-				session("permissionUser",
-						String.valueOf(user.permission.idPermission));
-				session("adminMode", "off");
-				user.title = User.showTitle(user);
-				user.update();
-				return redirect(routes.AccueilController.accueil());
+				
+				flash("success", "Identifiant ou mot de passe non valide");
+				return ok(views.html.login.render(boundForm, searchForm));
 			}
+			
 		}
 	}
 	
@@ -178,6 +205,10 @@ import controllers.SearchController.Search;
 	public static boolean getPremium(){
 		return getUser().isPremium;
 	}
+	
+	
+	
+	
 	
 	/**
 	 * 

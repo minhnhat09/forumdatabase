@@ -19,7 +19,10 @@
 				<div class="col-md-2 col-xs-3">
 					<ul class="nav nav-pills nav-stacked" style="height:285px;padding-top:5px;">
 						<li class="active">
-							<a href="#message" data-toggle="tab">Messages</a>
+							<a href="#receivedMessages" data-toggle="tab">Boîte de réception</a>
+						</li>
+						<li>
+							<a href="#sentMessages" data-toggle="tab">Message Envoyés</a>
 						</li>
 						<li>
 							<a href="#rappel" data-toggle="tab" onclick="javascript:viewNotis('@routes.MessageController.viewNotis(controllers.Application.getSessionUser())')">Rappel</a>
@@ -28,7 +31,9 @@
 				</div>
 				<!-- Message Item 1-->
 				<div class="tab-content">
-					@listMessages() @listNotifications()
+					@listReceivedMessages() 
+					@listSentMessages()
+					@listNotifications()
 				</div>
 			</div>
 		</div>
@@ -80,28 +85,56 @@
 
 		$(".noti_check_box").click(function(){
 			$("#select_all_notis").prop('checked', false);
+
 			if($(".noti_check_box").length == $(".noti_check_box:checked").length){
 				$("#select_all_notis").prop('checked', true);
 			}
 		});
 
-		$("#deleteListMess").click(function(){
-			var data = findCheckedMess();
 
-			if(data === undefined || data.length == 0){
-				alert("Sélectionnez au moin un message");
-			}
-			appRoutes.controllers.MessageController.deleteListMess().ajax({
-					data:JSON.stringify(data),
-					contentType:'application/json',
-					type:'POST',
-					success:function(resultats){
-						location.reload();
-					},
-					error:function(resultats){
-						alert("Supprimer liste échec");
-					}
-			});
+
+function ConfirmDialog(message){
+    $('<div></div>').appendTo('body')
+                    .html('<div><h6>'+message+'?</h6></div>')
+                    .dialog({
+                        modal: true, title: 'Delete message', zIndex: 10000, autoOpen: true,
+                        width: 'auto', resizable: false,
+                        buttons: {
+                            Yes: function () {
+					            var data = findCheckedMess();
+								if(data === undefined || data.length == 0){
+									alert("Sélectionnez au moin un message");
+								}
+								$(".mess_check_box").prop("checked",false);
+
+								appRoutes.controllers.MessageController.deleteListMess().ajax({
+										data:JSON.stringify(data),
+										contentType:'application/json',
+										type:'POST',
+										success:function(resultats){
+											location.reload();
+										},
+										error:function(resultats){
+											alert("Supprimer liste échec");
+										}
+								});
+                                $(this).dialog("close");
+                            },
+                            No: function () {
+                                $(this).dialog("close");
+                            }
+                        },
+                        close: function (event, ui) {
+                            $(this).remove();
+                        }
+                    });
+    };
+
+
+		$("#deleteListMess").click(function(){
+			ConfirmDialog('Are you sure');
+			
+			
 		});
 
 		$("#deleteListNotis").click(function(){
@@ -109,6 +142,7 @@
 			if(data === undefined || data.length == 0){
 				alert("Sélectionnez au moin une notification");
 			}
+			$(".noti_check_box").prop("checked",false);
 			appRoutes.controllers.MessageController.deleteListNotis().ajax({
 					data:JSON.stringify(data),
 					contentType:'application/json',

@@ -4,14 +4,11 @@ import java.util.Date;
 import java.util.List;
 
 import models.Application;
-import models.BonusRule;
-import models.Notification;
 import models.Post;
 import models.Tag;
 import models.Thread;
 import models.User;
 import models.UserAppreciation;
-import play.i18n.Messages;
 import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -69,13 +66,13 @@ public class ThreadControllerApi extends Controller {
 			comment.postTime = new Date();
 			comment.thread = thread;
 			comment.save();
-			ThreadController.increaseBonus(comment.user);
+			
 			//update comment counter
 			Post.updateCommentCount(thread);
 			//save notification for thread 's user
 			ThreadController.notificationForComment(thread, comment);
-			//increase bonus for user who created thread
-			ThreadController.increaseBonus(user);
+			//increase bonus for user post comment
+			ThreadController.increaseBonusPostComment(comment.user);
 			
 			return ok("Success");
 		}
@@ -186,9 +183,8 @@ public class ThreadControllerApi extends Controller {
 			thread.save();
 			
 			//update bonus and exp for thread author
-			thread.author.exp   += BonusRule.findByID("2").xp;
-			thread.author.bonus += BonusRule.findByID("2").bonus;
-			thread.author.update();
+			ThreadController.increaseBonusPostThread(thread.author);
+			
 			
 		}
 		return ok("Success");

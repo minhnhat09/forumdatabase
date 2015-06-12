@@ -81,17 +81,9 @@ public class GiftController extends Controller {
 		
 		if(boundForm.hasErrors()){
 			flash("error", String.format("Erreur"));
-			return ok(views.html.gifts.detailGift.render(giftForm, searchForm));
+			return ok(views.html.gifts.detailGift.render(boundForm, searchForm));
 		}
 		Gift gift = boundForm.get();
-		
-		if(gift.idGift == 0){
-			Ebean.save(gift);
-		}else{
-			Ebean.update(gift);
-		}
-		
-		
 		MultipartFormData body = request().body().asMultipartFormData();
 		FilePart picture = body.getFile("picture");
 		if (picture != null) {
@@ -99,7 +91,6 @@ public class GiftController extends Controller {
 			String contentType = picture.getContentType();
 			String str[] = contentType.split("/");
 			String fileType = str[1];
-			System.out.println(fileType);
 			
 			/**
 			 * if filetype not equal jpg, jpeg, bmp, gif (image format) return error
@@ -108,14 +99,14 @@ public class GiftController extends Controller {
 					&& !fileType.equalsIgnoreCase("gif")){
 				
 				flash("error", String.format("La photo doit être en format jpg, jpeg, bmp, gif"));
-				return ok(views.html.gifts.detailGift.render(giftForm, searchForm));
+				return ok(views.html.gifts.detailGift.render(boundForm, searchForm));
 			}
 			
 			
 			File content = picture.getFile();
 			if(content == null){
 				flash("error", String.format("Aucun fichier selectionné"));
-				return ok(views.html.gifts.detailGift.render(giftForm, searchForm));
+				return ok(views.html.gifts.detailGift.render(boundForm, searchForm));
 			}
 			
 			FileOutputStream fop = null;
@@ -132,7 +123,7 @@ public class GiftController extends Controller {
 								.println("Failed to create multiple directories!");
 					}
 				}
-				String fileName = "avatarGift" + fileType;
+				String fileName = "avatarGift" + "." + fileType;
 				
 				file = new File(path +  fileName);
 				fop = new FileOutputStream(file);
@@ -146,11 +137,12 @@ public class GiftController extends Controller {
 				byte[] contentInBytes = Files.toByteArray(content);
 				gift.imgUrl = fileName;
 				
-				gift.update();
+				
 				fop.write(contentInBytes);
 				fop.flush();
 				fop.close();
-
+				
+				
 			} catch (IOException e) {
 				e.printStackTrace();
 			} finally {
@@ -158,6 +150,7 @@ public class GiftController extends Controller {
 					if (fop != null) {
 						fop.close();
 					}
+					
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -165,6 +158,11 @@ public class GiftController extends Controller {
 			
 		}
 		
+		if(gift.idGift == 0){
+			Ebean.save(gift);
+		}else{
+			Ebean.update(gift);
+		}
 		
 		
 		flash("success", String.format("Le cadeau a bien été enregistré"));

@@ -112,7 +112,7 @@ public class MessageController extends Controller {
 	    if(mess == null) {
 	        return notFound(String.format("Message %s does not exists.", idMess));
 	    }
-	    mess.unRead = true;
+	    mess.viewed = true;
 	    Ebean.update(mess);
 	    
 	    return GO_HOME_MESSAGE;
@@ -128,8 +128,8 @@ public class MessageController extends Controller {
 	        return notFound(String.format("user %s does not exists.", userName));
 	    }
 	    for (Notification noti : Notification.listNotificationsUnread(userName)) {
-			noti.unRead = true;
-			System.out.println(noti.idNotification);
+			noti.viewed = true;
+			
 			Ebean.update(noti);
 		}
 	  

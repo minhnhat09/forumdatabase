@@ -15,8 +15,10 @@ POST    /forgetpassword                        			controllers.Application.forget
 GET     /logout                             			controllers.Application.logout()
 #Page Search
 POST	/search											controllers.SearchController.search()
-GET	   	/searchall/:content								controllers.SearchController.searchAll(page: Integer ?= 0, content: String)
-GET	   	/searchbyauthor/:content						controllers.SearchController.searchByAuthor(page: Integer ?= 0, content: String)
+GET	   	/searchall/content=:content						controllers.SearchController.searchAll(page: Integer ?= 0, content: String)
+GET	   	/searchbyauthorusername/:content				controllers.SearchController.searchByAuthorName(page: Integer ?= 0, content: String)
+GET	   	/searchbyauthorpseudo/:content					controllers.SearchController.searchByAuthorUserName(page: Integer ?= 0, content: String)
+
 #Page Admin
 
 GET 	/admin/											controllers.AdminController.adminHome()
@@ -24,6 +26,7 @@ POST	/admin/toggle									controllers.AdminController.toggleAdminMode()
 
 #Tab Admin User
 GET		/admin/users/									controllers.AdminController.listUsers(page: Integer ?= 0, s ?= "user_name", o ?= "asc", f ?= "")
+GET 	/admin/users/search								controllers.AdminController.searchUsersAdminPage(page: Integer ?=0, userName: String ?="", s ?= "user_name", o ?= "asc", f ?= "")
 POST    /admin/users/mod=:user			 				controllers.AdminController.changeStatusMod(user: models.User)
 POST    /admin/users/admin=:user			 			controllers.AdminController.changeStatusAdmin(user: models.User)
 POST    /admin/users/block=:user			 			controllers.AdminController.blockUnblockUser(user: models.User)
@@ -124,10 +127,10 @@ DELETE  /infoperson/bookmark/:idUa						controllers.PersonController.deleteBookm
 #Page User
 GET		/infouser/:user									controllers.UserController.userHome(user: models.User)
 #Page Forum
-GET 	/forum/f=:app/									controllers.ForumController.forumHome(app: models.Application,page: Integer ?=0, s ?= "publicDate", o ?= "desc")
-GET 	/forum/f=:app/country							controllers.ForumController.forumTagCountry(app: models.Application,page: Integer ?=0, s ?= "publicDate", o ?= "desc")
-GET 	/forum/f=:app/module							controllers.ForumController.forumTagModule(app: models.Application,page: Integer ?=0, s ?= "publicDate", o ?= "desc")
-GET 	/forum/f=:app/tag=:tag							controllers.ForumController.forumTag(app: models.Application,tag: models.Tag, page: Integer ?=0, s ?= "publicDate", o ?= "desc")
+GET 	/forum/f=:app/									controllers.ForumController.forumHome(app: models.Application,page: Integer ?=0, s ?= "lastUpdate", o ?= "desc")
+GET 	/forum/f=:app/country							controllers.ForumController.forumTagCountry(app: models.Application,page: Integer ?=0, s ?= "lastUpdate", o ?= "desc")
+GET 	/forum/f=:app/module							controllers.ForumController.forumTagModule(app: models.Application,page: Integer ?=0, s ?= "lastUpdate", o ?= "desc")
+GET 	/forum/f=:app/tag=:tag							controllers.ForumController.forumTag(app: models.Application,tag: models.Tag, page: Integer ?=0, s ?= "lastUpdate", o ?= "desc")
 POST    /forum/f=:app/spin=:idThread			 		controllers.ThreadController.spinThread(app: models.Application, idThread:String)
 POST    /forum/f=:app/unspin=:idThread			 		controllers.ThreadController.unSpinThread(app: models.Application, idThread:String)
 POST    /forum/f=:app/blockunblock=:idThread			controllers.ThreadController.blockUnblockThread(app: models.Application, idThread:String)
@@ -137,6 +140,7 @@ DELETE  /forum/f=:app/del=:idThread			 			controllers.ThreadController.deleteThr
 
 #Page Thread	
 GET		/showthread/t=:thread							controllers.ThreadController.threadHome(thread: models.Thread, page: Integer ?= 0)
+GET		/showthread/t=:thread/noti=:idNoti				controllers.ThreadController.threadHomeFromNotiPage(idNoti: Integer, thread: models.Thread, page: Integer ?= 0)
 DELETE	/showthread/t=:thread/delPost=:idPost	 		controllers.ThreadController.deletePost(thread: models.Thread, idPost: String)
 
 POST	/showthread/									controllers.PersonController.sendRequest()

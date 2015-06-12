@@ -47,7 +47,7 @@ public class EditorController extends Controller {
 		
 		if(boundThreadForm.hasErrors()){
 			flash("error", String.format("Erreur lors de la création de l'article"));
-			return ok(views.html.threadeditor.mainPage.render(app, threadForm, searchForm));
+			return ok(views.html.threadeditor.mainPage.render(app, boundThreadForm, searchForm));
 			
 		}
 		
@@ -77,9 +77,7 @@ public class EditorController extends Controller {
 			thread.application = app;
 			thread.update();
 			//Experience point for posting an thread
-			thread.author.exp   += BonusRule.findByID("2").xp;
-			thread.author.bonus += BonusRule.findByID("2").bonus;
-			thread.author.update();
+			ThreadController.increaseBonusPostThread(thread.author);
 			flash("success", String.format("L'article a bien été enregistré"));
 			return redirect(routes.ForumController.forumHome(app,0, "publicDate", "desc"));
 			
@@ -96,7 +94,7 @@ public class EditorController extends Controller {
 			thread.lastUpdate = new Date();
 			thread.update();
 			
-			flash("success", String.format("Changer de l'article avec succès"));
+			flash("success", String.format("Votre article a bien été publié"));
 			return redirect(routes.ThreadController.threadHome(thread, 0));
 		}
 		

@@ -43,6 +43,7 @@
 	<td><div>@thread.likeCount</div></td>
 	<td><div>@thread.dislikeCount</div></td>
 	<td><div>@thread.rating</div></td>
+	<td><div>@("%1$td/%1$tm/%1$tY %1$tH:%1$tM:%1$tS".format(thread.lastUpdate))</div></td>
 	
 	
 	@if(controllers.Application.getAdminMode=="on"){

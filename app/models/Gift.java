@@ -151,5 +151,13 @@ public class Gift extends Model {
 		final Gift gift = find.byId(id);
 		gift.delete();
 	}
+	@Override
+	public String toString() {
+		return "Gift [idGift=" + idGift + ", name=" + name + ", bonus=" + bonus
+				+ ", imgUrl=" + imgUrl + ", category=" + category
+				+ ", description=" + description + ", users=" + users + "]";
+	}
+	
+	
 
 }

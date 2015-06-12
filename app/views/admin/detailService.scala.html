@@ -6,7 +6,13 @@
 
 @main("Ajouter/Modifier Serivce", searchForm) {
     
-    <h1>Ajouter/Modifier Service</h1>
+    @if(serviceForm("idService") == 0){
+        <h1>Ajouter Service</h1>
+        serviceForm("idService").value()
+}else{
+    <h1>Modifier Service</h1>
+}
+    
     
     @helper.form(routes.AdminController.saveService(), 'class -> "form-group", 'enctype -> "multipart/form-data") {
        
@@ -19,7 +25,14 @@
            
 		</fieldset>
         <div class="actions">
-            <input type="submit" value="Créer nouveau service" class="btn btn-primary"> 
+            @if(serviceForm("idService") != 0){
+            <input type="submit" value="Modifier" class="btn btn-primary"> 
+        }else{
+        <input type="submit" value="Créer" class="btn btn-primary"> 
+    }
+            
+
+
             <a href="@routes.AdminController.listServices(0)" class="btn btn-danger">Annuler</a> 
             
         </div>

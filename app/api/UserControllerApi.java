@@ -83,8 +83,8 @@ public class UserControllerApi extends Controller{
 			if (!actualPass.equals(passFromDB)) {
 				return badRequest("Mot de passe actuel incorrect");
 			} else {
-				if (newPass.length() < 6) {
-					return badRequest("Le mot de passe doit être au moin 6 caractères");
+				if (newPass.length() < 7) {
+					return badRequest("Le mot de passe doit être au moin 7 caractères");
 				} else {
 					if (!newPass.equals(confirmPass)) {
 						return badRequest("Les deux cases doivent être identiques");

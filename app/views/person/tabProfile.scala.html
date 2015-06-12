@@ -4,14 +4,20 @@
 		<div class="col-md-3"></div>
 	
 		<div class="col-md-6">
+			
 			<div class='row rowpadding'>
 				<div class="col-md-6">Pseudo</div>
 				<div class="col-md-6">@person.userName</div>
 			</div>
+			
+			<div class='row rowpadding'>
+				<div class="col-md-6">Compte</div>
+				<div class="col-md-6">@person.permission.permissionDescription</div>
+			</div>
 
 			<div class='row rowpadding'>
 				<div class="col-md-6">Date Inscription</div>
-				<div class="col-md-6">@person.dateInscription</div>
+				<div class="col-md-6">@("%1$td/%1$tm/%1$tY".format(person.dateInscription))</div>
 			</div>
 
 			<div class='row rowpadding'>
@@ -49,6 +55,16 @@
 			<div class='row rowpadding'>
 				<div class="col-md-6">Email</div>
 				<div class="col-md-6">@person.email</div>
+			</div>
+
+			<div class='row rowpadding'>
+				<div class="col-md-6">Nombre Articles</div>
+				<div class="col-md-6">@person.threadCount</div>
+			</div>
+
+			<div class='row rowpadding'>
+				<div class="col-md-6">Nombre Posts</div>
+				<div class="col-md-6">@person.postCount</div>
 			</div>
 			
 			<div class='row rowpadding'>

@@ -79,6 +79,7 @@ create table demand (
   motif                     varchar(255),
   date_apply                datetime,
   is_activated              tinyint(1) default 0,
+  is_refused                tinyint(1) default 0,
   constraint pk_demand primary key (id_demand))
 ;
 
@@ -117,7 +118,7 @@ create table message (
   title                     varchar(255),
   send_date                 datetime,
   content                   LONGTEXT,
-  un_read                   tinyint(1) default 0,
+  viewed                    tinyint(1) default 0,
   constraint pk_message primary key (id_message))
 ;
 
@@ -126,7 +127,7 @@ create table notification (
   user_user_name            varchar(255),
   content                   LONGTEXT,
   note_date                 datetime,
-  un_read                   boolean default true not null,
+  viewed                    tinyint(1) default 0,
   id_thread_response        integer,
   constraint pk_notification primary key (id_notification))
 ;
@@ -134,7 +135,7 @@ create table notification (
 create table permission (
   id_permission             integer auto_increment not null,
   permission_name           varchar(255),
-  permisson_description     varchar(255),
+  permission_description    varchar(255),
   constraint pk_permission primary key (id_permission))
 ;
 
@@ -214,6 +215,7 @@ create table user (
   confirm_email             varchar(255),
   title                     varchar(255),
   post_count                integer,
+  thread_count              integer,
   first_name                varchar(255),
   last_name                 varchar(255),
   address                   varchar(255),

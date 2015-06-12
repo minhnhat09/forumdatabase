@@ -57,7 +57,7 @@
 									<a href="@routes.AdminController.modifyCommunication(com)">Modifier</a>
 								</li>
 								<li>
-									<a href="" onclick="javascript:del('@routes.AdminController.deleteCommunication(com.idCommunication.toString)')">Supprimer</a>
+									<a href="#" data-href="@routes.AdminController.deleteCommunication(com.idCommunication.toString)" data-toggle="modal" data-target="#confirm-delete">Supprimer</a>
 								</li>
 							</ul>
 						</div>

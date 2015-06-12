@@ -309,7 +309,6 @@ public class Thread extends Model implements PathBindable<Thread>{
 			FileOutputStream out = new FileOutputStream(new File("ReportLike.xls"));
 			workbook.write(out);
 			out.close();
-			System.out.println("okkkk");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}catch(IOException e){
@@ -329,13 +328,14 @@ public class Thread extends Model implements PathBindable<Thread>{
 				.eq("application_id_app", app.idApp)
 				.eq("is_spined", 0)
 				.orderBy(sortBy + " " + order)
-				
 				.findPagingList(10)
 				.setFetchAhead(false)
 				.getPage(page);
 	}
 	
-	/***/
+	/**
+	 * 
+	 * */
 	public static Page<Thread> findPageByTagName(Page<Thread>threads, Tag tag){
 		
 		for (Thread thread : threads.getList()) {
@@ -432,12 +432,14 @@ public class Thread extends Model implements PathBindable<Thread>{
 	 * 
 	 * */
 	
-	public static List<Thread> findByName(int page, String nameThread){
+	public static Page<Thread> findByName(int page, String nameThread){
 		
 		return find.where()
 				.ilike("thread_name", "%" + nameThread + "%")
 				.orderBy("id_thread asc")
-				.findList();
+				.findPagingList(10)
+				.setFetchAhead(false)
+				.getPage(page);
 	}
 	
 	/**
@@ -446,11 +448,12 @@ public class Thread extends Model implements PathBindable<Thread>{
 	 * @param authorName Author to search
 	 * */
 	
-	public static Page<Thread> findByAuthor(int page, String authorName){
+	public static Page<Thread> findByAuthorName(int page, String authorName){
 		return find.where()
-				.ilike("author_user_name", "%" + authorName + "%")
+				.ilike("author_first_name", "%" + authorName + "%")
+				
 				.orderBy("id_thread asc")
-				.findPagingList(4)
+				.findPagingList(10)
 				.setFetchAhead(false)
 				.getPage(page);
 	}

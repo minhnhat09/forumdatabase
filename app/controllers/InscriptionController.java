@@ -102,34 +102,43 @@ public class InscriptionController extends Controller {
 			String error = "";
 			error += "* Tous les champs marqués d'un astérique sont obligatoires";
 			flash("error", String.format(error));
-			return badRequest(views.html.person.inscriptionPage.render(userForm, searchForm));
+			return badRequest(views.html.person.inscriptionPage.render(boundForm, searchForm));
 		}
 		
 		User user = boundForm.get();
+		boundForm.fill(user);
 		String signInCode = user.signinCode;
-		if(!user.email.equals(user.confirmEmail)  || !user.password.equals(user.confirmPassword)){
+		
+		if(!user.email.equals(user.confirmEmail)){
 			flash("error", String.format("Email doit être identique"));
-			return badRequest(views.html.person.inscriptionPage.render(userForm, searchForm));
+			return ok(views.html.person.inscriptionPage.render(boundForm, searchForm));
 		}
-		if(!AccountValidation.confirmCode(signInCode)){
-			flash("error", String.format("Code Parrainage Invalide"));
-			return badRequest(views.html.person.inscriptionPage.render(userForm, searchForm));
+		
+		if(!user.password.equals(user.confirmPassword)){
+			flash("error", String.format("Mot de passe doit être identique"));
+			return ok(views.html.person.inscriptionPage.render(boundForm, searchForm));
 		}
+		
+		
 		if(User.findById(user.userName) != null){
 			flash("error", String.format("Nom d'utilisateur existe déjà"));
-			return badRequest(views.html.person.inscriptionPage.render(userForm, searchForm));
+			return badRequest(views.html.person.inscriptionPage.render(boundForm, searchForm));
 		}
 		
 		if(user.userName.contains(" ")){
 			flash("error", String.format("Nom d'utilisateur ne contient pas d'espace"));
-			return badRequest(views.html.person.inscriptionPage.render(userForm, searchForm));
+			return badRequest(views.html.person.inscriptionPage.render(boundForm, searchForm));
 		}
 		
 		if(User.checkEmail(user.email)){
 			;
 			flash("error", String.format("Email existe déjà"));
-			return badRequest(views.html.person.inscriptionPage.render(userForm, searchForm));
+			return badRequest(views.html.person.inscriptionPage.render(boundForm, searchForm));
+		}
 		
+		if(!AccountValidation.confirmCode(signInCode)){
+			flash("error", String.format("Code Parrainage Invalide"));
+			return badRequest(views.html.person.inscriptionPage.render(boundForm, searchForm));
 		}
 		
 		

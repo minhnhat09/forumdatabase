@@ -1,5 +1,5 @@
 @()
-<div class="tab-pane active" id="message">
+<div class="tab-pane" id="sentMessages">
 	<div class="col-md-10">
 		
 		<div class="col-md-12"  >
@@ -11,15 +11,18 @@
 			<div class='col-md-5' align="right">
 				<button id="deleteListMess" class="btn btn-danger">Supprimer</button>
 			</div>
+			
 		</div>
 		<table class="table-condensed">
-			@for(messages <- Message.findMessagesToByUser(controllers.Application.getSessionUser())){
+			@for(messages <- Message.findMessagesFromByUser(controllers.Application.getSessionUser())){
 
 			<tr>
-				<td class="col-md-1"><a href="@routes.UserController.userHome(messages.userNameFrom)">@messages.userNameFrom.firstName @messages.userNameFrom.lastName</a></td>
+				<td class="col-md-1"><a href="@routes.UserController.userHome(User.findById(messages.userNameTo))">@User.findById(messages.userNameTo).firstName @User.findById(messages.userNameTo).lastName</a></td>
+
+				
 				<td class="col-md-2">
 					
-					<img src="@routes.Assets.at("imgs/" + "users/" + messages.userNameFrom.userName + "/avatar/" + messages.userNameFrom.avatar)" alt="..." width="70" height="70">
+					<img src="@routes.Assets.at("imgs/" + "users/" + User.findById(messages.userNameTo).userName + "/avatar/" + User.findById(messages.userNameTo).avatar)" alt="..." width="70" height="70">
 				</td>
 				
 				<td class="col-md-4">
@@ -31,10 +34,7 @@
 				</td>
 				<td class="col-md-1">@{if(messages.sendDate == null)"" else("%1$tH:%1$tM:%1$tS %1$td/%1$tm/%1$tY".format(messages.sendDate))}
 				</td>
-				<td class="col-md-1">
-
-					<a href="@routes.MessageController.writeMessageWithUser(messages.userNameFrom)" class='btn btn-success'>Répondre</a>
-				</td>
+				
 				<td class="col-md-2">
 
 					<button class="btn btn-primary btn-md" data-toggle="modal" data-target="#mess@messages.idMessage" onclick="javascript:viewMess('@routes.MessageController.viewMess(messages.idMessage)')">

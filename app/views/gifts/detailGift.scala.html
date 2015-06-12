@@ -21,19 +21,14 @@
             'class -> "form-control", 'placeholder -> "Category du cadeau", 'style ->"width:50%") -->
             @helper.textarea(giftForm("description"), '_label -> "Description du cadeau",
             'class -> "form-control", 'placeholder -> "Description du cadeau", 'rows -> 5)
-            <div class="form-group" sytle="width:50%">
-                <label for="category">Category</label>
-                <select name="category" class="form-control" style="width:50%">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                </select>
-            </div>
+
+             @select(giftForm("category"), options("1" -> "1", "2" -> "2", "3" -> "3"), '_label -> "Catégory", '_default -> "-- Choisir un catégory --", '_showConstraints -> false, 'class -> "form-control", 'style ->"width:50%", 'required -> "")
+          
             <input type="file" name="picture">
         </fieldset>
         <div class="actions">
             <input type="submit" value="Créer/Modifier cadeau" class="btn btn-primary"> ou 
-            <a href="@routes.GiftController.giftHome()" class="btn btn-danger">Annuler</a> 
+            <a href="@routes.GiftController.giftHomeAdmin()" class="btn btn-danger">Annuler</a> 
         </div>
     }
 }

@@ -1,8 +1,5 @@
-@(currentPage:List[models.Thread], searchForm:Form[controllers.SearchController.Search])
+@(currentPage:com.avaje.ebean.Page[models.Thread], searchForm:Form[controllers.SearchController.Search], content: String)
 @main("Résultat de Recherche", searchForm){
-
-
-
 
 <div class="row">
 	<div class="col-xs-12 col-md-10">
@@ -12,35 +9,32 @@
 					<span class="glyphicon glyphicon-star"></span>Sujet</div>
 					<table class="threadlayout table table-bordered">
 						<tr>
-							<th>
-								Trier:
-							</th>
-							<th>
-								Dernier Post
-							</th>
-							<th>
-								Auteur de Sujet
-							</th>
-							<th>
-								Nombre de Rép
-							</th>
-							<th>
-								Note
-							</th>
+							<th>Article</th>
+							<th>Forum</th>
+							<th>Auteur de Sujet</th>
+							<th>Nb Rép/Nb Vues</th>
+							<th>Note</th>
 						</tr>
-						@for(thread <- currentPage){
+						@for(thread <- currentPage.getList()){
 						<tr>
 							<td>
-								<span class="glyphicon glyphicon-lock" id="glyphicon"></span>
-							</td>
-							<td>
 								<div class="leftwing">
-									<span id="titre">@thread.threadName</span>
+									<a href="@routes.ThreadController.threadHome(thread)"><span id="titre">@thread.threadName</span></a>
 								</div>
 							</td>
 							<td>
-								<div>@thread.author.firstName @thread.author.lastName</div>
-								<div class="subtitle">10/11/2011</div>
+								<div class="leftwing">
+									<a href="@routes.ForumController.forumHome(thread.application)"><span id="titre">@thread.application.appName</span></a>
+								</div>
+								
+
+							</td>
+							<td>
+
+								<a href="@routes.UserController.userHome(thread.author)">
+									<div>@thread.author.firstName @thread.author.lastName</div>
+								</a>
+								
 							</td>
 							<td>
 								<div>@thread.responseCount</div>
@@ -52,5 +46,29 @@
 				</div>
 			</div>
 		</div>
+	</div>
+
+	
+	<div class="row">
+	  <div class='col-md-6'>
+	  </div>
+	  <div class='col-md-6' align='right'>
+	    <div class="btn-group">
+	        @if(currentPage.hasPrev){
+	    <a class="btn btn-primary" href="@routes.SearchController.searchAll(currentPage.getPageIndex - 1, content)"><span class='glyphicon glyphicon-chevron-left'>
+	        </span>Page precedente</a>
+
+	        }else{
+	    <a class="btn btn-primary" disabled="disabled"><span class='glyphicon glyphicon-chevron-left'>
+	        </span>Page precedente</a>
+	        }
+	    <a class="btn btn-primary">@currentPage.getDisplayXtoYofZ(" - ", " / ")</a>
+	        @if(currentPage.hasNext){
+	          <a class="btn btn-primary" href="@routes.SearchController.searchAll(currentPage.getPageIndex + 1, content)">Page suivante<span class='glyphicon glyphicon-chevron-right'></span></a>
+	        }else{
+	          <a class="btn btn-primary" disabled="disabled">Page suivante<span class='glyphicon glyphicon-chevron-right'></span></a>
+	        }
+	    </div>
+	  </div>
 	</div>
 }

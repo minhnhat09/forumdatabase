@@ -57,6 +57,7 @@ public class User extends Model implements PathBindable<User>{
 	public String title;
 	
 	public int postCount;
+	public int threadCount;
 	
 	@Constraints.Required
 	public String firstName;
@@ -239,6 +240,26 @@ public class User extends Model implements PathBindable<User>{
 	public static User findById(String userName){
 		return find.where().eq("user_name",userName).findUnique();
 	}
+	
+	public static Page<User> getListUsersById(int page, String userName){
+		return find.where()
+				   .ilike("user_name", "%" + userName + "%")
+				   .findPagingList(10)
+				   .setFetchAhead(false)
+				   .getPage(page);
+	}
+	
+	public static Page<User> getListUsersByName(int page, String userName){
+		
+		return find.where("lower(first_name) like :first_name OR lower(last_name) like :last_name ")
+			     .setParameter("first_name", "%" + userName.toLowerCase()+"%")
+			     .setParameter("last_name", "%" + userName.toLowerCase() + "%")
+				   .findPagingList(10)
+				   .setFetchAhead(false)
+				   .getPage(page);
+	}
+	
+	
 	
 	public static boolean checkEmail(String email){
 		for(User user: find.findList()){

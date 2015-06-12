@@ -16,6 +16,7 @@
 				<input id="select_all_tags" type='checkbox' />
 				<b>Tous Choisir</b>
 				<a href="@routes.AdminController.newTag()" class="btn btn-primary">Nouveau Tag</a>
+			
 			</div>
 			<div class="col-md-6" align="right">
 				<div class="btn-group">
@@ -24,7 +25,6 @@
 						<span class="caret"></span>
 					</button>
 					<ul class="dropdown-menu" role="menu">
-					
 						<li>
 							<a href="#" data-target="#confirm-delete">Supprimer</a>
 						</li>
@@ -68,7 +68,6 @@
 								<li>
 									<a href="#" data-href="@routes.AdminController.deleteTag(tag.idTag)" data-toggle="modal" data-target="#confirm-delete">Supprimer</a>
     
-									
 								</li>
 							</ul>
 						</div>
@@ -79,15 +78,9 @@
 		</table>
 	</div>
 </div>
-
-
      
 <script type="text/javascript">
 	$(document).ready(function(){
-
-
-
-
 
 		$("#select_all_tags").click(function(){
 			$('.tag_check_box').prop('checked',false);
@@ -103,12 +96,7 @@
 				$("#select_all_tags").prop('checked', true);
 			}
 		});
-
-		
-
 	});
-
-	
 </script>
 
 }

@@ -36,6 +36,7 @@ public class Demand extends Model implements PathBindable<Demand>{
 	public String motif;
 	public Date dateApply;
 	public boolean isActivated;
+	public boolean isRefused;
 	
 	public static Finder<Integer, Demand> find = new Finder<Integer, Demand>(
 			Integer.class, Demand.class);
@@ -48,7 +49,6 @@ public class Demand extends Model implements PathBindable<Demand>{
 		return find.where()
 				.eq("is_activated", false)
 				.orderBy("id_demand asc")
-				
 				.findPagingList(10)
 				.setFetchAhead(false)
 				.getPage(page);

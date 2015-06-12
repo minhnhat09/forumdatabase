@@ -123,15 +123,30 @@ public class AdminController extends Controller {
 		
 		if(controllers.Application.isAdmin()){
 			Page<User> users = User.find(page, 10, sortBy, order, filter);
-			return ok(views.html.admin.listUsers.render(users, searchForm, sortBy, order, filter));
+			return ok(views.html.admin.listUsers.render(users, "", searchForm, sortBy, order, filter));
 		}else{
 			flash("error", String.format("Vous n'avez pas le droit de consulter cette page"));
 			return redirect(routes.AccueilController.accueil());
 		}
-		
-		
-		
 	}
+	
+	/**
+	 * Method used to search an user by name
+	 * @param String for the app's name
+	 * @return application form
+	 */
+	public static Result searchUsersAdminPage(Integer page, String userName, String sortBy, String order, String filter){
+		if(controllers.Application.isAdmin()){
+			
+			Page<User> users = User.getListUsersByName(page, userName);
+			
+			return ok(views.html.admin.listUsers.render(users, userName, searchForm, sortBy, order, filter));
+		}else{
+			flash("error", String.format("Vous n'avez pas le droit de consulter cette page"));
+			return redirect(routes.AccueilController.accueil());
+		}
+	}
+	
 	
 	/**
 	 * 
@@ -195,6 +210,8 @@ public class AdminController extends Controller {
 	}
 	
 	
+	
+	
 	/**
 	 * method delete user and all his references
 	 * @param user 
@@ -244,7 +261,10 @@ public class AdminController extends Controller {
 	    if(demand == null) {
 	        return notFound(String.format("Demand %s n'existe pas", idAV));
 	    }
-	    Ebean.delete(demand);
+	    demand.isRefused = true;
+	    demand.update();
+	    //Ebean.delete(demand);
+	    
 	    return redirect(routes.AdminController.listDemands(0));
 	  }
 	
@@ -529,7 +549,6 @@ public class AdminController extends Controller {
 			return redirect(routes.AccueilController.accueil());
 		}
 		
-		
 	}
 	
 	
@@ -539,17 +558,39 @@ public class AdminController extends Controller {
 	 */
 	public static Result saveApp(){
 		Form<Application> boundForm = appForm.bindFromRequest();
+		
 		MultipartFormData body = request().body().asMultipartFormData();
 	    
 		if(boundForm.hasErrors()){
 			flash("error", String.format("Erreur"));
-			return badRequest(views.html.admin.detailApp.render(appForm, searchForm));
+			return badRequest(views.html.admin.detailApp.render(boundForm, searchForm));
 		}
 		Application app = boundForm.get();
 		
 		FilePart picture = body.getFile("picture");
+		
 		if (picture != null) {
+			
+			String contentType = picture.getContentType();
+			
+			String str[] = contentType.split("/");
+			String fileType = str[1];
+			
+			/**
+			 * if filetype not equal jpg, jpeg, bmp, gif (image format) return error
+			 */
+			if(!fileType.equalsIgnoreCase("jpg") && !fileType.equalsIgnoreCase("jpeg")&& !fileType.equalsIgnoreCase("bmp")
+					&& !fileType.equalsIgnoreCase("gif")){
+				
+				flash("error", String.format("La photo doit être en format jpg, jpeg, bmp, gif"));
+				return badRequest(views.html.admin.detailApp.render(boundForm, searchForm));
+			}
+			
 			File content = picture.getFile();
+			if(content == null){
+				flash("error", String.format("Aucun fichier selectionné"));
+				return ok(views.html.admin.detailApp.render(boundForm, searchForm));
+			}
 			FileOutputStream fop = null;
 			File file;
 			String path = "public\\imgs\\applications\\app" 
@@ -565,7 +606,7 @@ public class AdminController extends Controller {
 								.println("Failed to create multiple directories!");
 					}
 				}
-				String fileName = "avatarApp";
+				String fileName = "avatarApp" + fileType;
 				
 				file = new File(path + fileName);
 				fop = new FileOutputStream(file);
@@ -597,13 +638,14 @@ public class AdminController extends Controller {
 		}
 		
 		if(app.idApp == 0){
+			//default value of max views is 3
 			app.maxViews = 3;
 			app.save();
 		}else{
 			app.update();
 		}
 		
-		flash("success", String.format("L'application a bien été ajoutée/changée"));
+		flash("success", String.format("L'application a bien été enregistrée"));
 		return GO_HOME_APPLICATION;
 	}
 	

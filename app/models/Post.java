@@ -13,6 +13,7 @@ import play.data.validation.Constraints;
 import play.db.ebean.Model;
 import play.mvc.PathBindable;
 
+import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Page;
 @Entity
 public class Post extends Model implements PathBindable<Post>{
@@ -46,6 +47,15 @@ public class Post extends Model implements PathBindable<Post>{
 	}
 	
 	public static void delPost(Post post){
+		//delete list Post quote of this post before delete the post
+		List<PostQuote> listQuotesOfPost = PostQuote.findQuotesByQuote(post.idPost);
+		for(PostQuote pq: listQuotesOfPost){
+			pq.delete();
+		}
+		List<PostQuote> listPostOfPost = PostQuote.findQuotesByPost(post.idPost);
+		for(PostQuote pq: listPostOfPost){
+			pq.delete();
+		}
 		post.delete();
 	}
 	
@@ -66,6 +76,8 @@ public class Post extends Model implements PathBindable<Post>{
 	public static String printAuthor(Post post){
 		return post.user.firstName + " " + post.user.lastName;
 	}
+	
+	
 	public static int countPostsByUser(User user){
 		return find.where()
 				   .eq("user_user_name", user.userName)
@@ -89,7 +101,8 @@ public class Post extends Model implements PathBindable<Post>{
 		thread.responseCount = find.where()
 								   .eq("thread_id_thread", thread.idThread)
 								   .findRowCount();
-		thread.update();
+		thread.lastUpdate = new Date();
+		Ebean.update(thread);
 	}
 	
 	public static Post findById(int idPost){

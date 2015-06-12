@@ -6,21 +6,21 @@
 @implicitFieldConstructor = @{ FieldConstructor(twitterBootstrapInput.render) } 
 
 @main("Inscription", searchForm){
-<!-- PANEL VOS INDENTIFIANTS -->
-<div class="panel panel-default">
-	<div class="col-md-12">
-		<label>Si vous n'avez pas le code de Parrainage, click sur ce bouton</label>
-		<a href="@routes.InscriptionController.newDemand()" class="btn btn-success">Demande Code Parrainage</a>
-	</div>
+	<!-- PANEL VOS INDENTIFIANTS -->
+	<div class="panel panel-default">
+		<div class="col-md-12">
+			<label>Si vous n'avez pas le code de Parrainage, click sur ce bouton</label>
+			<a href="@routes.InscriptionController.newDemand()" class="btn btn-success">Demande Code Parrainage</a>
+		</div>
+		
+		<div class="panel-heading">
+			<h3 class="panel-title" align="center">VOTRE COMPTE</h3>
 
-	<div class="panel-heading">
-		<h3 class="panel-title" align="center">VOTRE COMPTE</h3>
+		</div>
 
-	</div>
-
-	@form(routes.InscriptionController.saveUser(), 'name -> "demandForm"){
-	<fieldset>
-
+		@form(routes.InscriptionController.saveUser()){
+		<fieldset>
+			
 		<div class="panel-body">
 			<div id="textbox">
 				<p class="alignleft">
@@ -33,61 +33,29 @@
 			<!-- Row 1 -->
 			<div class="row">
 				<div class="col-md-6">
-
-					<div class="clearfix ">
-						<label for="userName">* Pseudo</label>
-						<div class="input">
-							<input id="userName" class="form-control" type="text" placeholder="Pseudo" value="" name="userName" required ng-model="userName" ng-minlength="5">
-							<span class="help-inline">Minimum length: 5</span>
-						</div>
-					</div>
+				
+					@inputText(userForm("userName"), '_label -> "* Pseudo", 'class -> "form-control", 'placeholder -> "Pseudo" )
 				</div>
 				<div class="col-md-6">
-					@select(userForm("idServiceSubscribe"), options(models.Service.options), '_label -> "Service Inscrite", '_default -> "-- Choisir un service --",'required -> "" ) 
+						@select(userForm("idServiceSubscribe"), options(models.Service.options), '_label -> "Service Inscrite", '_default -> "-- Choisir un service --", '_showConstraints -> false ) 
 				</div>
 			</div>
 			<!-- Row 2 -->
 			<div class="row">
 				<div class="col-md-6">
-					<div class="clearfix ">
-						<label for="email">* Email</label>
-						<div class="input">
-							<input id="email" class="col-sm-6 form-control" type="email" placeholder="Email" value="" name="email" required ng-model="email">
-							<span class="help-inline">Email, Required</span>
-						</div>
-					</div>
+					@inputText(userForm("email"), '_label -> "* Email", 'class -> "col-sm-6 form-control", 'placeholder -> "Email", 'type -> "email")
 				</div>
 				<div class="col-md-6">
-					<div class="clearfix ">
-						<label for="confirmEmail">* Confirmation Email</label>
-						<div class="input">
-							<input id="confirmEmail" class="col-sm-6 form-control" type="email" placeholder="Confirmation Email" required ng-model="confirmEmail" value="" name="confirmEmail" ng-match="email">
-							<span class="help-inline">Email, Required</span>
-							<span data-ng-show="myForm.confirmEmail.$error.match">Emails have to match!</span>
-						</div>
-					</div>
+					@inputText(userForm("confirmEmail"), '_label -> "* Confirmation Email", 'class -> "col-sm-6 form-control", 'placeholder -> "Confirmation Email")
 				</div>
 			</div>
 			<!-- Row 3 -->
 			<div class="row">
 				<div class="col-md-6">
-					<div class="clearfix ">
-						<label for="password">* Mot de passe</label>
-						<div class="input">
-							<input id="password" class="col-sm-6 form-control" type="password" placeholder="Mot de passe" required ng-model="password" ng-minlength="7" name="password">
-							<span class="help-inline">Minimum length: 7, Required</span>
-						</div>
-					</div>
+					@inputPassword(userForm("password"), '_label -> "* Mot de passe", 'class -> "col-sm-6 form-control", 'placeholder -> "Mot de passe")
 				</div>
 				<div class="col-md-6">
-					<div class="clearfix ">
-						<label for="confirmPassword">* Confirmation Mot de passe</label>
-						<div class="input">
-							<input id="confirmPassword" class="col-sm-6 form-control" type="password" placeholder="Confirmation Mot de passe" name="confirmPassword" required ng-model="confirmPassword" ng-minlength="7">
-
-							<span class="help-inline">Minimum length: 7, Required</span>
-						</div>
-					</div>
+					@inputPassword(userForm("confirmPassword"), '_label -> "* Confirmation Mot de passe",'class -> "col-sm-6 form-control", 'placeholder -> "Confirmation Mot de passe")
 				</div>
 			</div>
 
@@ -117,34 +85,16 @@
 			<!-- Row 2 -->
 			<div class="row">
 				<div class="col-md-6">
-					<div class="clearfix ">
-						<label for="firstName">* Nom</label>
-						<div class="input">
-							<input id="firstName" class="form-control" type="text" placeholder="Nom" value="" name="firstName" required ng-model="firtName" ng-minlength="2">
-							<span class="help-inline">Required</span>
-						</div>
-					</div>
+					@inputText(userForm("firstName"), '_label -> "* Nom", 'class -> "form-control", 'placeholder -> "Nom" )
 				</div>
 				<div class="col-md-6">
-					<div class="clearfix ">
-						<label for="lastName">* Prénom</label>
-						<div class="input">
-							<input id="lastName" class="form-control" type="text" placeholder="Prénom" value="" name="lastName" required ng-model="lastName" ng-minlength="2">
-							<span class="help-inline">Required</span>
-						</div>
-					</div>
+					@inputText(userForm("lastName"), '_label -> "* Prénom", 'class -> "form-control", 'placeholder -> "Prénom" )
 				</div>
 			</div>
 			<!-- Row 3 -->
 			<div class="row">
 				<div class="col-md-6">
-					<div class="clearfix ">
-						<label for="address">* Adresse</label>
-						<div class="input">
-							<input id="address" class="form-control" type="text" placeholder="Adresse" value="" name="address" required ng-model="address">
-							<span class="help-inline">Required</span>
-						</div>
-					</div>
+					@inputText(userForm("address"), '_label -> "* Adresse", 'class -> "form-control", 'placeholder -> "Adresse" )
 				</div>
 				<div class="col-md-6">
 
@@ -153,29 +103,17 @@
 			<!-- Row 4 -->
 			<div class="row">
 				<div class="col-md-6">
-					<div class="clearfix ">
-						<label for="postalCode">* Code Postal</label>
-						<div class="input">
-							<input id="postalCode" class="form-control" type="number" placeholder="Code Postal" value="" name="postalCode" required ng-model="postalCode" >
-							<span class="help-inline">Required</span>
-						</div>
-					</div>
+					@inputText(userForm("postalCode"), '_label -> "* Code Postal", 'class -> "form-control", 'placeholder -> "Code Postal", 'type -> "number" )
 				</div>
 				<div class="col-md-6">
-					<div class="clearfix ">
-						<label for="city">* Ville</label>
-						<div class="input">
-							<input id="city" class="form-control" type="text" placeholder="Ville" value="" name="city" required ng-model="city">
-							<span class="help-inline">Required</span>
-						</div>
-					</div>
+					@inputText(userForm("city"), '_label -> "* Ville", 'class -> "form-control", 'placeholder -> "Ville" )
 				</div>
 			</div>
 			<!-- End Row 4 -->
 			<!-- Row 5 -->
 			<div class="row">
 				<div class="col-md-6">
-					@select(userForm("country"), options(models.Tag.countryOptions), '_label -> "* Pays", '_default -> "-- Choisir un pays --", 'required -> "" ) 
+							@select(userForm("country"), options(models.Tag.countryOptions), '_label -> "* Pays", '_default -> "-- Choisir un pays --", '_showConstraints -> false ) 
 				</div>
 			</div>
 			<!-- END Row 5 -->
@@ -190,22 +128,10 @@
 			<!-- Row 7 -->
 			<div class="row">
 				<div class="col-md-6">
-					<div class="clearfix ">
-						<label for="homePhone"> Téléphone fixe</label>
-						<div class="input">
-							<input id="homePhone" class="form-control" type="number" ng-model="homePhone" placeholder="Téléphone fixe" value="" name="homePhone">
-							<span class="help-inline"></span>
-						</div>
-					</div>
+					@inputText(userForm("homePhone"), '_label -> " Téléphone fixe", 'class -> "form-control", 'placeholder -> "Téléphone fixe" )
 				</div>
 				<div class="col-md-6">
-					<div class="clearfix ">
-						<label for="mobilePhone"> Téléphone portable</label>
-						<div class="input">
-							<input id="mobilePhone" class="form-control" type="number" ng-model="mobilePhone" placeholder="Téléphone portable" value="" name="mobilePhone">
-							<span class="help-inline"></span>
-						</div>
-					</div>
+					@inputText(userForm("mobilePhone"), '_label -> " Téléphone portable", 'class -> "form-control", 'placeholder -> "Téléphone portable" )
 				</div>
 			</div>
 			<!-- End Row 7 -->
@@ -215,21 +141,16 @@
 			<!-- Row 1 -->
 			<div class="row">
 				<div class="col-md-6">
-					<div class="clearfix ">
-						<label for="signinCode">* Code de parrainage</label>
-						<div class="input">
-							<input id="signinCode" class="form-control" type="text" placeholder="Code de Parrainage" value="" name="signinCode" required ng-model="signinCode">
-							<span class="help-inline">Required</span>
-						</div>
-					</div>
+					@inputText(userForm("signinCode"), '_label -> "* Code de parrainage", 'class -> "form-control", 'placeholder -> "Code de Parrainage" )
 				</div>
 				<div class="col-md-6 action" align="right">
-					<input type="submit" value="Valider" class="btn btn-primary" ng-disabled="demandForm.$invalid">
+					
+					<input type="submit" value="Valider" class="btn btn-primary">
 				</div>
 			</div>
 		</div>
 	</div>
-</fieldset>}
+	</fieldset>}
 
 
 

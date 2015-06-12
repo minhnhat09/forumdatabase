@@ -88,7 +88,7 @@ public class PersonController extends Controller {
 			
 			String str[] = contentType.split("/");
 			String fileType = str[1];
-			System.out.println(fileType);
+			
 			
 			/**
 			 * if filetype not equal jpg, jpeg, bmp, gif (image format) return error
@@ -259,10 +259,13 @@ public class PersonController extends Controller {
 			User user = User.findById(Application.getSessionUser());
 			if (AccountValidation.saveCode(user, str)) {
 				flash("success", String.format("Code généré avec succès"));
+				return ok("Le code parrainage a bien été créé");
+			}else{
+				return badRequest("Le nombre maximum de création du code parrainage est 3");
 			}
-			return ok();
+			
 		} else
-			return forbidden();
+			return forbidden("Erreur lors de la création du code");
 	}
 
 	/**
@@ -298,11 +301,11 @@ public class PersonController extends Controller {
 					sendGiftForm, searchForm));
 		} else {
 			if (PersonController.offerGift(user, friend, gift, amount)) {
-				flash("success", String.format("Envoi cadeau réussi"));
+				flash("success", String.format("Le cadeau a bien été envoyé"));
 				return ok(views.html.person.infoPerson.render(user,
 						sendGiftForm, searchForm));
 			} else {
-				flash("error", String.format("Erreur lors envoi cadeau"));
+				flash("error", String.format("Erreur lors de l'envoi du cadeau"));
 				return badRequest(views.html.person.infoPerson.render(user,
 						sendGiftForm, searchForm));
 			}
@@ -370,9 +373,9 @@ public class PersonController extends Controller {
 			return ok(views.html.person.infoPerson.render(user, sendGiftForm,
 					searchForm));
 		} else {
-			if (newPass.length() < 6) {
+			if (newPass.length() < 7) {
 				flash("error",
-						String.format("Mot de passe doit contenir plus de 6 charactères"));
+						String.format("Mot de passe doit contenir plus de 7 charactères"));
 				return ok(views.html.person.infoPerson.render(user,
 						sendGiftForm, searchForm));
 			} else {

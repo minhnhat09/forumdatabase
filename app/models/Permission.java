@@ -20,7 +20,7 @@ public class Permission extends Model{
 	public int idPermission;
 	
 	public String permissionName;
-	public String permissonDescription;
+	public String permissionDescription;
 	
 	@OneToMany(mappedBy = "permission")
 	public List<UserPermission> users;
