@@ -111,7 +111,10 @@ public class Thread extends Model implements PathBindable<Thread>{
 			b.delete();
 		}
 		thread.biblios.clear();
-		
+		List<Notification> listNotiByThread = Notification.findListNotisByThread(String.valueOf(thread.idThread));
+		for (Notification notification : listNotiByThread) {
+			Notification.deleteNotification(String.valueOf(notification.idNotification));
+		}
 		
 		Ebean.update(thread);
 		Ebean.delete(thread);

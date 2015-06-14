@@ -16,7 +16,9 @@
 			</div>
 			<div class="col-md-6" align="right" id="adminBar">
 				<a class="btn btn-primary" href="@routes.GiftController.newGift()">Nouveau cadeau</a>
-				<div class="btn-group">
+				<a href="" id="delete_cadeaux" class="btn btn-danger">Supprimer</a>
+				
+				<!-- <div class="btn-group">
 					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 						Opération
 						<span class="caret"></span>
@@ -27,23 +29,13 @@
 							<a href="" id="delete_cadeaux">Supprimer</a>
 						</li>
 					</ul>
-				</div>
+				</div> -->
 			</div>
 		</div>
 
 	</div>
 </div>
 
-<!-- <br>
-<div class="row">
-	<h1>Votre Bonus: @User.findById(controllers.Application.getSessionUser()).bonus</h1>
-	<h1 id="total">Total:</h1>
-	<button class="btn btn-primary active" id="showTotal">Total</button>
-
-	<button class="btn btn-success" id="buyGift">Acheter Cadeaux</button>
-
-
-</div> -->
 <div class='row total'>
 	<div class="col-md-1"></div>
 	<div class="col-md-10 ">
@@ -109,28 +101,50 @@
 <script>
 	$(document).ready(function() {
 
-		//show and hide button
-		/*	$("#showAdminBar").click(function(){
-		$("#adminBar").show();
-	});
-	$("#hideAdminBar").click(function(){
-		$("#adminBar").hide();
-	});*/
+	function ConfirmDialog(message, data){
+	$('<div></div>').appendTo('body')
+                .html('<div><h6>'+message+'?</h6></div>')
+                .dialog({
+                    modal: true, title: 'Confirmation supression', zIndex: 10000, autoOpen: true,
+                    width: 'auto', resizable: false,
+                    buttons: {
+                        Yes: function () {
+				            
+							$(".cadeaux_check_box").prop("checked",false);
 
-		
+							appRoutes.controllers.GiftController.deleteListGift(data).ajax({
+								type: 'DELETE',
+								success: function(resultats) {
+									location.reload();
+								},error:function(resultats){
+											alert("Supprimer liste échec");
+								}
+							});
 
+                            $(this).dialog("close");
+                        },
+                        No: function () {
+                            $(this).dialog("close");
+                        }
+                    },
+                    close: function (event, ui) {
+                        $(this).remove();
+                    }
+                });
+    };
 		//function checkbox tous choisir
-		$("#select_all_cadeaux").click(function(event) {
-			if (this.checked) {
-				$(".cadeaux_check_box").each(function() {
-					this.checked = true;
-				})
-			} else {
-				$(".cadeaux_check_box").each(function() {
-					this.checked = false;
-				})
+		$("#select_all_cadeaux").click(function(){
+			$('.cadeaux_check_box').prop('checked',false);
+			if(this.checked){
+				$('.cadeaux_check_box').prop('checked',true);
 			}
+		});
 
+		$(".cadeaux_check_box").click(function(){
+			$("#select_all_cadeaux").prop('checked', false);
+			if($(".cadeaux_check_box").length == $(".cadeaux_check_box:checked").length){
+				$("#select_all_cadeaux").prop('checked', true);
+			}
 		});
 
 		function deleteListGift(urlToDelete) {
@@ -183,15 +197,15 @@
 		//function send list gift to db to delete
 		$("#delete_cadeaux").click(function(event) {
 
-			var listGift = findCheckedGifts();
-			appRoutes.controllers.GiftController.deleteListGift(listGift).ajax({
-				type: 'DELETE',
-				success: function(resultats) {
-					location.reload();
-				}
-			});
-
+			var data = findCheckedGifts();
+			if(data === undefined || data.length == 0){
+				alert("Sélectionnez au moin un objet");
+			}else{
+				ConfirmDialog('Voulez vous vraiment supprimer ces objets ?', data);
+			}
 		});
+
+
 		$("#testBuyGift").click(function(event) {});
 
 		$("#buyGift").click(function(event) {
@@ -206,5 +220,6 @@
 				}
 			});
 		});
+		
 	});
 </script>

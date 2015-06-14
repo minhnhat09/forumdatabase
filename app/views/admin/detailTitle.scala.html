@@ -5,20 +5,30 @@
 
 
 @main("Ajouter un Titre", searchForm) {
+    @if(titleForm("idTitle").value() == null){
+        <h1>Ajouter nouveau titre</h1>
+
+}else{
+        <h1>Modifier titre</h1>
+}
     
-    <h1>Ajouter nouveau titre</h1>
-    
-    @helper.form(routes.AdminController.saveTitle(), 'class -> "form-group") {
+    @helper.form(routes.AdminController.saveTitle(), 'class -> "form-group",  'name ->"titleForm") {
        
         <fieldset>
         	<input type="hidden" value="@titleForm("idTitle").valueOr("0")" name="idTitle"/>
             @helper.inputText(titleForm("titleName"), '_label -> "Nom du titre", 
-            	'class -> "form-control", 'placeholder -> "Nom du titre", 'style ->"width:50%" )
+            	'class -> "form-control", 'placeholder -> "Nom du titre", 'style ->"width:50%", 'required -> "")
             @helper.inputText(titleForm("exp"), '_label -> "Points", 
-                'class -> "form-control", 'placeholder -> "Points", 'style ->"width:50%" )
+                'class -> "form-control", 'placeholder -> "Points", 'style ->"width:50%", 'type -> "number", 'required -> "")
         </fieldset>
         <div class="actions">
-            <input type="submit" value="Créer nouveau titre" class="btn btn-success"> 
+            @if(titleForm("idTitle").value() == null){
+            <input type="submit" value="Créer nouveau titre" class="btn btn-success" ng-disabled="$titleForm.$invalid"> 
+            }else{
+            <input type="submit" value="Modifier titre" class="btn btn-success" ng-disabled="$titleForm.$invalid"> 
+            }
+            
+            
             <a href="@routes.AdminController.listTitles" class="btn btn-danger">Annuler</a> 
         </div>
     }

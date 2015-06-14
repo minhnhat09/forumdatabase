@@ -22,7 +22,7 @@
 				<a href="@routes.AdminController.newService()" class="btn btn-success">Nouveau Service</a>
 			</div>
 			<div class="col-md-6" align="right">
-				<a href="" class="btn btn-danger">Supprimer</a>
+				<a id="deleteListServices" class="btn btn-danger">Supprimer</a>
 			</div>
 		</div>
 	</div>
@@ -41,11 +41,12 @@
 				@for(service <- currentPage.getList()){
 				<tr>
 					<td>
-						<input class="service_check_box" type='checkbox' />@service.serviceName
+						<input id="@service.idService" class="service_check_box" type='checkbox' /
 					</td>
-					<th></th>
+					<td>@service.serviceName</td>
 					<td>
-						<div class="btn-group">
+						<a class="btn btn-info" href="@routes.AdminController.modifyService(service)">Modifier</a>
+						<!-- <div class="btn-group">
 							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 								Opération
 								<span class="caret"></span>
@@ -58,7 +59,7 @@
 									<a href="#" data-href="@routes.AdminController.deleteService(service.idService.toString)" data-toggle="modal" data-target="#confirm-delete">Supprimer</a>
 								</li>
 							</ul>
-						</div>
+						</div> -->
 					</td>
 				</tr>
 				}
@@ -67,6 +68,26 @@
 		</table>
 	</div>
 </div>
+<div class="row">
+	<div class="col-md-6"></div>
+		<div class="col-md-6" align="right">
+			<div class="btn-group">
+				@if(currentPage.hasPrev){
+				<a class="btn btn-primary" href="@routes.AdminController.listServices(currentPage.getPageIndex - 1)">
+					<span class='glyphicon glyphicon-chevron-left'>
+					</span>Page precedente</a>
+				}else{
+				<a class="btn btn-primary" disabled="disabled"><span class='glyphicon glyphicon-chevron-left'>
+				</span>Page precedente</a>
+			}<a class="btn btn-primary" href="">@currentPage.getDisplayXtoYofZ(" - ", " / ")</a> @if(currentPage.hasNext){
+			<a class="btn btn-primary" href="@routes.AdminController.listServices(currentPage.getPageIndex + 1)">Page suivante<span class='glyphicon glyphicon-chevron-right'></span></a>
+		}else{
+		<a class="btn btn-primary" disabled="disabled">Page suivante<span class='glyphicon glyphicon-chevron-right'></span></a>
+	}
+			</div>
+	</div>
+</div>
+
 <script type="text/javascript">
 		$(document).ready(function(){
 
@@ -86,18 +107,60 @@
 			}
 		});
 
+		$("#deleteListServices").click(function(){
+				var data = findCheckedServices();
+				if(data === undefined || data.length == 0){
+					alert("Sélectionnez au moin un objet");
+				}else{
+					ConfirmDialog('Voulez vous vraiment supprimer ces objets ?', data);
+				}
+			});
 
 	});
-		function del(urlToDelete) {
-		$.ajax({
-			url: urlToDelete,
-			type: 'DELETE',
-			success: function(results) { 
-				// Refresh the page
-				location.reload();
-				
+	
+	function ConfirmDialog(message, data){
+
+	    $('<div></div>').appendTo('body')
+	                    .html('<div><h6>'+message+'?</h6></div>')
+	                    .dialog({
+	                        modal: true, title: 'Confirmation supression', zIndex: 10000, autoOpen: true,
+	                        width: 'auto', resizable: false,
+	                        buttons: {
+	                            Yes: function () {
+									$(".service_check_box").prop("checked",false);
+									
+									appRoutes.controllers.AdminController.deleteListServices().ajax({
+											data:JSON.stringify(data),
+											contentType:'application/json',
+											type:'POST',
+											success:function(resultats){
+												location.reload();
+											},
+											error:function(resultats){
+												alert("Supprimer liste échec");
+											}
+									});
+
+	                                $(this).dialog("close");
+	                            },
+	                            No: function () {
+	                                $(this).dialog("close");
+	                            }
+	                        },
+	                        close: function (event, ui) {
+	                            $(this).remove();
+	                        }
+	                    });
+	    };
+
+	function findCheckedServices(){
+		var service_list = [];
+		$('.service_check_box').each(function(){
+			if(this.checked){
+				service_list.push(this.id);
 			}
 		});
+		return service_list;
 	}
 </script>
 }

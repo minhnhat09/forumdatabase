@@ -38,10 +38,18 @@ public class Notification extends Model {
 	}
 	
 
+
+	
 	public static int notificationsUnread(String userName){
 		return find.where().eq("viewed", 0)
 				  .eq("user_user_name", userName)
 				.findRowCount();
+	}
+	
+	public static List<Notification> findListNotisByThread(String idThread){
+		return find.where().eq("viewed", 0)
+				  .eq("id_thread_response", idThread)
+				.findList();
 	}
 	
 	public static List<Notification> listNotificationsUnread(String userName){
@@ -59,13 +67,13 @@ public class Notification extends Model {
 				.findList();
 	}
 
-	public static void deleteNotification(String idMess){
-		int messString = Integer.parseInt(idMess);
-		Notification mess = Notification.findById(messString);
-		if(mess != null){
-			mess.delete();
-			 System.out.println("Delete noti: " + idMess + " ok");
-		}else System.out.println("Delete noti: " + idMess + " not ok");
+	public static void deleteNotification(String idNoti){
+		int notiString = Integer.parseInt(idNoti);
+		final Notification noti = Notification.findById(notiString);
+		if(noti != null){
+			noti.delete();
+			 System.out.println("Delete noti: " + idNoti + " ok");
+		}else System.out.println("Delete noti: " + idNoti + " not ok");
 			
 		
 	}

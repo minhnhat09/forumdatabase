@@ -64,7 +64,7 @@
 
 	</div>
 
-	<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<!-- <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
             
@@ -86,12 +86,14 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
     
 
 <script type="text/javascript">
-$(document).ready(function(){
+
+
+/*$(document).ready(function(){
 
 		$('#confirm-delete').on('show.bs.modal', function(e) {
 
@@ -108,7 +110,7 @@ $(document).ready(function(){
 			del($(this).attr("href"));
 		});
 
-});
+});*/
 
 function del(urlToDelete) {
 		$.ajax({
@@ -121,5 +123,7 @@ function del(urlToDelete) {
 			}
 		});
 	}
+
+	
 </script>
 }

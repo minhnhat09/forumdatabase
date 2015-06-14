@@ -5,8 +5,11 @@
 
 
 @main("Ajouter/Modifier cadeau", searchForm) {
-
-<h1>Ajouter/Modifier nouveau cadeau</h1>
+@if(giftForm("idGift").value() == null){
+    <h1>Ajouter nouveau cadeau</h1>
+}else{
+    <h1>Modifier nouveau cadeau</h1>
+}
 
 @helper.form(routes.GiftController.saveGift(), 'enctype -> "multipart/form-data", 'class -> "form-group") {
 
@@ -14,20 +17,26 @@
     <input type="hidden" value="@giftForm("idGift").valueOr("0")" name="idGift"/>
 
     @helper.inputText(giftForm("name"), '_label -> "Nom du cadeau", 
-    'class -> "form-control", 'placeholder -> "Nom du cadeau", 'style ->"width:50%" )
+    'class -> "form-control", 'placeholder -> "Nom du cadeau", 'style ->"width:50%", 'required -> "" )
+    
     @helper.inputText(giftForm("bonus"), '_label -> "Bonus du cadeau", 
-    'class -> "form-control", 'placeholder -> "Bonus du cadeau", 'style ->"width:50%", 'type -> "number")
+    'class -> "form-control", 'placeholder -> "Bonus du cadeau", 'style ->"width:50%", 'type -> "number", 'required -> "")
             <!-- @helper.inputText(giftForm("category"), '_label -> "Category du cadeau", 
             'class -> "form-control", 'placeholder -> "Category du cadeau", 'style ->"width:50%") -->
             @helper.textarea(giftForm("description"), '_label -> "Description du cadeau",
-            'class -> "form-control", 'placeholder -> "Description du cadeau", 'rows -> 5)
+            'class -> "form-control", 'placeholder -> "Description du cadeau", 'rows -> 5, 'required -> "")
 
              @select(giftForm("category"), options("1" -> "1", "2" -> "2", "3" -> "3"), '_label -> "Catégory", '_default -> "-- Choisir un catégory --", '_showConstraints -> false, 'class -> "form-control", 'style ->"width:50%", 'required -> "")
           
             <input type="file" name="picture">
         </fieldset>
         <div class="actions">
-            <input type="submit" value="Créer/Modifier cadeau" class="btn btn-primary"> ou 
+            @if(giftForm("idGift").value() == null){
+                <input type="submit" value="Créer cadeau" class="btn btn-primary"> 
+            }else{
+                <input type="submit" value="Modifier cadeau" class="btn btn-primary"> 
+            }
+            
             <a href="@routes.GiftController.giftHomeAdmin()" class="btn btn-danger">Annuler</a> 
         </div>
     }

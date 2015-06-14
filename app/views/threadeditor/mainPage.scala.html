@@ -12,32 +12,48 @@ $(function(){
 
 	var count  = 0;
 	
-	$("#addBibli").click(function(){
+	$(".addBibli").click(function(){
 		count++;
 		addBibliFunc(count);
 	});
+
+	$('.row#bibli' + this.id).each(function(){
+		$('button#bibli' + this.id).click(function(){
+			$('.row#bibli' + this.id).remove();
+		});
+	});
+
+
 	
 });
 function addBibliFunc (count) {
 	
 	
 	var zoneBibli = "";
-		zoneBibli += "<div class='row'>";
-		zoneBibli += "<div class='col-md-12' id='bibli" + count + "'>";
-		zoneBibli += "<h4>Bibliographie " + count + "</h4>";
-		zoneBibli += "<div class='col-md-4'>";
-		zoneBibli += "<label >Auteur</label>";
-		zoneBibli += "<input class='form-control' type='text' name='biblios[" + count + "].author'>";
-		zoneBibli += "</div>";
-		zoneBibli += "<div class='col-md-4'>";
-		zoneBibli += "<label >Titre</label>";
-		zoneBibli += "<input class='form-control' type='text' name='biblios[" + count + "].content'>";
-		zoneBibli += "</div>";
-		zoneBibli += "<div class='col-md-4'>";
-		zoneBibli += "<label >Lien</label>";
-		zoneBibli += "<input class='form-control' type='text' name='biblios[" + count + "].lien'>";
-		zoneBibli += "</div>";
-		zoneBibli += "</div>";
+		zoneBibli += "<div class='row' id='bibli" + count + "'>";
+			
+			zoneBibli += "<div class='col-md-10' id='bibli" + count + "'>";
+				zoneBibli += "<h4>Bibliographie " + count + "</h4>";
+			zoneBibli += "</div>";
+			
+			zoneBibli += "<div class='col-md-2'>";
+				zoneBibli += "<a class='btn btn-xs' id='bibli" + count + "'> <span class='glyphicon glyphicon-remove'></span></a>"
+			zoneBibli += "</div>";
+
+			zoneBibli += "<div class='row'>";
+				zoneBibli += "<div class='col-md-4'>";
+					zoneBibli += "<label >Auteur</label>";
+					zoneBibli += "<input class='form-control' type='text' name='biblios[" + count + "].author'>";
+				zoneBibli += "</div>";
+				zoneBibli += "<div class='col-md-4'>";
+					zoneBibli += "<label >Titre</label>";
+					zoneBibli += "<input class='form-control' type='text' name='biblios[" + count + "].content'>";
+				zoneBibli += "</div>";
+				zoneBibli += "<div class='col-md-4'>";
+					zoneBibli += "<label >Lien</label>";
+					zoneBibli += "<input class='form-control' type='text' name='biblios[" + count + "].lien'>";
+				zoneBibli += "</div>";
+			zoneBibli += "</div>";
 		zoneBibli += "</div>";
 	$(".zoneBibli").append(zoneBibli);
 
@@ -98,7 +114,7 @@ function addBibliFunc (count) {
 
 			<a href="@routes.ForumController.forumHome(app,0, "publicDate", "desc")" class="btn btn-danger">Annuler</a> 
 			
-			<div class="btn btn-success" id="addBibli">Ajouter une bibliographie</div>
+			<div class="addBibli btn btn-success">Ajouter une bibliographie</div>
 		</div>
 	</div>
 	<div class="col-md-1">

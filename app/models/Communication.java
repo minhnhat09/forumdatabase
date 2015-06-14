@@ -12,12 +12,11 @@ import play.data.validation.Constraints;
 import play.db.ebean.Model.Finder;
 import play.mvc.PathBindable;
 
+import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Page;
 
 @Entity
 public class Communication implements PathBindable<Communication>{
-
-
 	
 	@Id
 	public int idCommunication;
@@ -75,6 +74,13 @@ public class Communication implements PathBindable<Communication>{
 		return String.valueOf(this.idCommunication);
 	}
 	
+	public static void deleteCommunication(String idCom){
+		final Communication com = Communication.findByID(idCom);
+		if(com != null){
+			Ebean.delete(com);
+		}
+		
+	}
 }
 
 

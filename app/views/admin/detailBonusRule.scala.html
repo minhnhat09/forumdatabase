@@ -5,8 +5,11 @@
 
 
 @main("Modifier règlement", searchForm) {
-    
-    <h1>Ajouter/Modifier nouveau règlement</h1>
+    @if(bonusRuleForm("idBonus").value() == null){
+        <h1>Ajouter nouveau règlement</h1>
+    }else{
+        <h1>Modifier règlement</h1>
+    }
     
     @helper.form(routes.AdminController.saveBonusRule(), 'class -> "form-group") {
        
@@ -20,7 +23,12 @@
             	'class -> "form-control", 'placeholder -> "Bonus", 'style ->"width:50%")
 		</fieldset>
         <div class="actions">
-            <input type="submit" value="Modifier le règlement" class="btn btn-primary"> 
+            @if(bonusRuleForm("idBonus").value() == null){
+                <input type="submit" value="Ajouter règlement" class="btn btn-primary"> 
+            }else{
+                <input type="submit" value="Modifier règlement" class="btn btn-primary"> 
+            }
+            
             <a href="@routes.AdminController.listBonusRules(0)" class="btn btn-danger">Annuler</a> 
         </div>
     }

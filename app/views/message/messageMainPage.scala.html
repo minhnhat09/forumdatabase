@@ -93,20 +93,17 @@
 
 
 
-function ConfirmDialog(message){
+function ConfirmDialog(message, data){
+
     $('<div></div>').appendTo('body')
                     .html('<div><h6>'+message+'?</h6></div>')
                     .dialog({
-                        modal: true, title: 'Delete message', zIndex: 10000, autoOpen: true,
+                        modal: true, title: 'Confirmation supression', zIndex: 10000, autoOpen: true,
                         width: 'auto', resizable: false,
                         buttons: {
                             Yes: function () {
-					            var data = findCheckedMess();
-								if(data === undefined || data.length == 0){
-									alert("Sélectionnez au moin un message");
-								}
 								$(".mess_check_box").prop("checked",false);
-
+								
 								appRoutes.controllers.MessageController.deleteListMess().ajax({
 										data:JSON.stringify(data),
 										contentType:'application/json',
@@ -118,6 +115,7 @@ function ConfirmDialog(message){
 											alert("Supprimer liste échec");
 										}
 								});
+
                                 $(this).dialog("close");
                             },
                             No: function () {
@@ -132,9 +130,12 @@ function ConfirmDialog(message){
 
 
 		$("#deleteListMess").click(function(){
-			ConfirmDialog('Are you sure');
-			
-			
+			var data = findCheckedMess();
+			if(data === undefined || data.length == 0){
+				alert("Sélectionnez au moin un message");
+			}else{
+				ConfirmDialog('Voulez vous vraiment supprimer ces objets ?', data);
+			}
 		});
 
 		$("#deleteListNotis").click(function(){

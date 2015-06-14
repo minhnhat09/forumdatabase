@@ -274,7 +274,19 @@ import controllers.SearchController.Search;
 				routes.javascript.AdminController.getAppsByService(),
 
 				routes.javascript.GiftController.deleteListGift(),
-				routes.javascript.GiftController.buyListGift()));
+				routes.javascript.GiftController.buyListGift(),
+				//Tag admin page
+				routes.javascript.AdminController.deleteListTags(),
+				//Application admin page
+				routes.javascript.AdminController.deleteListApps(),
+				//Service admin page
+				routes.javascript.AdminController.deleteListServices(),
+				//Title admin page
+				routes.javascript.AdminController.deleteListTitles(),
+				//Communication admin page
+				routes.javascript.AdminController.deleteListComs()
+				
+				));
 
 	}
 

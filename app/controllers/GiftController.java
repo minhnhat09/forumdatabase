@@ -84,6 +84,11 @@ public class GiftController extends Controller {
 			return ok(views.html.gifts.detailGift.render(boundForm, searchForm));
 		}
 		Gift gift = boundForm.get();
+		
+		if(gift.idGift == 0){
+			Ebean.save(gift);
+		}
+		
 		MultipartFormData body = request().body().asMultipartFormData();
 		FilePart picture = body.getFile("picture");
 		if (picture != null) {
@@ -158,11 +163,7 @@ public class GiftController extends Controller {
 			
 		}
 		
-		if(gift.idGift == 0){
-			Ebean.save(gift);
-		}else{
-			Ebean.update(gift);
-		}
+		Ebean.update(gift);
 		
 		
 		flash("success", String.format("Le cadeau a bien été enregistré"));
@@ -189,12 +190,11 @@ public class GiftController extends Controller {
 	 * @return
 	 */
 	public static Result deleteListGift(String str){
-		
 		if(str != null){
 			if(Gift.deleteListGift(str))
-				flash("success", String.format("Supprimer la liste des cadeaux ok"));
+				flash("success", String.format("La liste des cadeaux a bien été supprimé"));
 			else
-				flash("error", String.format("Supprimer la liste des cadeaux not ok"));
+				flash("error", String.format("Erreur lors de la supression des cadeaux"));
 			return ok();
 		}
 		else return forbidden();

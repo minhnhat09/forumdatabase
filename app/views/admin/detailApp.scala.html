@@ -5,8 +5,11 @@
 
 
 @main("Ajouter une Application", searchForm) {
-    
-    <h1>Ajouter/Modifier Application</h1>
+    @if(appForm("idApp").value() == null){
+    <h1>Ajouter Application</h1>
+    }else{
+    <h1>Modifier Application</h1>
+    }
     
     @helper.form(routes.AdminController.saveApp(), 'class -> "form-group", 'enctype -> "multipart/form-data", 'name -> "detailForm") {
        
@@ -39,9 +42,12 @@
         </fieldset>
         <div class="actions">
 
+            @if(appForm("idApp").value() == null){
+                <input type="submit" value="Créer Application" class="btn btn-primary" ng-disabled="detailForm.$invalid"> 
+            }else{
+                <input type="submit" value="Modifier Application" class="btn btn-primary" ng-disabled="detailForm.$invalid"> 
+            }                    
             
-            <input type="submit" value="Créer/Modifier Application" class="btn btn-primary" ng-disabled="detailForm.$invalid"> 
-        
        
     
             

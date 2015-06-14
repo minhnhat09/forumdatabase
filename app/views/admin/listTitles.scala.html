@@ -18,18 +18,19 @@
 				<a href="@routes.AdminController.newTitle()" class="btn btn-primary">Nouveau Titre</a>
 			</div>
 			<div class="col-md-6" align="right">
-				<div class="btn-group">
+				<a id="deleteListTitles" class="btn btn-danger">Supprimer</a>
+				<!-- <div class="btn-group">
 					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 						Opération
 						<span class="caret"></span>
 					</button>
 					<ul class="dropdown-menu" role="menu">
+							
 						
 						<li>
-							<a href="#">Supprimer</a>
 						</li>
 					</ul>
-				</div>
+				</div> -->
 
 			</div>
 		</div>
@@ -50,26 +51,27 @@
 				@for(title <- Title.findListTitles){
 				<tr>
 					<td>
-						<input class="title_check_box" type='checkbox' />
+						<input id="@title.idTitle" class="title_check_box" type='checkbox' />
 					</td>
 					<th>@title.titleName</th>
 					<th>@title.exp</th>
 					
 					<td>
-						<div class="btn-group">
+						<a class="btn btn-info" href="@routes.AdminController.modifyTitle(title)">Modifier</a>
+
+						<!-- <div class="btn-group">
 							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 								Opération
 								<span class="caret"></span>
 							</button>
 							<ul class="dropdown-menu" role="menu">
 								<li>
-									<a href="@routes.AdminController.modifyTitle(title)">Modifier</a>
 								</li>
 								<li>
 									<a href="#" data-href="@routes.AdminController.deleteTitle(title.idTitle.toString)" data-toggle="modal" data-target="#confirm-delete">Supprimer</a>
 								</li>
 							</ul>
-						</div>
+						</div> -->
 					</td>
 				</tr>
 			}
@@ -97,8 +99,61 @@
 			}
 		});
 
+		$('#deleteListTitles').click(function(){
+			var data = findCheckedTitles();
+			if(data === undefined || data.length == 0){
+				alert("Sélectionnez au moin un objet");
+			}else{
+				ConfirmDialog('Voulez vous vraiment supprimer ces objets ?', data);
+			}
+		})
+
 	});
 
+	function ConfirmDialog(message, data){
+
+	    $('<div></div>').appendTo('body')
+	                    .html('<div><h6>'+message+'?</h6></div>')
+	                    .dialog({
+	                        modal: true, title: 'Confirmation supression', zIndex: 10000, autoOpen: true,
+	                        width: 'auto', resizable: false,
+	                        buttons: {
+	                            Yes: function () {
+									$(".title_check_box").prop("checked",false);
+									
+									appRoutes.controllers.AdminController.deleteListTitles().ajax({
+											data:JSON.stringify(data),
+											contentType:'application/json',
+											type:'POST',
+											success:function(resultats){
+												location.reload();
+											},
+											error:function(resultats){
+												alert("Supprimer liste échec");
+											}
+									});
+
+	                                $(this).dialog("close");
+	                            },
+	                            No: function () {
+	                                $(this).dialog("close");
+	                            }
+	                        },
+	                        close: function (event, ui) {
+	                            $(this).remove();
+	                        }
+	                    });
+	    };
+
+	function findCheckedTitles(){
+		var title_list = [];
+		$('.title_check_box').each(function(){
+			if(this.checked){
+				title_list.push(this.id);
+			}
+		});
+		return title_list;
+	}
 
 	function del(urlToDelete) {
 		$.ajax({

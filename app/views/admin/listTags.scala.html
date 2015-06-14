@@ -19,17 +19,20 @@
 			
 			</div>
 			<div class="col-md-6" align="right">
-				<div class="btn-group">
+				<a id="deleteListTags" class="btn btn-danger">Supprimer</a>
+
+
+				<!-- <div class="btn-group">
 					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 						Opération
 						<span class="caret"></span>
 					</button>
 					<ul class="dropdown-menu" role="menu">
 						<li>
-							<a href="#" data-target="#confirm-delete">Supprimer</a>
+							<a id="deleteListTags" class="btn btn-danger">Supprimer</a>
 						</li>
 					</ul>
-				</div>
+				</div> -->
 
 			</div>
 		</div>
@@ -50,13 +53,14 @@
 				@for(tag <- Tag.findListTag){
 				<tr>
 					<td>
-						<input class="tag_check_box" type='checkbox' />
+						<input id="@tag.idTag" class="tag_check_box" type='checkbox' />
 					</td>
 					<th>@tag.tagTitle</th>
 					<th>@tag.category</th>
 					
 					<td>
-						<div class="btn-group">
+						<a class="btn btn-info" href="@routes.AdminController.modifyTag(tag)">Modifier</a>
+						<!-- <div class="btn-group">
 							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 								Opération
 								<span class="caret"></span>
@@ -70,7 +74,7 @@
     
 								</li>
 							</ul>
-						</div>
+						</div> -->
 					</td>
 				</tr>
 			}
@@ -96,7 +100,65 @@
 				$("#select_all_tags").prop('checked', true);
 			}
 		});
+
+		$("#deleteListTags").click(function(){
+				var data = findCheckedTags();
+				if(data === undefined || data.length == 0){
+					alert("Sélectionnez au moin un objet");
+				}else{
+					ConfirmDialog('Voulez vous vraiment supprimer ces objets ?', data);
+				}
+			});
+
+
 	});
+
+	function ConfirmDialog(message, data){
+
+	    $('<div></div>').appendTo('body')
+	                    .html('<div><h6>'+message+'?</h6></div>')
+	                    .dialog({
+	                        modal: true, title: 'Confirmation supression', zIndex: 10000, autoOpen: true,
+	                        width: 'auto', resizable: false,
+	                        buttons: {
+	                            Yes: function () {
+									$(".tag_check_box").prop("checked",false);
+									
+									appRoutes.controllers.AdminController.deleteListTags().ajax({
+											data:JSON.stringify(data),
+											contentType:'application/json',
+											type:'POST',
+											success:function(resultats){
+												location.reload();
+											},
+											error:function(resultats){
+												alert("Supprimer liste échec");
+											}
+									});
+
+	                                $(this).dialog("close");
+	                            },
+	                            No: function () {
+	                                $(this).dialog("close");
+	                            }
+	                        },
+	                        close: function (event, ui) {
+	                            $(this).remove();
+	                        }
+	                    });
+	    };
+
+	function findCheckedTags(){
+		var tag_list = [];
+		$('.tag_check_box').each(function(){
+			if(this.checked){
+				tag_list.push(this.id);
+			}
+		});
+		return tag_list;
+	}
+
+
 </script>
 
 }

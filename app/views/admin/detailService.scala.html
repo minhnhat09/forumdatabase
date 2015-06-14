@@ -6,9 +6,9 @@
 
 @main("Ajouter/Modifier Serivce", searchForm) {
     
-    @if(serviceForm("idService") == 0){
+    @if(serviceForm("idService").value() == null){
         <h1>Ajouter Service</h1>
-        serviceForm("idService").value()
+        
 }else{
     <h1>Modifier Service</h1>
 }
@@ -19,13 +19,13 @@
         <fieldset>
         	<input type="hidden" value="@serviceForm("idService").valueOr("0")" name="idService"/>
             @helper.inputText(serviceForm("serviceName"), '_label -> "Nom du Service", 
-            	'class -> "form-control", 'placeholder -> "Nom du Service", 'style ->"width:50%" )
+            	'class -> "form-control", 'placeholder -> "Nom du Service", 'style ->"width:50%", 'required -> "")
             <!-- @helper.inputFile(serviceForm("picture"), '_label -> "Image du service", 
                 'style ->"width:50%" ) -->
            
 		</fieldset>
         <div class="actions">
-            @if(serviceForm("idService") != 0){
+            @if(serviceForm("idService").value() != null){
             <input type="submit" value="Modifier" class="btn btn-primary"> 
         }else{
         <input type="submit" value="Créer" class="btn btn-primary"> 

@@ -135,6 +135,8 @@ public class MessageController extends Controller {
 	  
 	    return GO_HOME_MESSAGE;
 	  }
+	
+	
 	/**
 	 * 
 	 * @return
@@ -155,6 +157,8 @@ public class MessageController extends Controller {
 		
 		return ok();
 	}
+	
+	
 	/**
 	 * 
 	 * @return

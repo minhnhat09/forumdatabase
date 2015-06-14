@@ -21,6 +21,7 @@
 			</div>
 			<div class="col-md-6" align="right">
 				<a class="btn btn-success" href="@routes.AdminController.newCommunication()">Ajouter une nouvelle</a>
+				<button id="deleteListComs" class="btn btn-danger">Supprimer</button>
 			</div>
 		</div>
 	</div>
@@ -41,13 +42,14 @@
 				@for(com
 				<- currentPage.getList()){ <tr>
 					<td>
-						<input class="com_check_box" type='checkbox' />
+						<input id="@com.idCommunication" class="com_check_box" type='checkbox' />
 					</td>
 					<td>@com.nameCommunication</td>
 					<td>@com.content</td>
 					<td>@("%1$tH:%1$tM:%1$tS %1$td/%1$tm/%1$tY".format(com.createDate))</td>
 					<td>
-						<div class="btn-group">
+						<a href="@routes.AdminController.modifyCommunication(com)" class="btn btn-info">Modifier</a>
+						<!-- <div class="btn-group">
 							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 								Opération
 								<span class="caret"></span>
@@ -56,11 +58,11 @@
 								<li>
 									<a href="@routes.AdminController.modifyCommunication(com)">Modifier</a>
 								</li>
-								<li>
+								 <li>
 									<a href="#" data-href="@routes.AdminController.deleteCommunication(com.idCommunication.toString)" data-toggle="modal" data-target="#confirm-delete">Supprimer</a>
-								</li>
+								</li> 
 							</ul>
-						</div>
+						</div> -->
 					</td>
 					</tr>
 					}
@@ -70,9 +72,8 @@
 </div>
 <script type="text/javascript">
 	$(document).ready(function(){
-
-
 		
+
 
 		$("#select_all_coms").click(function(){
 			$('.com_check_box').prop('checked',false);
@@ -89,8 +90,65 @@
 			}
 		});
 
+		$("#deleteListComs").click(function(){
+				var data = findCheckedComs();
+				if(data === undefined || data.length == 0){
+					alert("Sélectionnez au moin un objet");
+				}else{
+					ConfirmDialog('Voulez vous vraiment supprimer ces objets ?', data);
+				}
+			});
 		
+
+
 	});
+
+	function ConfirmDialog(message, data){
+
+	    $('<div></div>').appendTo('body')
+	                    .html('<div><h6>'+message+'?</h6></div>')
+	                    .dialog({
+	                        modal: true, title: 'Confirmation supression', zIndex: 10000, autoOpen: true,
+	                        width: 'auto', resizable: false,
+	                        buttons: {
+	                            Yes: function () {
+									$(".com_check_box").prop("checked",false);
+									
+									appRoutes.controllers.AdminController.deleteListComs().ajax({
+											data:JSON.stringify(data),
+											contentType:'application/json',
+											type:'POST',
+											success:function(resultats){
+												location.reload();
+											},
+											error:function(resultats){
+												alert("Supprimer liste échec");
+											}
+									});
+
+	                                $(this).dialog("close");
+	                            },
+	                            No: function () {
+	                                $(this).dialog("close");
+	                            }
+	                        },
+	                        close: function (event, ui) {
+	                            $(this).remove();
+	                        }
+	                    });
+	    };
+
+	function findCheckedComs(){
+		var com_list = [];
+		$('.com_check_box').each(function(){
+			if(this.checked){
+				com_list.push(this.id);
+			}
+		});
+		return com_list;
+	}
+
+
 </script>
 
 }

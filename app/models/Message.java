@@ -67,9 +67,6 @@ public class Message extends Model {
 		Message mess = Message.findById(messString);
 		if(mess != null){
 			mess.delete();
-			 
 		}
-			
-		
 	}
 }

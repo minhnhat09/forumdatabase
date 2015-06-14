@@ -5,6 +5,8 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import com.avaje.ebean.Ebean;
+
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
 import play.mvc.PathBindable;
@@ -52,6 +54,11 @@ public class Title extends Model implements PathBindable<Title>{
 		return String.valueOf(this.idTitle);
 	}
 	
-	
+	public static void deleteTitle(String idTitle){
+		final Title title = findById(idTitle);
+		if(title != null){
+			Ebean.delete(title);
+		}
+	}
 	
 }

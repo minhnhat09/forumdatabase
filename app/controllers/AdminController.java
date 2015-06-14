@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import models.AccountValidation;
@@ -12,6 +13,7 @@ import models.BonusRule;
 import models.Communication;
 import models.Demand;
 import models.DemandPremium;
+import models.Message;
 import models.Permission;
 import models.Service;
 import models.Tag;
@@ -23,12 +25,15 @@ import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Http.MultipartFormData;
 import play.mvc.Http.MultipartFormData.FilePart;
+import play.mvc.BodyParser;
 import play.mvc.Result;
 import play.mvc.Security;
 
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Page;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.io.Files;
+
 
 import controllers.SearchController.Search;
 /**
@@ -483,6 +488,38 @@ public class AdminController extends Controller {
 	  }
 	
 	/**
+	 * Method used to delete list services
+	 * input data: ajax
+	 * 
+	 * @return ok message if success
+	 */
+	
+	@BodyParser.Of(BodyParser.Json.class)
+	public static Result deleteListServices(){
+		JsonNode json = request().body().asJson();
+		
+		if(json ==null){
+			return badRequest("Json data not found");
+		}else{
+			Iterator<JsonNode> it = json.elements();
+			while(it.hasNext()){
+				
+				String idService = it.next().textValue();
+				System.out.println(idService);
+				final Service service = Service.findById(idService);
+				if(service != null){
+					Service.delService(service);
+				}
+				
+			}
+		}
+		
+		return ok();
+	}
+	
+	
+	
+	/**
 	 * Methods manage Apps 
 	 * */
 	
@@ -567,10 +604,22 @@ public class AdminController extends Controller {
 		}
 		Application app = boundForm.get();
 		
+		if(app.idApp == 0){
+			//Check if application don't have the same name
+			String idService = String.valueOf(app.service.idService);
+			List<Application> listAppsInService = Application.findByIdService(idService);
+			for (Application application : listAppsInService) {
+				if(app.appName.equalsIgnoreCase(application.appName)){
+					flash("error", String.format("Saisissez un autre nom de l'application"));
+					return badRequest(views.html.admin.detailApp.render(boundForm, searchForm));
+				}
+			}
+			Ebean.save(app);
+		}
+		
 		FilePart picture = body.getFile("picture");
 		
 		if (picture != null) {
-			
 			String contentType = picture.getContentType();
 			
 			String str[] = contentType.split("/");
@@ -606,7 +655,7 @@ public class AdminController extends Controller {
 								.println("Failed to create multiple directories!");
 					}
 				}
-				String fileName = "avatarApp" + fileType;
+				String fileName = "avatarApp." + fileType;
 				
 				file = new File(path + fileName);
 				fop = new FileOutputStream(file);
@@ -637,13 +686,8 @@ public class AdminController extends Controller {
 			
 		}
 		
-		if(app.idApp == 0){
-			//default value of max views is 3
-			app.maxViews = 3;
-			app.save();
-		}else{
-			app.update();
-		}
+		 
+		Ebean.update(app);
 		
 		flash("success", String.format("L'application a bien été enregistrée"));
 		return GO_HOME_APPLICATION;
@@ -666,6 +710,36 @@ public class AdminController extends Controller {
 	    
 	    return GO_HOME_APPLICATION;
 	  }
+	
+	/**
+	 * Method used to delete list apps
+	 * input data: ajax
+	 * 
+	 * @return ok message if success
+	 */
+	
+	@BodyParser.Of(BodyParser.Json.class)
+	public static Result deleteListApps(){
+		JsonNode json = request().body().asJson();
+		
+		if(json ==null){
+			return badRequest("Json data not found");
+		}else{
+			Iterator<JsonNode> it = json.elements();
+			while(it.hasNext()){
+				
+				String idApp = it.next().textValue();
+				System.out.println(idApp);
+				final Application app = Application.findById(idApp);
+				if(app != null){
+					Application.delApp(app);
+				}
+				
+			}
+		}
+		
+		return ok();
+	}
 	
 	
 	
@@ -827,16 +901,18 @@ public class AdminController extends Controller {
 			if(cat.equals("0")) tag.category = "pays";
 			else if(cat.equals("1")) tag.category = "modules";
 			else tag.category = "Catégory Inconnue";
+			flash("success", String.format("Le tag a bien été enregistré"));
 			Ebean.save(tag);
 		}else{
 			String cat = tag.category;
 			if(cat.equals("0")) tag.category = "pays";
 			else if(cat.equals("1")) tag.category = "modules";
 			else tag.category = "Catégory Inconnue";
+			flash("success", String.format("Le tag a bien été modifié"));
 			Ebean.update(tag);
 		}
 		
-		flash("success", String.format("Successfully added new Tag"));
+		
 		return GO_HOME_TAG;
 	}
 	
@@ -849,6 +925,32 @@ public class AdminController extends Controller {
 	    Ebean.delete(tag);
 	    return GO_HOME_TAG;
 	  }
+	
+	/**
+	 * Method used to delete list titles
+	 * input data: ajax
+	 * 
+	 * @return ok message if succes
+	 */
+	
+	@BodyParser.Of(BodyParser.Json.class)
+	public static Result deleteListTags(){
+		JsonNode json = request().body().asJson();
+		
+		if(json ==null){
+			return badRequest("Json data not found");
+		}else{
+			Iterator<JsonNode> it = json.elements();
+			while(it.hasNext()){
+				
+				String idTag = it.next().textValue();
+				System.out.println(idTag);
+				Tag.deleteTag(idTag);
+			}
+		}
+		
+		return ok();
+	}
 	
 	
 	
@@ -957,6 +1059,32 @@ public class AdminController extends Controller {
 	  }
 	
 	/**
+	 * Method used to delete list communication
+	 * input data: ajax
+	 * @return
+	 */
+	
+	@BodyParser.Of(BodyParser.Json.class)
+	public static Result deleteListComs(){
+		JsonNode json = request().body().asJson();
+		
+		if(json ==null){
+			return badRequest("Json data not found");
+		}else{
+			Iterator<JsonNode> it = json.elements();
+			while(it.hasNext()){
+				
+				String idCom = it.next().textValue();
+				Communication.deleteCommunication(idCom);
+			}
+		}
+		
+		return ok();
+	}
+	
+	
+	
+	/**
 	 * Methods manage Tag Tab
 	 * */
 	/**
@@ -1010,6 +1138,7 @@ public class AdminController extends Controller {
 	public static Result saveTitle(){
 		Form<Title> boundForm = titleForm.bindFromRequest();
 		if(boundForm.hasErrors()){
+			
 			return badRequest(views.html.admin.detailTitle.render(titleForm, searchForm));
 		}
 		Title title = boundForm.get();
@@ -1037,6 +1166,32 @@ public class AdminController extends Controller {
 	    Ebean.delete(title);
 	    return GO_HOME_TITLE;
 	  }
+	
+	/**
+	 * Method used to delete list titles
+	 * input data: ajax
+	 * 
+	 * @return ok message if succes
+	 */
+	
+	@BodyParser.Of(BodyParser.Json.class)
+	public static Result deleteListTitles(){
+		JsonNode json = request().body().asJson();
+		
+		if(json ==null){
+			return badRequest("Json data not found");
+		}else{
+			Iterator<JsonNode> it = json.elements();
+			while(it.hasNext()){
+				
+				String idTitle = it.next().textValue();
+				System.out.println(idTitle);
+				Title.deleteTitle(idTitle);
+			}
+		}
+		
+		return ok();
+	}
 	
 	/**
 	 * Ajax method used to get applications

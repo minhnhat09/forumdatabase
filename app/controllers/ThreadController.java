@@ -1,6 +1,7 @@
 package controllers;
 
 import java.util.Date;
+import java.util.List;
 
 import models.ApplicationView;
 import models.BonusRule;
@@ -485,10 +486,11 @@ public class ThreadController extends Controller {
 	public static Result deleteThread(models.Application app, String idThread){
 		final Thread thread = Thread.findById(Integer.parseInt(idThread));
 		if(thread == null){
-			
 			return notFound(String.format("Article % n'existe pas", idThread));
 		}
 		System.out.println("xoa thread------------------------------------------------------------" + thread.idThread);
+		
+		
 		Thread.delThread(thread);
 		
 		return ok();

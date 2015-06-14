@@ -9,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import com.avaje.ebean.Ebean;
+
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
 import play.mvc.PathBindable;
@@ -93,7 +95,16 @@ public class Tag extends Model implements PathBindable<Tag>{
 		
 	}
 
-
+	/**
+	 * Method used to delete tag
+	 * @param idTag find tag by its id
+	 */
+	public static void deleteTag(String idTag){
+		final Tag tag = findById(Integer.parseInt(idTag));
+		if(tag != null){
+			Ebean.delete(tag);
+		}
+	}
 
 	@Override
 	public Tag bind(String key, String value) {
