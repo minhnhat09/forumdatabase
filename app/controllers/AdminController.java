@@ -13,7 +13,6 @@ import models.BonusRule;
 import models.Communication;
 import models.Demand;
 import models.DemandPremium;
-import models.Message;
 import models.Permission;
 import models.Service;
 import models.Tag;
@@ -22,10 +21,10 @@ import models.Title;
 import models.User;
 import play.data.DynamicForm;
 import play.data.Form;
+import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Http.MultipartFormData;
 import play.mvc.Http.MultipartFormData.FilePart;
-import play.mvc.BodyParser;
 import play.mvc.Result;
 import play.mvc.Security;
 
@@ -33,7 +32,6 @@ import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Page;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.io.Files;
-
 
 import controllers.SearchController.Search;
 /**
@@ -55,8 +53,8 @@ public class AdminController extends Controller {
 	public static Result GO_HOME_DEMAND				= redirect(routes.AdminController.listDemands(0));
 	public static Result GO_HOME_DEMAND_PREMIUM		= redirect(routes.AdminController.listDemandsPremium(0));
 	
-	public static Result GO_HOME_TITLE 				= redirect(routes.AdminController.listTitles());
-	public static Result GO_HOME_TAG 				= redirect(routes.AdminController.listTags());
+	public static Result GO_HOME_TITLE 				= redirect(routes.AdminController.listTitles(0));
+	public static Result GO_HOME_TAG 				= redirect(routes.AdminController.listTags(0));
 	public static Result GO_HOME_SERVICE			= redirect(routes.AdminController.listServices(0));
 	public static Result GO_HOME_APPLICATION		= redirect(routes.AdminController.listApps(0));
 	
@@ -108,8 +106,10 @@ public class AdminController extends Controller {
 			flash("success", String.format("Admin Mode ON"));
 			return ok();
 		}
-		
-		
+	}
+	
+	public static Result detailUser(User user){
+		return ok(views.html.admin.detailUser.render(user, searchForm));
 	}
 	
 	/**
@@ -158,59 +158,100 @@ public class AdminController extends Controller {
 	 * @param user will be block/unblock
 	 * @return page
 	 */
-	public static Result blockUnblockUser(User user){
-		user.isBlock = !user.isBlock;
-		user.update();
-		return ok();
-	}
-	
-	/**
-	 * 
-	 * @param user status will be switch to expert/normal
-	 * @return
-	 */
-	public static Result changeExpert(User user){
-		user.isExpert = ! user.isExpert;
-		
-		user.update();
-		
-		return ok();
-	}
-	
-	/**
-	 * 
-	 * @param user status will be switched to moderateur/normal
-	 * @return
-	 */
-	public static Result changeStatusMod(User user){
-		
-		Permission statusMod  = Permission.findById(2);
-		Permission statusUser = Permission.findById(3);
-		if(user.permission.equals(statusMod)){
-			user.permission = statusUser;
+	@BodyParser.Of(BodyParser.Json.class)
+	public static Result blockUnblockUser(){
+		JsonNode json = request().body().asJson();
+		if(json ==null){
+			return badRequest("Json data not found");
 		}else{
-			user.permission = statusMod;
+			Iterator<JsonNode> it = json.elements();
+			while(it.hasNext()){
+				String idUser = it.next().textValue();
+				System.out.println(idUser);
+				final User user = User.findById(idUser);
+				if(user != null){
+					User.blockUnblockUser(user);
+				}
+			}
 		}
-		user.update();
+		flash("success", "Le statut d'utilisateur a bien été changé");
 		return ok();
 	}
 	
 	/**
 	 * 
-	 * @param user status will be switched to admin/normal
+	 * @param user statut will be switch to expert/normal
 	 * @return
 	 */
-	public static Result changeStatusAdmin(User user){
-		
-		Permission statusAdmin  = Permission.findById(1);
-		Permission statusUser = Permission.findById(3);
-		if(user.permission.equals(statusAdmin)){
-			user.permission = statusUser;
-			flash("success", "Le status d'utilisateur est changé");
+	@BodyParser.Of(BodyParser.Json.class)
+	public static Result changeExpert(){
+		JsonNode json = request().body().asJson();
+		if(json ==null){
+			return badRequest("Json data not found");
 		}else{
-			user.permission = statusAdmin;
+			Iterator<JsonNode> it = json.elements();
+			while(it.hasNext()){
+				String idUser = it.next().textValue();
+				System.out.println(idUser);
+				final User user = User.findById(idUser);
+				if(user != null){
+					User.changeExpert(user);
+				}
+			}
 		}
-		user.update();
+		flash("success", "Le statut d'utilisateur a bien été changé");
+		return ok();
+	}
+	
+	/**
+	 * 
+	 * @param user statut will be switched to moderateur/normal
+	 * @return
+	 */
+	@BodyParser.Of(BodyParser.Json.class)
+	public static Result changeStatusMod(){
+		JsonNode json = request().body().asJson();
+		if(json ==null){
+			return badRequest("Json data not found");
+		}else{
+			Iterator<JsonNode> it = json.elements();
+			while(it.hasNext()){
+				String idUser = it.next().textValue();
+				System.out.println(idUser);
+				final User user = User.findById(idUser);
+				if(user != null){
+					User.changeStatusMod(user);
+				}
+			}
+		}
+		flash("success", "Le statut d'utilisateur a bien été changé");
+		return ok();
+	}
+	
+	/**
+	 * 
+	 * @param user statut will be switched to admin/normal
+	 * @return
+	 */
+	@BodyParser.Of(BodyParser.Json.class)
+	public static Result changeStatusAdmin(){
+			JsonNode json = request().body().asJson();
+			
+			if(json ==null){
+				return badRequest("Json data not found");
+			}else{
+				Iterator<JsonNode> it = json.elements();
+				while(it.hasNext()){
+					String idUser = it.next().textValue();
+					System.out.println(idUser);
+					final User user = User.findById(idUser);
+					if(user != null){
+						User.changeStatusAdmin(user);
+					}
+					
+				}
+			}
+		flash("success", "Le statut d'utilisateur a bien été changé");
 		return ok();
 	}
 	
@@ -401,7 +442,7 @@ public class AdminController extends Controller {
 	/**
 	 * Method used to save Service, it receive arguments from http post from client
 	 * It used for both creation and modification service use case
-	 * @return status ok or not ok, 
+	 * @return statut ok or not ok, 
 	 */
 	public static Result saveService(){
 		MultipartFormData body = request().body().asMultipartFormData();
@@ -514,7 +555,7 @@ public class AdminController extends Controller {
 			}
 		}
 		
-		return ok();
+		return ok("La liste des service a bien été supprimée");
 	}
 	
 	
@@ -591,7 +632,7 @@ public class AdminController extends Controller {
 	
 	/**
 	 * Method used to save application into database. It used for both creation and modification use case
-	 * @return status ok or not ok
+	 * @return statut ok or not ok
 	 */
 	public static Result saveApp(){
 		Form<Application> boundForm = appForm.bindFromRequest();
@@ -799,7 +840,7 @@ public class AdminController extends Controller {
 	
 	/**
 	 * Method used to save bonus rule into database. It used for both creation and modification use case
-	 * @return status ok or not ok and redirect to bonus rule admin page
+	 * @return statut ok or not ok and redirect to bonus rule admin page
 	 */
 	public static Result saveBonusRule(){
 		Form<BonusRule> boundForm = bonusRuleForm.bindFromRequest();
@@ -841,9 +882,11 @@ public class AdminController extends Controller {
 	 * Method used to render tag admin page
 	 * @return tag admin page
 	 */
-	public static Result listTags(){
+	public static Result listTags(Integer page){
+		Page<Tag> tags = Tag.find(page);
+		
 		if(controllers.Application.isAdmin()){
-			return ok(views.html.admin.listTags.render(searchForm));
+			return ok(views.html.admin.listTags.render(tags, searchForm));
 		}else{
 			flash("error", String.format("Vous n'avez pas le droit de consulter cette page"));
 			return redirect(routes.AccueilController.accueil());
@@ -886,7 +929,7 @@ public class AdminController extends Controller {
 	
 	/**
 	 * Method used to save tag into database. It used for both creation and modification page
-	 * @return status ok or not ok and redirect to tag admin page
+	 * @return statut ok or not ok and redirect to tag admin page
 	 */
 	public static Result saveTag(){
 		Form<Tag> boundForm = tagForm.bindFromRequest();
@@ -949,7 +992,7 @@ public class AdminController extends Controller {
 			}
 		}
 		
-		return ok();
+		return ok("La liste des étiquettes a bien été supprimée");
 	}
 	
 	
@@ -1023,7 +1066,7 @@ public class AdminController extends Controller {
 	}
 	/**
 	 * Method used to save a communication into database. It used for both creation and modification use case
-	 * @return status ok or not ok. Redirect to communication admin page
+	 * @return statut ok or not ok. Redirect to communication admin page
 	 */
 	public static Result saveCommunication(){
 		Form<Communication> boundForm = communicationForm.bindFromRequest();
@@ -1079,7 +1122,7 @@ public class AdminController extends Controller {
 			}
 		}
 		
-		return ok();
+		return ok("La liste des communication a bien été supprimée");
 	}
 	
 	
@@ -1091,9 +1134,10 @@ public class AdminController extends Controller {
 	 * Method used to render list of titles
 	 * @return titles admin page
 	 */
-	public static Result listTitles(){
+	public static Result listTitles(int page){
 		if(controllers.Application.isAdmin()){
-			return ok(views.html.admin.listTitles.render(searchForm));
+			Page<Title> titles = Title.find(page);
+			return ok(views.html.admin.listTitles.render(titles, searchForm));
 		}else{
 			flash("error", String.format("Vous n'avez pas le droit de consulter cette page"));
 			return redirect(routes.AccueilController.accueil());
@@ -1133,7 +1177,7 @@ public class AdminController extends Controller {
 	}
 	/**
 	 * Method used to save title into database. It used for both creation and modification use case
-	 * @return status ok or not ok. It redirect to title admin page
+	 * @return statut ok or not ok. It redirect to title admin page
 	 */
 	public static Result saveTitle(){
 		Form<Title> boundForm = titleForm.bindFromRequest();
@@ -1190,7 +1234,7 @@ public class AdminController extends Controller {
 			}
 		}
 		
-		return ok();
+		return ok("La listed des titre a bien été supprimée");
 	}
 	
 	/**

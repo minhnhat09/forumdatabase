@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 import com.avaje.ebean.Ebean;
+import com.avaje.ebean.Page;
 
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
@@ -37,6 +38,18 @@ public class Title extends Model implements PathBindable<Title>{
 				   .findUnique();
 	}
 	
+	/**
+	 * Return a page of titles
+	 * @param page Page to display
+	 * */
+	
+	public static Page<Title> find(int page){
+		return find.where()
+				.orderBy("id_title asc")
+				.findPagingList(10)
+				.setFetchAhead(false)
+				.getPage(page);
+	}
 	
 
 	@Override

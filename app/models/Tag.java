@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
 import com.avaje.ebean.Ebean;
+import com.avaje.ebean.Page;
 
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
@@ -41,6 +42,16 @@ public class Tag extends Model implements PathBindable<Tag>{
 	
 	public static Tag findById(int id){
 		return find.byId(id);
+	}
+	
+	public static Page<Tag> find(int page){
+		return 
+				find.where()
+				.orderBy("id_tag asc")
+				.findPagingList(10)
+				.setFetchAhead(false)
+				.getPage(page);
+				
 	}
 	
 	public static List<Tag> findListTag(){

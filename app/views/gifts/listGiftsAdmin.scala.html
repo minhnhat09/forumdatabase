@@ -115,6 +115,7 @@
 							appRoutes.controllers.GiftController.deleteListGift(data).ajax({
 								type: 'DELETE',
 								success: function(resultats) {
+									alert(resultats);
 									location.reload();
 								},error:function(resultats){
 											alert("Supprimer liste échec");

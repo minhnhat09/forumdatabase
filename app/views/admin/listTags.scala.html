@@ -1,4 +1,4 @@
-@(searchForm:Form[controllers.SearchController.Search])
+@(currentPage: com.avaje.ebean.Page[Tag], searchForm:Form[controllers.SearchController.Search])
 @adminMain(searchForm){
 
 
@@ -20,20 +20,6 @@
 			</div>
 			<div class="col-md-6" align="right">
 				<a id="deleteListTags" class="btn btn-danger">Supprimer</a>
-
-
-				<!-- <div class="btn-group">
-					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-						Opération
-						<span class="caret"></span>
-					</button>
-					<ul class="dropdown-menu" role="menu">
-						<li>
-							<a id="deleteListTags" class="btn btn-danger">Supprimer</a>
-						</li>
-					</ul>
-				</div> -->
-
 			</div>
 		</div>
 	</div>
@@ -50,7 +36,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				@for(tag <- Tag.findListTag){
+				@for(tag <- currentPage.getList()){
 				<tr>
 					<td>
 						<input id="@tag.idTag" class="tag_check_box" type='checkbox' />
@@ -60,26 +46,30 @@
 					
 					<td>
 						<a class="btn btn-info" href="@routes.AdminController.modifyTag(tag)">Modifier</a>
-						<!-- <div class="btn-group">
-							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-								Opération
-								<span class="caret"></span>
-							</button>
-							<ul class="dropdown-menu" role="menu">
-								<li>
-									<a href="@routes.AdminController.modifyTag(tag)">Modifier</a>
-								</li>
-								<li>
-									<a href="#" data-href="@routes.AdminController.deleteTag(tag.idTag)" data-toggle="modal" data-target="#confirm-delete">Supprimer</a>
-    
-								</li>
-							</ul>
-						</div> -->
 					</td>
 				</tr>
 			}
 			</tbody>
 		</table>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-6"></div>
+		<div class="col-md-6" align="right">
+			<div class="btn-group">
+				@if(currentPage.hasPrev){
+				<a class="btn btn-primary" href="@routes.AdminController.listTags(currentPage.getPageIndex - 1)">
+					<span class='glyphicon glyphicon-chevron-left'>
+					</span>Page precedente</a>
+				}else{
+				<a class="btn btn-primary" disabled="disabled"><span class='glyphicon glyphicon-chevron-left'>
+				</span>Page precedente</a>
+			}<a class="btn btn-primary" href="">@currentPage.getDisplayXtoYofZ(" - ", " / ")</a> @if(currentPage.hasNext){
+			<a class="btn btn-primary" href="@routes.AdminController.listTags(currentPage.getPageIndex + 1)">Page suivante<span class='glyphicon glyphicon-chevron-right'></span></a>
+		}else{
+		<a class="btn btn-primary" disabled="disabled">Page suivante<span class='glyphicon glyphicon-chevron-right'></span></a>
+	}
+			</div>
 	</div>
 </div>
      
@@ -129,6 +119,7 @@
 											contentType:'application/json',
 											type:'POST',
 											success:function(resultats){
+												alert(resultats);
 												location.reload();
 											},
 											error:function(resultats){

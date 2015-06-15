@@ -16,9 +16,9 @@
         <fieldset>
         	<input type="hidden" value="@communicationForm("idCommunication").valueOr("0")" name="idCommunication"/>
             @helper.inputText(communicationForm("nameCommunication"), '_label -> "Information Communication", 
-            	'class -> "form-control", 'placeholder -> "Information Communication", 'style ->"width:50%" )
+            	'class -> "form-control", 'placeholder -> "Information Communication", 'style ->"width:50%", 'required -> "")
             @helper.textarea(communicationForm("content"), '_label -> "Contenu de la pub",
-                'class -> "form-control", 'placeholder -> "Contenu de la pub", 'rows -> 5, 'style ->"width:50%" )
+                'class -> "form-control", 'placeholder -> "Contenu de la pub", 'rows -> 5, 'style ->"width:50%", 'required -> "" )
         </fieldset>
         <div class="actions">
             @if(communicationForm("idCommunication").value() == null){

@@ -1,11 +1,5 @@
 package controllers;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
-import com.google.common.io.Files;
-
 import models.Post;
 import models.Thread;
 import models.User;
@@ -15,8 +9,6 @@ import play.data.Form;
 import play.data.validation.Constraints;
 import play.mvc.Controller;
 import play.mvc.Result;
-import play.mvc.Http.MultipartFormData;
-import play.mvc.Http.MultipartFormData.FilePart;
 import controllers.SearchController.Search;
 
 	/**
@@ -272,7 +264,12 @@ import controllers.SearchController.Search;
 				routes.javascript.MessageController.deleteListNotis(),
 
 				routes.javascript.AdminController.getAppsByService(),
-
+				//User admin page
+				routes.javascript.AdminController.changeExpert(),
+				routes.javascript.AdminController.changeStatusAdmin(),
+				routes.javascript.AdminController.changeStatusMod(),
+				routes.javascript.AdminController.blockUnblockUser(),
+				//Gift admin page
 				routes.javascript.GiftController.deleteListGift(),
 				routes.javascript.GiftController.buyListGift(),
 				//Tag admin page

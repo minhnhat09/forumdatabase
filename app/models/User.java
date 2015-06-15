@@ -21,6 +21,7 @@ import play.data.validation.Constraints.Min;
 import play.data.validation.Constraints.MinLength;
 import play.db.ebean.Model;
 import play.mvc.PathBindable;
+import play.mvc.Result;
 
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Page;
@@ -73,6 +74,8 @@ public class User extends Model implements PathBindable<User>{
 	public String mobilePhone;
 	
 	public int idServiceSubscribe;
+	
+	
 	
 	@Constraints.Required
 	public String postalCode;
@@ -329,6 +332,59 @@ public class User extends Model implements PathBindable<User>{
 	            .eq("user_name", userName)
 	            .eq("password", password)
 	            .findUnique();
-	    }
+	 }
+	 
+	 /**
+	  * Method used to change status block or unblock of user
+	  * @param user user user whose status is changed
+	  */
+	 
+	 public static void blockUnblockUser(User user){
+			user.isBlock = !user.isBlock;
+			user.update();
+			
+	 }
+	 /**
+	  * Method used to change status expert of user
+	  * @param user user user whose status is changed
+	  */
+	 public static void changeExpert(User user){
+			user.isExpert = ! user.isExpert;
+			user.update();
+	}
+	 /**
+	  * Method used to change status moderator of user
+	  * @param user user whose status is changed
+	  * @return
+	  */
+	 public static void changeStatusMod(User user){
+			
+			Permission statusMod  = Permission.findById(2);
+			Permission statusUser = Permission.findById(3);
+			if(user.permission.equals(statusMod)){
+				user.permission = statusUser;
+			}else{
+				user.permission = statusMod;
+			}
+			user.update();
+		}
+	 
+	 /**
+	  * Method used to change status administrator of user 
+	  * @param user user whose status is changed
+	  */
+	 public static void changeStatusAdmin(User user){
+		 //Admin status
+		 Permission statusAdmin  = Permission.findById(1);
+		 //User status
+			Permission statusUser = Permission.findById(3);
+			if(user.permission.equals(statusAdmin)){
+				user.permission = statusUser;
+				
+			}else{
+				user.permission = statusAdmin;
+			}
+			user.update();
+	 }
 
 }

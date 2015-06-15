@@ -195,7 +195,7 @@ public class GiftController extends Controller {
 				flash("success", String.format("La liste des cadeaux a bien été supprimé"));
 			else
 				flash("error", String.format("Erreur lors de la supression des cadeaux"));
-			return ok();
+			return ok("La liste des cadeaux a bien été supprimée");
 		}
 		else return forbidden();
 	}

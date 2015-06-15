@@ -27,10 +27,13 @@ POST	/admin/toggle									controllers.AdminController.toggleAdminMode()
 #Tab Admin User
 GET		/admin/users/									controllers.AdminController.listUsers(page: Integer ?= 0, s ?= "user_name", o ?= "asc", f ?= "")
 GET 	/admin/users/search								controllers.AdminController.searchUsersAdminPage(page: Integer ?=0, userName: String ?="", s ?= "user_name", o ?= "asc", f ?= "")
-POST    /admin/users/mod=:user			 				controllers.AdminController.changeStatusMod(user: models.User)
-POST    /admin/users/admin=:user			 			controllers.AdminController.changeStatusAdmin(user: models.User)
-POST    /admin/users/block=:user			 			controllers.AdminController.blockUnblockUser(user: models.User)
-POST    /admin/users/expert=:user			 			controllers.AdminController.changeExpert(user: models.User)
+GET		/admin/users/detailUser/:user					controllers.AdminController.detailUser(user: models.User)
+
+POST    /admin/users/mods		 						controllers.AdminController.changeStatusMod()
+POST    /admin/users/admins			 					controllers.AdminController.changeStatusAdmin()
+POST    /admin/users/blocks			 					controllers.AdminController.blockUnblockUser()
+POST    /admin/users/experts			 				controllers.AdminController.changeExpert()
+
 DELETE  /admin/users/user=:user			 				controllers.AdminController.deleteUser(user: models.User)
 #Tab Admin Inscription
 GET		/admin/demands/									controllers.AdminController.listDemands(page: Integer ?= 0)
@@ -45,7 +48,7 @@ GET		/admin/services/								controllers.AdminController.listServices(page: Inte
 GET		/admin/services/newservice						controllers.AdminController.newService()
 GET		/admin/services/modifyservice/:service			controllers.AdminController.modifyService(service:models.Service)
 POST	/admin/services/saveservice						controllers.AdminController.saveService()
-POST	/admin/services/listservices						controllers.AdminController.deleteListServices()
+POST	/admin/services/listservices					controllers.AdminController.deleteListServices()
 DELETE  /admin/services/:idService					    controllers.AdminController.deleteService(idService:String)
 #Tab Admin App
 GET		/admin/apps/									controllers.AdminController.listApps(page: Integer ?= 0)
@@ -71,14 +74,14 @@ GET 	/gift/:idGift									controllers.GiftController.modifyGift(idGift: Integer
 DELETE 	/gift/:listGift									controllers.GiftController.deleteListGift(listGift:String)
 POST  	/gift/:listGift									controllers.GiftController.buyListGift(listGift:String)
 #Tab Admin Tag
-GET		/admin/tags/									controllers.AdminController.listTags()
+GET		/admin/tags/									controllers.AdminController.listTags(page: Integer ?= 0)
 GET		/admin/tags/newtags								controllers.AdminController.newTag()
 POST	/admin/tags/savetags							controllers.AdminController.saveTag()
 GET  	/admin/tags/:idTag   							controllers.AdminController.modifyTag(idTag: models.Tag)
 POST	/admin/tag/listtags								controllers.AdminController.deleteListTags()
 DELETE  /admin/tags/:idTag								controllers.AdminController.deleteTag(idTag:Integer)
 #Tab Admin Title
-GET		/admin/titles/									controllers.AdminController.listTitles()
+GET		/admin/titles/									controllers.AdminController.listTitles(page: Integer ?= 0)
 GET		/admin/titles/newtitles							controllers.AdminController.newTitle()
 POST	/admin/titles/savetitles						controllers.AdminController.saveTitle()
 POST	/admin/titles/listtitles						controllers.AdminController.deleteListTitles()

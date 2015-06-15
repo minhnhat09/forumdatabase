@@ -49,25 +49,31 @@
 					<td>@("%1$tH:%1$tM:%1$tS %1$td/%1$tm/%1$tY".format(com.createDate))</td>
 					<td>
 						<a href="@routes.AdminController.modifyCommunication(com)" class="btn btn-info">Modifier</a>
-						<!-- <div class="btn-group">
-							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-								Opération
-								<span class="caret"></span>
-							</button>
-							<ul class="dropdown-menu" role="menu">
-								<li>
-									<a href="@routes.AdminController.modifyCommunication(com)">Modifier</a>
-								</li>
-								 <li>
-									<a href="#" data-href="@routes.AdminController.deleteCommunication(com.idCommunication.toString)" data-toggle="modal" data-target="#confirm-delete">Supprimer</a>
-								</li> 
-							</ul>
-						</div> -->
+						
 					</td>
 					</tr>
 					}
 			</tbody>
 		</table>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-6"></div>
+		<div class="col-md-6" align="right">
+			<div class="btn-group">
+				@if(currentPage.hasPrev){
+				<a class="btn btn-primary" href="@routes.AdminController.listCommunications(currentPage.getPageIndex - 1)">
+					<span class='glyphicon glyphicon-chevron-left'>
+					</span>Page precedente</a>
+				}else{
+				<a class="btn btn-primary" disabled="disabled"><span class='glyphicon glyphicon-chevron-left'>
+				</span>Page precedente</a>
+			}<a class="btn btn-primary" href="">@currentPage.getDisplayXtoYofZ(" - ", " / ")</a> @if(currentPage.hasNext){
+			<a class="btn btn-primary" href="@routes.AdminController.listCommunications(currentPage.getPageIndex + 1)">Page suivante<span class='glyphicon glyphicon-chevron-right'></span></a>
+		}else{
+		<a class="btn btn-primary" disabled="disabled">Page suivante<span class='glyphicon glyphicon-chevron-right'></span></a>
+	}
+			</div>
 	</div>
 </div>
 <script type="text/javascript">
@@ -119,6 +125,7 @@
 											contentType:'application/json',
 											type:'POST',
 											success:function(resultats){
+												alert(resultats);
 												location.reload();
 											},
 											error:function(resultats){
@@ -136,7 +143,7 @@
 	                            $(this).remove();
 	                        }
 	                    });
-	    };
+	};
 
 	function findCheckedComs(){
 		var com_list = [];

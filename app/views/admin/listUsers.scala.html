@@ -83,17 +83,18 @@ routes.AdminController.searchUsersAdminPage(newPage, userName, sortBy, order, cu
 						</button>
 						<ul class="dropdown-menu" role="menu">
 							<li>
-								<a href="#">Affecter/Déaffecter mod</a>
+								<a id="changeAdmin">Affecter/Déaffecter Admin</a>
 							</li>
 							<li>
-								<a href="#">Supprimer</a>
+								<a id="changeMod">Affecter/Déaffecter Mod</a>
 							</li>
+							<!-- <li>
+								<a id="changeExpert">Affecter/Déaffecter l'expert</a>
+							</li> -->
 							<li>
-								<a href="#">Bloquer</a>
+								<a id="blockUnblock">Bloquer/Débloquer</a>
 							</li>
-							<li>
-								<a href="#">Réaffecter l'expert</a>
-							</li>
+							
 						</ul>
 					</div>
 				</div>
@@ -110,16 +111,14 @@ routes.AdminController.searchUsersAdminPage(newPage, userName, sortBy, order, cu
 
 						@header("userName", "Membre")
 						@header("permission.permissionDescription", "Profil")
-						<th>Nom</th>
-
+						
+						@header("firstName", "Nom")
+						@header("lastName", "Prénom")
 						@header("service.serviceName", "Service")
 						@header("postCount", "Nb Posts")
 						@header("dateFinalPost", "Date de dernier post")
 						@header("dateInscription", "Date Inscription")
-
-						<!-- @header("dateFinalPost", "Dernier Post") -->
-
-						<th>Est bloqué</th>
+						@header("isBlock", "Est bloqué")
 						<th></th>
 					</tr>
 				</thead>
@@ -128,45 +127,28 @@ routes.AdminController.searchUsersAdminPage(newPage, userName, sortBy, order, cu
 					@for(user
 					<- currentPage.getList()){ <tr>
 					<td>
-						<input type='checkbox' class="user_check_box"/>
+						<input id="@user.userName" type='checkbox' class="user_check_box"/>
 					</td>
 
 					<td>
 						<img class="img-thumbnail" src="@routes.Assets.at("imgs/users/" + user.userName + "/avatar/" + user.avatar)" alt="..." width="80" height="80">@user.userName</td>
 						<td>@user.permission.permissionDescription</td>
+						<td>
+							<a href="@routes.UserController.userHome(user)">
+									@user.firstName</a>
+						</td>
 						<td><a href="@routes.UserController.userHome(user)">
-									<div>@user.firstName @user.lastName</div>
-								</a></td>
+									@user.lastName</a></td>
+
 						<td>@user.service.serviceName</td>
 						<td>@user.postCount</td>
 						<td>@("%1$td/%1$tm/%1$tY".format(user.dateFinalPost))</td>
 						<td>@("%1$td/%1$tm/%1$tY".format(user.dateInscription))</td>
-						<!-- <td>@("%1$td/%1$tm/%1$tY".format(user.dateFinalPost))</td> -->
+						
 						<td>@if(user.isBlock){oui}else{non}</td>
 						<td>
-							<div class="btn-group">
-								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-									Opération
-									<span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu" role="menu">
-									<li>
-										<a href="#" onclick="javascript:changeStatusMod('@routes.AdminController.changeStatusMod(user)')">Affecter/Déaffecter mod</a>
-									</li>
-									<li>
-										<a href="#" onclick="javascript:changeStatusAdmin('@routes.AdminController.changeStatusAdmin(user)')">Affecter/Déaffecter Admin</a>
-									</li>
-									<!-- <li>
-										<a href="#" onclick="javascript:delUser('@routes.AdminController.deleteUser(user)')">Supprimer</a>
-									</li> -->
-									<li>
-										<a href="#" onclick="javascript:blockUnblock('@routes.AdminController.blockUnblockUser(user)')">Bloquer/Débloquer</a>
-									</li>
-									<li>
-										<a href="#" onclick="javascript:changeExpert('@routes.AdminController.changeExpert(user)')">Affecter/Déaffecter l'expert</a>
-									</li>
-								</ul>
-							</div>
+							<a class="btn btn-info" href="@routes.AdminController.detailUser(user)">Detail</a>
+							
 						</td>
 					</tr>
 				}
@@ -241,10 +223,46 @@ $(document).ready(function(){
 			}
 		});
 
+		$("#changeAdmin").click(function(){
+				var data = findCheckecUsers();
+				if(data === undefined || data.length == 0){
+					alert("Sélectionnez au moin un objet");
+				}else{
+					changeStatusAdmin('Voulez vous vraiment appliquer ce changement ?', data);
+				}
+			});
+
+		$("#changeMod").click(function(){
+				var data = findCheckecUsers();
+				if(data === undefined || data.length == 0){
+					alert("Sélectionnez au moin un objet");
+				}else{
+					changeStatusMod('Voulez vous vraiment appliquer ce changement ?', data);
+				}
+			});
+
+		$("#changeExpert").click(function(){
+				var data = findCheckecUsers();
+				if(data === undefined || data.length == 0){
+					alert("Sélectionnez au moin un objet");
+				}else{
+					changeExpert('Voulez vous vraiment appliquer ce changement ?', data);
+				}
+			});
+
+		$("#blockUnblock").click(function(){
+				var data = findCheckecUsers();
+				if(data === undefined || data.length == 0){
+					alert("Sélectionnez au moin un objet");
+				}else{
+					blockUnblockUser('Voulez vous vraiment appliquer ce changement ?', data);
+				}
+			});
+
 
 });
 
-function changeStatusMod(urlToDelete) {
+/*function changeStatusMod(urlToDelete) {
 	$.ajax({
 		url: urlToDelete,
 		type: 'POST',
@@ -307,7 +325,160 @@ function changeExpert(urlToDelete) {
 				
 			}
 		});
+}*/
+
+function findCheckecUsers(){
+	var user_list = [];
+	$('.user_check_box').each(function(){
+		if(this.checked){
+			user_list.push(this.id);
+		}
+	});
+	return user_list;
 }
+
+function changeStatusAdmin(message, data){
+
+	    $('<div></div>').appendTo('body')
+	    				.html('<div><h6>'+message+'?</h6></div>')
+	                    .dialog({
+	                        modal: true, title: 'Confirmation de changement', zIndex: 10000, autoOpen: true,
+	                        width: 'auto', resizable: false,
+	                        buttons: {
+	                            Yes: function () {
+									$(".user_check_box").prop("checked",false);
+									
+									appRoutes.controllers.AdminController.changeStatusAdmin().ajax({
+											data:JSON.stringify(data),
+											contentType:'application/json',
+											type:'POST',
+											success:function(resultats){
+												alert(resultats);
+												location.reload();
+											},
+											error:function(resultats){
+												alert("Supprimer liste échec");
+											}
+									});
+
+	                                $(this).dialog("close");
+	                            },
+	                            No: function () {
+	                                $(this).dialog("close");
+	                            }
+	                        },
+	                        close: function (event, ui) {
+	                            $(this).remove();
+	                        }
+	                    });
+	};
+	function changeStatusMod(message, data){
+
+	    $('<div></div>').appendTo('body')
+	                    .html('<div><h6>'+message+'?</h6></div>')
+	                    .dialog({
+	                        modal: true, title: 'Confirmation de changement', zIndex: 10000, autoOpen: true,
+	                        width: 'auto', resizable: false,
+	                        buttons: {
+	                            Yes: function () {
+									$(".user_check_box").prop("checked",false);
+									
+									appRoutes.controllers.AdminController.changeStatusMod().ajax({
+											data:JSON.stringify(data),
+											contentType:'application/json',
+											type:'POST',
+											success:function(resultats){
+												alert(resultats);
+												location.reload();
+											},
+											error:function(resultats){
+												alert("Supprimer liste échec");
+											}
+									});
+
+	                                $(this).dialog("close");
+	                            },
+	                            No: function () {
+	                                $(this).dialog("close");
+	                            }
+	                        },
+	                        close: function (event, ui) {
+	                            $(this).remove();
+	                        }
+	                    });
+	};
+
+	function changeExpert(message, data){
+
+	    $('<div></div>').appendTo('body')
+	                    .html('<div><h6>'+message+'?</h6></div>')
+	                    .dialog({
+	                        modal: true, title: 'Confirmation de changement', zIndex: 10000, autoOpen: true,
+	                        width: 'auto', resizable: false,
+	                        buttons: {
+	                            Yes: function () {
+									$(".user_check_box").prop("checked",false);
+									
+									appRoutes.controllers.AdminController.changeExpert().ajax({
+											data:JSON.stringify(data),
+											contentType:'application/json',
+											type:'POST',
+											success:function(resultats){
+												alert(resultats);
+												location.reload();
+											},
+											error:function(resultats){
+												alert("Supprimer liste échec");
+											}
+									});
+
+	                                $(this).dialog("close");
+	                            },
+	                            No: function () {
+	                                $(this).dialog("close");
+	                            }
+	                        },
+	                        close: function (event, ui) {
+	                            $(this).remove();
+	                        }
+	                    });
+	};
+
+	function blockUnblockUser(message, data){
+
+	    $('<div></div>').appendTo('body')
+	                    .html('<div><h6>'+message+'?</h6></div>')
+	                    .dialog({
+	                        modal: true, title: 'Confirmation de changement', zIndex: 10000, autoOpen: true,
+	                        width: 'auto', resizable: false,
+	                        buttons: {
+	                            Yes: function () {
+									$(".user_check_box").prop("checked",false);
+									
+									appRoutes.controllers.AdminController.blockUnblockUser().ajax({
+											data:JSON.stringify(data),
+											contentType:'application/json',
+											type:'POST',
+											success:function(resultats){
+												
+												location.reload();
+											},
+											error:function(resultats){
+												alert("Supprimer liste échec");
+											}
+									});
+
+	                                $(this).dialog("close");
+	                            },
+	                            No: function () {
+	                                $(this).dialog("close");
+	                            }
+	                        },
+	                        close: function (event, ui) {
+	                            $(this).remove();
+	                        }
+	                    });
+	};
 
 </script>
 }
