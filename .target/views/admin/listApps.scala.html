@@ -13,7 +13,7 @@
 		</form>
 	</div>
 </div>
-<!-- Members -->
+<!-- apps -->
 <div class='row' style="margin-top:20px;padding-top:10px; border-top: 1px dashed rgba(86, 61, 124, 0.2);">
 	<div class="col-md-12">
 		<div class='row'>
@@ -23,7 +23,7 @@
 				<a href="@routes.AdminController.newApp()" class="btn btn-success">Nouvelle Application</a>
 			</div>
 			<div class="col-md-6" align="right">
-				<a href="" class="btn btn-danger">Supprimer</a>
+				<a id="deleteListApp" class="btn btn-danger">Supprimer</a>
 			</div>
 		</div>
 	</div>
@@ -44,7 +44,9 @@
 			<tbody>
 				@for(app <- currentPage.getList()){
 				<tr>
-					<td><input class="app_check_box" type='checkbox'/></td>
+					<td>
+						<input id="@app.idApp" class="app_check_box" type='checkbox'/>
+					</td>
 					<td><img src="@routes.Assets.at("imgs/" + "applications/app" + app.idApp+ "/avatar/" + app.avatarApp)" alt="..." class="img-thumbnail" width="100" height="100" /></td>
 					<td>
 						@app.appName
@@ -52,55 +54,136 @@
 					<td>@app.appDescription</td>
 					<td>@app.service.serviceName</td>
 					<td>
-						<div class="btn-group">
+						<a class="btn btn-info" href="@routes.AdminController.modifyApp(app)">Modifier</a>
+						<!-- <div class="btn-group">
 							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 								Opération
 								<span class="caret"></span>
 							</button>
 							<ul class="dropdown-menu" role="menu">
 								<li>
-									<a href="#" onclick="javascript:del('@routes.AdminController.deleteApp(app.idApp.toString)')">Supprimer</a>
-								</li>
-								<li>
 									<a href="@routes.AdminController.modifyApp(app)">Modifier</a>
 								</li>
+								<li>
+									<a href="#" data-href="@routes.AdminController.deleteApp(app.idApp.toString)" data-toggle="modal" data-target="#confirm-delete">Supprimer</a>
+								</li>
 							</ul>
-						</div>
+						</div> -->
 					</td>
 				</tr>
 			}
 			
-		</tbody>
-	</table>
+			</tbody>
+		</table>
+	</div>
 </div>
+<div class="row">
+	<div class="col-md-6"></div>
+		<div class="col-md-6" align="right">
+			<div class="btn-group">
+				@if(currentPage.hasPrev){
+				<a class="btn btn-primary" href="@routes.AdminController.listApps(currentPage.getPageIndex - 1)">
+					<span class='glyphicon glyphicon-chevron-left'>
+					</span>Page precedente</a>
+				}else{
+				<a class="btn btn-primary" disabled="disabled"><span class='glyphicon glyphicon-chevron-left'>
+				</span>Page precedente</a>
+			}<a class="btn btn-primary" href="">@currentPage.getDisplayXtoYofZ(" - ", " / ")</a> @if(currentPage.hasNext){
+			<a class="btn btn-primary" href="@routes.AdminController.listApps(currentPage.getPageIndex + 1)">Page suivante<span class='glyphicon glyphicon-chevron-right'></span></a>
+		}else{
+		<a class="btn btn-primary" disabled="disabled">Page suivante<span class='glyphicon glyphicon-chevron-right'></span></a>
+	}
+			</div>
+	</div>
 </div>
+
 <script type="text/javascript">
 $(document).ready(function(){
+
+
 	$("#select_all_apps").click(function(){
-		if(this.checked){
-			$(".app_check_box").each(function(){
-				this.checked = true;
-			})
-		}else{
-			$(".app_check_box").each(function(){
-				this.checked = false;
-			})
+			$('.app_check_box').prop('checked',false);
+			if(this.checked){
+				$('.app_check_box').prop('checked',true);
 
-		}
-	});
-});
-
-function del(urlToDelete) {
-	$.ajax({
-		url: urlToDelete,
-		type: 'DELETE',
-		success: function(results) { 
-				// Refresh the page
-				location.reload();
-				
 			}
 		});
-}
+
+		$(".app_check_box").click(function(){
+			$("#select_all_apps").prop('checked', false);
+			if($(".app_check_box").length == $(".app_check_box:checked").length){
+				$("#select_all_apps").prop('checked', true);
+			}
+		});
+
+		$("#deleteListApp").click(function(){
+			var data = findCheckApps();
+			if(data === undefined || data.length == 0){
+				alert("Sélectionnez au moin un objet");
+			}else{
+				ConfirmDialog("Voulez vous vraiment supprimer ces objets ?", data);
+			}
+		});
+
+
+});
+
+function ConfirmDialog(message, data){
+
+	    $('<div></div>').appendTo('body')
+	                    .html('<div><h6>'+message+'?</h6></div>')
+	                    .dialog({
+	                        modal: true, title: 'Confirmation supression', zIndex: 10000, autoOpen: true,
+	                        width: 'auto', resizable: false,
+	                        buttons: {
+	                            Yes: function () {
+									$(".app_check_box").prop("checked",false);
+									
+									appRoutes.controllers.AdminController.deleteListApps().ajax({
+											data:JSON.stringify(data),
+											contentType:'application/json',
+											type:'POST',
+											success:function(resultats){
+												location.reload();
+											},
+											error:function(resultats){
+												alert("Supprimer liste échec");
+											}
+									});
+
+	                                $(this).dialog("close");
+	                            },
+	                            No: function () {
+	                                $(this).dialog("close");
+	                            }
+	                        },
+	                        close: function (event, ui) {
+	                            $(this).remove();
+	                        }
+	                    });
+	    };
+
+	function findCheckApps(){
+		var app_list = [];
+		$('.app_check_box').each(function(){
+			if(this.checked){
+				app_list.push(this.id);
+			}
+		});
+		return app_list;
+	}
+
+	function del(urlToDelete) {
+		$.ajax({
+			url: urlToDelete,
+			type: 'DELETE',
+			success: function(results) { 
+					// Refresh the page
+					location.reload();
+					
+				}
+			});
+	}
 </script>
 
 }

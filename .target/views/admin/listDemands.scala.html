@@ -25,7 +25,7 @@
 								<a href="#">Modifier</a>
 							</li>
 							<li>
-								<a href="#">Supprimer</a>
+								<a href="#">Refuser</a>
 							</li>
 						</ul>
 					</div>
@@ -45,6 +45,7 @@
 						<th>Email</th>
 						<th>Motif</th>
 						<th>Date de demande</th>
+						<th>Status</th>
 						<th></th>
 					</tr>
 				</thead>
@@ -60,6 +61,7 @@
 						<td>@demand.email</td>
 						<td>@demand.motif</td>
 						<td>@("%1$td/%1$tm/%1$tY".format(demand.dateApply))</td>
+						<td></td>
 						<td><div class="btn-group">
 							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 								Opération
@@ -73,6 +75,7 @@
 									<a href="#" onclick="javascript:del('@routes.AdminController.deleteDemand(demand.idDemand)')">Supprimer</a>
 								</li>
 							</ul>
+							
 						</div></td>
 						</tr>
 						}
@@ -84,18 +87,17 @@
 	</div>
 <script type="text/javascript">
 	$(document).ready(function(){
-
-
 		$("#select_all_demands").click(function(){
+			$('.demand_check_box').prop('checked',false);
 			if(this.checked){
-				$(".demand_check_box").each(function(){
-					this.checked = true;
-				})
-			}else{
-				$(".demand_check_box").each(function(){
-					this.checked = false;
-				})
+				$('.demand_check_box').prop('checked',true);
+			}
+		});
 
+		$(".demand_check_box").click(function(){
+			$("#select_all_demands").prop('checked', false);
+			if($(".demand_check_box").length == $(".demand_check_box:checked").length){
+				$("#select_all_demands").prop('checked', true);
 			}
 		});
 

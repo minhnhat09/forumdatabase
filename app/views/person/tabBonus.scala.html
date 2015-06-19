@@ -15,7 +15,7 @@
 				<div class='row rowpadding'>
 					<div class="col-md-4">Titre:</div>
 					<div class="col-md-4">
-						<b>@User.showTitle(person)</b>
+						<b>@person.title</b>
 					</div>
 					<div class="col-md-4 greentext"></div>
 				</div>
@@ -51,11 +51,29 @@
 									<h4 class="modal-title" id="myModalLabel">Règle</h4>
 								</div>
 								<div class="modal-body">
+									<table class="table">
+										<thead>
+											<tr>
+											<th>Nom</th>
+											<th>Points</th>
+										</tr>
+										</thead>
+										
+									<tbody>
 
+
+									@for(title <- Title.findListTitles){
+										<tr>
+											<td>@title.titleName</td>
+											<td>@title.exp</td>
+										</tr>
+								}
+									</tbody>
+								</table>
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-									<button type="button" class="btn btn-primary">Save changes</button>
+									
 								</div>
 							</div>
 						</div>

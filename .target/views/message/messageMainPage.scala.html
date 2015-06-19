@@ -1,4 +1,4 @@
-@(searchForm:Form[controllers.SearchController.Search])
+@(currentReceivedMessagePage:com.avaje.ebean.Page[models.Message], currentSentMessagePage:com.avaje.ebean.Page[models.Message], currentNotisPage:com.avaje.ebean.Page[models.Notification], searchForm:Form[controllers.SearchController.Search])
 @main("Page Messagerie", searchForm){
 
 <div class="container">
@@ -19,7 +19,10 @@
 				<div class="col-md-2 col-xs-3">
 					<ul class="nav nav-pills nav-stacked" style="height:285px;padding-top:5px;">
 						<li class="active">
-							<a href="#message" data-toggle="tab">Messages</a>
+							<a href="#receivedMessages" data-toggle="tab">Boîte de réception</a>
+						</li>
+						<li>
+							<a href="#sentMessages" data-toggle="tab">Message Envoyés</a>
 						</li>
 						<li>
 							<a href="#rappel" data-toggle="tab" onclick="javascript:viewNotis('@routes.MessageController.viewNotis(controllers.Application.getSessionUser())')">Rappel</a>
@@ -28,7 +31,9 @@
 				</div>
 				<!-- Message Item 1-->
 				<div class="tab-content">
-					@listMessages() @listNotifications()
+					@listReceivedMessages(currentReceivedMessagePage) 
+					@listSentMessages(currentSentMessagePage)
+					@listNotifications(currentNotisPage)
 				</div>
 			</div>
 		</div>
@@ -36,9 +41,6 @@
 	</div>
 </div>
 <script type="text/javascript">
-
-			
-		
 	$(document).ready(function(){
 	    
 
@@ -59,7 +61,6 @@
 			$('.mess_check_box').prop('checked',false);
 			if(this.checked){
 				$('.mess_check_box').prop('checked',true);
-
 			}
 		});
 
@@ -67,6 +68,21 @@
 			$("#select_all_mess").prop('checked', false);
 			if($(".mess_check_box").length == $(".mess_check_box:checked").length){
 				$("#select_all_mess").prop('checked', true);
+			}
+		});
+
+
+		$("#select_all_sent_mess").click(function(){
+			$('.sent_mess_check_box').prop('checked',false);
+			if(this.checked){
+				$('.sent_mess_check_box').prop('checked',true);
+			}
+		});
+
+		$(".sent_mess_check_box").click(function(){
+			$("#select_all_sent_mess").prop('checked', false);
+			if($(".sent_mess_check_box").length == $(".sent_mess_check_box:checked").length){
+				$("#select_all_sent_mess").prop('checked', true);
 			}
 		});
 
@@ -81,6 +97,7 @@
 
 		$(".noti_check_box").click(function(){
 			$("#select_all_notis").prop('checked', false);
+
 			if($(".noti_check_box").length == $(".noti_check_box:checked").length){
 				$("#select_all_notis").prop('checked', true);
 			}
@@ -90,40 +107,105 @@
 			var data = findCheckedMess();
 			if(data === undefined || data.length == 0){
 				alert("Sélectionnez au moin un message");
+			}else{
+				ConfirmDeleteMessage('Voulez vous vraiment supprimer ces objets ?', data);
 			}
-			appRoutes.controllers.MessageController.deleteListMess().ajax({
-					data:JSON.stringify(data),
-					contentType:'application/json',
-					type:'POST',
-					success:function(resultats){
-						location.reload();
-					},
-					error:function(resultats){
-						alert("Supprimer liste échec");
-					}
-			});
+		});
+
+		$("#deleteListSentMess").click(function(){
+			var data = findCheckedSentMess();
+			if(data === undefined || data.length == 0){
+				alert("Sélectionnez au moin un message");
+			}else{
+				ConfirmDeleteMessage('Voulez vous vraiment supprimer ces objets ?', data);
+			}
 		});
 
 		$("#deleteListNotis").click(function(){
 			var data = findCheckedNotis();
-
-			appRoutes.controllers.MessageController.deleteListNotis().ajax({
-					data:JSON.stringify(data),
-					contentType:'application/json',
-					type:'POST',
-					success:function(resultats){
-						location.reload();
-					},
-					error:function(resultats){
-						alert("Supprimer liste échec");
-					}
-			});
+			if(data === undefined || data.length == 0){
+				alert("Sélectionnez au moin une notification");
+			}else{
+				ConfirmDeleteNotis('Voulez vous vraiment supprimer ces objets ?', data )
+			}
+			
 		});
+
+
 	});
 
-		
+function ConfirmDeleteNotis(message, data){
 
-	
+    $('<div></div>').appendTo('body')
+                    .html('<div><h6>'+message+'?</h6></div>')
+                    .dialog({
+                        modal: true, title: 'Confirmation supression', zIndex: 10000, autoOpen: true,
+                        width: 'auto', resizable: false,
+                        buttons: {
+                            Yes: function () {
+								$(".noti_check_box").prop("checked",false);
+								$("#select_all_notis").prop("checked",false);
+
+								appRoutes.controllers.MessageController.deleteListNotis().ajax({
+										data:JSON.stringify(data),
+										contentType:'application/json',
+										type:'POST',
+										success:function(resultats){
+											location.reload();
+										},
+										error:function(resultats){
+											alert("Supprimer liste échec");
+										}
+								});
+
+                                $(this).dialog("close");
+                            },
+                            No: function () {
+                                $(this).dialog("close");
+                            }
+                        },
+                        close: function (event, ui) {
+                            $(this).remove();
+                        }
+                    });
+    };
+
+function ConfirmDeleteMessage(message, data){
+
+    $('<div></div>').appendTo('body')
+                    .html('<div><h6>'+message+'?</h6></div>')
+                    .dialog({
+                        modal: true, title: 'Confirmation supression', zIndex: 10000, autoOpen: true,
+                        width: 'auto', resizable: false,
+                        buttons: {
+                            Yes: function () {
+								$(".sent_mess_check_box").prop("checked",false);
+								$(".mess_check_box").prop("checked",false);
+								$("#select_all_mess").prop("checked",false);
+								$("#select_all_sent_mess").prop("checked",false);
+								appRoutes.controllers.MessageController.deleteListMess().ajax({
+										data:JSON.stringify(data),
+										contentType:'application/json',
+										type:'POST',
+										success:function(resultats){
+											location.reload();
+										},
+										error:function(resultats){
+											alert("Supprimer liste échec");
+										}
+								});
+
+                                $(this).dialog("close");
+                            },
+                            No: function () {
+                                $(this).dialog("close");
+                            }
+                        },
+                        close: function (event, ui) {
+                            $(this).remove();
+                        }
+                    });
+    };
 
 	function del(urlToDelete) {
 		$.ajax({
@@ -167,6 +249,16 @@
 		return mess_list;
 	}
 
+	function findCheckedSentMess() {
+		var mess_list = [];
+		$(".sent_mess_check_box").each(function() {
+			if (this.checked) {
+				mess_list.push(this.id);
+			}
+		});
+		return mess_list;
+	}
+
 	function findCheckedNotis() {
 		var notis_list = [];
 		$(".noti_check_box").each(function() {
@@ -176,5 +268,7 @@
 		});
 		return notis_list;
 	}
+
+	
 </script>
 }

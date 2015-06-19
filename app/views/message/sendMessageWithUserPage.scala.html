@@ -35,7 +35,7 @@
         
         <div class="actions">
            <input type="submit" value="Envoyer" class="btn btn-primary" ng-disabled="sendMessageForm.$invalid"> 
-            <a href="@routes.MessageController.message()" class="btn btn-danger">Annuler</a> 
+            <a href="@routes.MessageController.message(0, 0, 0, controllers.Application.getSessionUser())" class="btn btn-danger">Annuler</a> 
         </div>
 <script type="text/javascript">
     $("#userNameTo").val("@user.userName")

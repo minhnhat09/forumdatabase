@@ -8,14 +8,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
+
+import com.avaje.ebean.Page;
 @Entity
 public class Message extends Model {
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -33,29 +34,56 @@ public class Message extends Model {
 	@Constraints.Required
 	public String content;
 	public boolean viewed;
-	
+	@OneToOne
+	public Message previousMail;
 	
 	public static Finder<Integer, Message> find = new Finder<Integer, Message>(Integer.class, Message.class);
 	
-	public static List<Message> findMessagesToByUser(String userName){
+	public static List<Message> findMessagesToByUserApi(String userName){
 		return find.where()
 				.ilike("user_name_to", "%" + userName + "%")
+				.orderBy().asc("viewed")
 				.orderBy().desc("sendDate")
 				.findList();
 	}
 	
+	
+	/**
+	 * Method used to find the message sent to a user
+	 * @param userName messages sent to this user
+	 * @return
+	 */
+	public static Page<Message> findMessagesToByUser(String userName, int page){
+		return find.where()
+				.ilike("user_name_to", "%" + userName + "%")
+				.orderBy().asc("viewed")
+				.orderBy().desc("sendDate")
+				.findPagingList(10)
+				.setFetchAhead(false)
+				.getPage(page);
+	}
+	/**
+	 * Method used to count the unread mesasges
+	 * @param userName mesasges belong to this user
+	 * @return
+	 */
 	public static int messagesUnread(String userName){
 		return find.where().eq("viewed", 0)
-				  .eq("user_name_to", userName)
-				  
-				.findRowCount();
+				   .eq("user_name_to", userName)
+				   .findRowCount();
 	}
-	
-	public static List<Message> findMessagesFromByUser(String userName){
+	/**
+	 * Method used to return 
+	 * @param userName
+	 * @return
+	 */
+	public static Page<Message> findMessagesFromByUser(String userName, int page){
 		return find.where()
 				.ilike("user_name_from_user_name", "%" + userName + "%")
 				.orderBy().desc("sendDate")
-				.findList();
+				.findPagingList(10)
+				.setFetchAhead(false)
+				.getPage(page);
 	}
 	
 	public static Message findById(int idMess){

@@ -2,14 +2,13 @@
 <div class="tab-pane active" id="moncompte">
 	<div class='row' style="padding-top:20px;">
 		<div class="col-md-3"></div>
-	
 		<div class="col-md-6">
 			
 			<div class='row rowpadding'>
 				<div class="col-md-6">Pseudo</div>
 				<div class="col-md-6">@person.userName</div>
 			</div>
-			
+		
 			<div class='row rowpadding'>
 				<div class="col-md-6">Compte</div>
 				<div class="col-md-6">@person.permission.permissionDescription</div>
@@ -66,12 +65,12 @@
 				<div class="col-md-6">Nombre Posts</div>
 				<div class="col-md-6">@person.postCount</div>
 			</div>
-			
+		
 			<div class='row rowpadding'>
 				<div class="col-md-6">Presentation</div>
 				<div class="col-md-6">@person.presentation</div>
 			</div>
-			
+		
 			<div class='row rowpadding'>
 				<div class="col-md-6">Centre d'intérêt</div>
 				<div class="col-md-6">@person.hoppy</div>
@@ -81,29 +80,22 @@
 				<div class="col-md-6">Code parainnage</div>
 				<div class="col-md-6">@for(account
 					<- AccountValidation.findAccountByUser(person.userName)){ @account.codeGenerated }</div>
-				</div>
-
-
-				<div class='row rowpadding'>
-					<div class="col-md-6"></div>
-					<div class="col-md-6">
-						<a href="@routes.PersonController.modifyPerson(person)" class='btn btn-primary'>Modifier</a>
-					</div>
-				</div>
 			</div>
-			<div class="col-md-3"></div>
 		</div>
-		<a href="" class="btn btn-info" id="postCode">Générer Code Parrainage</a>
+		<div class="col-md-3"></div>
+	</div>
+	<div class="row"></div>
+	<div class="row" style="text-align:center">
+			<a href="@routes.PersonController.modifyPerson(person)" class='btn btn-primary'>Modifier</a>
+			<a class="btn btn-info" id="postCode">Générer Code Parrainage</a>
 		
-		@if(person.permission.idPermission==1){
+			@if(person.permission.idPermission==1){
+				<a href="@routes.AdminController.adminHome()" class="btn btn-success" id="goAdminPage">Admin Page</a>
+			}
+			@if(person.permission.idPermission!=3){
+				<a href="#" onclick="javascript:toggleAdminMode('@routes.AdminController.toggleAdminMode()')" class="btn btn-danger" id="adminMode">Mode Modification</a>
 		
-		<a href="@routes.AdminController.adminHome()" class="btn btn-success" id="goAdminPage">Admin Page</a>
-		}
-		@if(person.permission.idPermission!=3){
-
-		<a href="#" onclick="javascript:toggleAdminMode('@routes.AdminController.toggleAdminMode()')" class="btn btn-danger" id="adminMode">Mode Modification</a>
-		
-}
-
+			}
+	</div>
 	</div>
 	

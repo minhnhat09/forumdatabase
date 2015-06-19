@@ -1,4 +1,4 @@
-@()
+@(currentPage:com.avaje.ebean.Page[models.Notification])
 <div class="tab-pane" id="rappel">
 	<div class="col-md-10">
 	<div class="col-md-12"  >
@@ -12,16 +12,26 @@
 			</div>
 		</div>
 		<table class="table-condensed">
-			@for(notis <- Notification.findNotificationsByUser(controllers.Application.getSessionUser())){
+			@for(notis <- currentPage.getList()){
 				<tr>
 				<td class="col-md-7">
-					<input id="@notis.idNotification" type='checkbox' class="noti_check_box" /><tt><pre>@notis.content</pre></tt></td>
+					<input id="@notis.idNotification" type='checkbox' class="noti_check_box" /><tt>
+
+					@if(!notis.viewed){
+					<pre><b>@notis.content</b></pre>
+				}else{
+				<pre>@notis.content</pre>
+			}
+
+				</tt></td>
 				<td class="col-md-2">@("%1$td/%1$tm/%1$tY %1$tH:%1$tM:%1$tS".format(notis.noteDate))</td>
 				<!-- <td class="col-md-2"><button class="btn btn-primary btn-md" data-toggle="modal" data-target="#noti@notis.idNotification">
 							Consulter
 						</button></td> -->
-						<td><a href="@routes.ThreadController.threadHome(models.Thread.findById(notis.idThreadResponse))" class="btn btn-primary">Consulter</a></td>
-						<td><a href="" onclick="javascript:del('@routes.MessageController.deleteNoti(notis.idNotification)')">Supprimer</a></td>
+						<td><a href="@routes.ThreadController.threadHomeFromNotiPage(notis.idNotification, models.Thread.findById(notis.idThreadResponse))" class="btn btn-primary">Consulter</a></td>
+						<td>
+							<a href="" onclick="javascript:del('@routes.MessageController.deleteNoti(notis.idNotification)')">Supprimer</a>
+						</td>
 			</tr>
 
 <div class="modal fade" id="noti@notis.idNotification" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -46,4 +56,23 @@
 				
 		</table>	
 	</div>
+	<div class="row">
+	<div class="col-md-6"></div>
+		<div class="col-md-6" align="right">
+			<div class="btn-group">
+				@if(currentPage.hasPrev){
+				<a class="btn btn-primary" href="@routes.MessageController.message(0, 0, currentPage.getPageIndex - 1, controllers.Application.getUser.userName)#rappel">
+					<span class='glyphicon glyphicon-chevron-left'>
+					</span>Page precedente</a>
+				}else{
+				<a class="btn btn-primary" disabled="disabled"><span class='glyphicon glyphicon-chevron-left'>
+				</span>Page precedente</a>
+			}<a class="btn btn-primary" href="">@currentPage.getDisplayXtoYofZ(" - ", " / ")</a> @if(currentPage.hasNext){
+			<a class="btn btn-primary" href="@routes.MessageController.message(0, 0, currentPage.getPageIndex + 1, controllers.Application.getUser.userName)#rappel">Page suivante<span class='glyphicon glyphicon-chevron-right'></span></a>
+		}else{
+		<a class="btn btn-primary" disabled="disabled">Page suivante<span class='glyphicon glyphicon-chevron-right'></span></a>
+	}
+			</div>
+	</div>
+</div>
 </div>

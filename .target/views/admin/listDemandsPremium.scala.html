@@ -22,10 +22,10 @@
 						</button>
 						<ul class="dropdown-menu" role="menu">
 							<li>
-								<a href="#">Modifier</a>
+								<a href="#">Valider</a>
 							</li>
 							<li>
-								<a href="#">Supprimer</a>
+								<a href="#">Refuser</a>
 							</li>
 						</ul>
 					</div>
@@ -70,7 +70,7 @@
 									<a href="#" onclick="javascript:activate('@routes.AdminController.validateDemandPremium(demand.idDemandPremium)')">Valider</a>
 								</li>
 								<li>
-									<a href="#" onclick="javascript:del('@routes.AdminController.deleteDemandPremium(demand.idDemandPremium)')">Supprimer</a>
+									<a href="#" onclick="javascript:del('@routes.AdminController.deleteDemandPremium(demand.idDemandPremium)')">Refuser</a>
 								</li>
 							</ul>
 						</div></td>
@@ -82,20 +82,41 @@
 
 		</div>
 	</div>
+	<div class="row">
+	<div class="col-md-6"></div>
+		<div class="col-md-6" align="right">
+			<div class="btn-group">
+				@if(currentPage.hasPrev){
+				<a class="btn btn-primary" href="@routes.AdminController.listDemandsPremium(currentPage.getPageIndex - 1)">
+					<span class='glyphicon glyphicon-chevron-left'>
+					</span>Page precedente</a>
+				}else{
+				<a class="btn btn-primary" disabled="disabled"><span class='glyphicon glyphicon-chevron-left'>
+				</span>Page precedente</a>
+			}<a class="btn btn-primary" href="">@currentPage.getDisplayXtoYofZ(" - ", " / ")</a> @if(currentPage.hasNext){
+			<a class="btn btn-primary" href="@routes.AdminController.listDemandsPremium(currentPage.getPageIndex + 1)">Page suivante<span class='glyphicon glyphicon-chevron-right'></span></a>
+		}else{
+		<a class="btn btn-primary" disabled="disabled">Page suivante<span class='glyphicon glyphicon-chevron-right'></span></a>
+	}
+			</div>
+	</div>
+</div>
 <script type="text/javascript">
 	$(document).ready(function(){
 
 
 		$("#select_all_demands").click(function(){
+			$('.demand_check_box').prop('checked',false);
 			if(this.checked){
-				$(".demand_check_box").each(function(){
-					this.checked = true;
-				})
-			}else{
-				$(".demand_check_box").each(function(){
-					this.checked = false;
-				})
+				$('.demand_check_box').prop('checked',true);
 
+			}
+		});
+
+		$(".demand_check_box").click(function(){
+			$("#select_all_demands").prop('checked', false);
+			if($(".demand_check_box").length == $(".demand_check_box:checked").length){
+				$("#select_all_demands").prop('checked', true);
 			}
 		});
 

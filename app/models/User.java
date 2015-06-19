@@ -35,101 +35,65 @@ public class User extends Model implements PathBindable<User>{
 	@Id
 	@MinLength(5)
 	public String userName;
-	
 	@MinLength(7)
 	@Constraints.Required
 	public String password;
 	@MinLength(7)
 	@Constraints.Required
 	public String confirmPassword;
-	
 	public int bonus;
-	
 	public int exp;
-	
-	
 	@Constraints.Required
 	public String email;
-	
-	
 	@Constraints.Required
 	public String confirmEmail;
-	
 	public String title;
-	
 	public int postCount;
 	public int threadCount;
-	
 	@Constraints.Required
 	public String firstName;
-	
 	@Constraints.Required
 	public String lastName;
-	
 	@Constraints.Required
 	public String address;
-	
 	public String homePhone;
-	
 	public String mobilePhone;
-	
 	public int idServiceSubscribe;
-	
-	
-	
 	@Constraints.Required
 	public String postalCode;
-	
 	@Constraints.Required
 	public String city;
-	
 	@Constraints.Required
 	public String country;
-	
-	
 	public boolean civilite;
-	
 	public String role;
-	
 	public String imgUrl;
-	
 	public String signature;
-	
-	
-	
 	public String ipn;
 	public boolean isBlock;
 	public boolean isExpert;
 	public String avatar;
 	public byte[] imageAvatar;
 	public Date dateInscription;
-	
 	public Date dateFinalPost;
 	@Column(columnDefinition = "LONGTEXT")
 	public String presentation;
 	@Column(columnDefinition = "LONGTEXT")
 	public String hoppy;
-	
 	@Constraints.Required
 	public String signinCode;
-	
-	
 	public boolean isPremium;
-	
 	public int threadCountViews;
-	
 	@ManyToMany
 	public List<Application> apps = new LinkedList<Application>();
 	@ManyToOne
 	public Service service;
 	@OneToOne
 	public Permission permission;
-	
 	@OneToMany(mappedBy = "user")
 	List<Notification> notifications = new ArrayList<Notification>();
 	@OneToMany
 	public List<AccountValidation> accountValidations = new ArrayList<AccountValidation>();
-	
 	@OneToMany(mappedBy = "user")
 	public List<GiftUser> gifts;
 	@OneToMany(mappedBy = "user")
@@ -140,6 +104,12 @@ public class User extends Model implements PathBindable<User>{
 	public List<Contact> contacts;
 	@OneToMany(mappedBy = "user")
 	public List<UserPermission> permissions;
+	@OneToMany(mappedBy = "user")
+	public List<KeyUser> keyUsers;
+	
+	@OneToMany(mappedBy = "user")
+	public List<UserMod> userMods;
+	
 	@OneToMany(mappedBy = "userNameFrom")
 	public List<Message> messagesFrom;
 	@OneToMany(mappedBy = "author")
@@ -301,11 +271,8 @@ public class User extends Model implements PathBindable<User>{
 		List<Title> listTitle = Title.findListTitles();
 		
 		for (Title title : listTitle) {
-			
 			if(user.exp >= title.exp){
-				
 				return title.titleName;
-				
 			}
 		}
 		return "Titre inconnu";

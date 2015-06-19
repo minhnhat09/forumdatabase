@@ -2,13 +2,14 @@ package api;
 
 import java.util.List;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
 import models.Message;
 import models.Notification;
 import models.User;
 import play.mvc.Controller;
 import play.mvc.Result;
+
+import com.fasterxml.jackson.databind.JsonNode;
+
 import flexjson.JSONSerializer;
 
 public class NotificationControllerApi extends Controller{
@@ -20,7 +21,7 @@ public class NotificationControllerApi extends Controller{
 	 */
 	public static Result findMessagesByUser(){
 		String userName = session("userNameMobile");
-		List<Message> messages = Message.findMessagesToByUser(userName);
+		List<Message> messages = Message.findMessagesToByUserApi(userName);
 		JSONSerializer serializer = new JSONSerializer();
 		String json = serializer.serialize(messages);
 		return ok(json);
@@ -33,7 +34,7 @@ public class NotificationControllerApi extends Controller{
 	 */
 	public static Result findNotisByUser(){
 		String userName = session("userNameMobile");
-		List<Notification> notis = Notification.findNotificationsByUser(userName);
+		List<Notification> notis = Notification.findNotificationsByUserApi(userName);
 		JSONSerializer serializer = new JSONSerializer();
 		String json = serializer.serialize(notis);
 		return ok(json);

@@ -101,9 +101,9 @@ public class GiftController extends Controller {
 			 * if filetype not equal jpg, jpeg, bmp, gif (image format) return error
 			 */
 			if(!fileType.equalsIgnoreCase("jpg") && !fileType.equalsIgnoreCase("jpeg")&& !fileType.equalsIgnoreCase("bmp")
-					&& !fileType.equalsIgnoreCase("gif")){
+					&& !fileType.equalsIgnoreCase("gif")&& !fileType.equalsIgnoreCase("png")){
 				
-				flash("error", String.format("La photo doit être en format jpg, jpeg, bmp, gif"));
+				flash("error", String.format("La photo doit être en format jpg, jpeg, bmp, gif, png"));
 				return ok(views.html.gifts.detailGift.render(boundForm, searchForm));
 			}
 			
@@ -177,7 +177,7 @@ public class GiftController extends Controller {
 	public static Result buyListGift(String str){
 		if(str != null){
 			if(Gift.buyListGift(str))
-				flash("success", String.format("Succès"));
+				flash("success", String.format("Le cadeau a bien été acheté"));
 			else
 				flash("error", String.format("Erreur"));
 			return ok();

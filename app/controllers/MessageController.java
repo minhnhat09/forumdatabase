@@ -12,26 +12,36 @@ import play.mvc.Result;
 import play.mvc.Security;
 
 import com.avaje.ebean.Ebean;
+import com.avaje.ebean.Page;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.sun.mail.handlers.message_rfc822;
 
 import controllers.SearchController.Search;
 @Security.Authenticated(Secured.class)
 public class MessageController extends Controller {
 	
-	public static Result GO_HOME_MESSAGE        = redirect(routes.MessageController.message());
+	public static Result GO_HOME_MESSAGE        = redirect(routes.MessageController.message(0,0,0, Application.getSessionUser()));
     public static Form<Message> messageForm     = Form.form(Message.class);
     public static final Form<Search> searchForm = Form.form(Search.class);
     
-    /**
-     * 
-     * @return
-     */
-	public static Result message(){
-		return ok(views.html.message.messageMainPage.render(searchForm));
+
+	/**
+	 * 
+	 * @param userName
+	 * @param pageReceivedMess
+	 * @param pageSentMess
+	 * @param pageNotis
+	 * @return
+	 */
+	public static Result message(int pageReceivedMess, int pageSentMess, int pageNotis, String userName){
+		Page<Message> receivedMessage = Message.findMessagesToByUser(userName, pageReceivedMess);
+		Page<Message> sentMessage     = Message.findMessagesFromByUser(userName, pageSentMess);
+		Page<Notification> notis      = Notification.findNotificationsByUser(userName, pageNotis);
+		return ok(views.html.message.messageMainPage.render(receivedMessage, sentMessage, notis, searchForm));
 	}
 	
 	public static Result notis(){
-		return ok(views.html.message.messageMainPage.render(searchForm));
+		return GO_HOME_MESSAGE;
 	}
 	/**
 	 * 
@@ -129,7 +139,6 @@ public class MessageController extends Controller {
 	    }
 	    for (Notification noti : Notification.listNotificationsUnread(userName)) {
 			noti.viewed = true;
-			
 			Ebean.update(noti);
 		}
 	  

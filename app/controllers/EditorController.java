@@ -57,7 +57,7 @@ public class EditorController extends Controller {
 		
 		
 		thread.content = thread.content.replace("<img", "<img class='img-thumbnail' ");
-		
+		//Case Create thread
 		if(thread.idThread == 0){
 			//attach user to thread
 			User authorThread = User.findById(Application.getSessionUser());
@@ -81,7 +81,9 @@ public class EditorController extends Controller {
 			flash("success", String.format("L'article a bien été enregistré"));
 			return redirect(routes.ForumController.forumHome(app,0, "publicDate", "desc"));
 			
-		}else{
+		}
+		//Case update thread
+		else{
 			//b1.save();
 			for (Bibliography bibli : thread.biblios) {
 				System.out.println(bibli.idBibliography);

@@ -1,7 +1,6 @@
 package controllers;
 
 import java.util.Date;
-import java.util.List;
 
 import models.ApplicationView;
 import models.BonusRule;
@@ -18,7 +17,6 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
 
-import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Page;
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -314,11 +312,13 @@ public class ThreadController extends Controller {
 	 */
 	public static void notificationForComment(Thread thread, Post comment){
 		Notification noti = new Notification();
-		noti.user     = thread.author;
-		noti.noteDate = new Date();
-		noti.content  = comment.user.firstName + " " + comment.user.lastName +  " " + Messages.get("responseThread") + " " + comment.thread.threadName;
-		noti.idThreadResponse = comment.thread.idThread;
-		noti.save();
+		if(thread.author != comment.user){
+			noti.user     = thread.author;
+			noti.noteDate = new Date();
+			noti.content  = comment.user.firstName + " " + comment.user.lastName +  " " + Messages.get("responseThread") + " " + comment.thread.threadName;
+			noti.idThreadResponse = comment.thread.idThread;
+			noti.save();
+		}
 	}
 	
 	/**

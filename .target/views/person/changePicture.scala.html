@@ -1,6 +1,6 @@
 @(person:User, searchForm:Form[controllers.SearchController.Search])
-@main("Changer Photo", searchForm){
-	@helper.form(action = routes.PersonController.changePicture(person), 'enctype -> "multipart/form-data") {
+@main("Changer Avatar Utilisateur", searchForm){
+	@helper.form(action = routes.PersonController.changePictureUser(person), 'enctype -> "multipart/form-data") {
     
     <input type="file" name="picture">
     

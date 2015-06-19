@@ -131,6 +131,7 @@ import controllers.SearchController.Search;
 							String.valueOf(user.permission.idPermission));
 					session("adminMode", "off");
 					user.title = User.showTitle(user);
+					//update post and thread count
 					user.threadCount = Thread.countThreadsByUser(user.userName);
 					user.postCount = Post.countPostsByUser(user);
 					user.update();

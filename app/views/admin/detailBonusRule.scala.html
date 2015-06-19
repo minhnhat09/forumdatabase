@@ -16,11 +16,13 @@
         <fieldset>
         	<input type="hidden" value="@bonusRuleForm("idBonus").valueOr("0")" name="idBonus"/>
             @helper.inputText(bonusRuleForm("name"), '_label -> "Nom du règlement", 
-            	'class -> "form-control", 'placeholder -> "Nom du règlement", 'style ->"width:50%" )
+            	'class -> "form-control", 'placeholder -> "Nom du règlement", 'style ->"width:50%", 'required -> "")
+
             @helper.inputText(bonusRuleForm("xp"), '_label -> "Points expériences", 
-            	'class -> "form-control", 'placeholder -> "Points expériences", 'style ->"width:50%")
+            	'class -> "form-control", 'placeholder -> "Points expériences", 'style ->"width:50%", 'required -> "", 'type -> "number")
+
             @helper.inputText(bonusRuleForm("bonus"), '_label -> "Bonus", 
-            	'class -> "form-control", 'placeholder -> "Bonus", 'style ->"width:50%")
+            	'class -> "form-control", 'placeholder -> "Bonus", 'style ->"width:50%", 'required -> "", 'type -> "number")
 		</fieldset>
         <div class="actions">
             @if(bonusRuleForm("idBonus").value() == null){

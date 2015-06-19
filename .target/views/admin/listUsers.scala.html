@@ -1,4 +1,4 @@
-@(currentPage: com.avaje.ebean.Page[User], searchForm:Form[controllers.SearchController.Search], currentSortBy: String, currentOrder:String, currentFilter: String)
+@(currentPage: com.avaje.ebean.Page[User],userName: String, searchForm:Form[controllers.SearchController.Search], currentSortBy: String, currentOrder:String, currentFilter: String)
 
 
 @link(newPage:Int, newSortBy:String) = @{
@@ -24,6 +24,29 @@ routes.AdminController.listUsers(newPage, sortBy, order, currentFilter)
 
 }
 
+@linkSearchCase(newPage:Int, newSortBy:String) = @{
+
+var sortBy = currentSortBy
+var order  = currentOrder
+
+if(newSortBy != null) {
+sortBy = newSortBy
+if(currentSortBy == newSortBy) {
+	if(currentOrder == "asc") {
+	order = "desc"
+	} else {
+	order = "asc"
+		}
+	} else {
+	order = "asc"
+		}
+}
+
+// Generate the link
+routes.AdminController.searchUsersAdminPage(newPage, userName, sortBy, order, currentFilter)
+
+}
+
 @header(key:String, title:String) = {
 	<th class="@key.replace(".","_") header @if(currentSortBy == key) @{if(currentOrder == "asc") "headerSortDown" else "headerSortUp"}">
 		<a href="@link(0, key)">@title</a>
@@ -34,15 +57,16 @@ routes.AdminController.listUsers(newPage, sortBy, order, currentFilter)
 <div class="tab-pane active" id="gestion">
 	<!-- Button -->
 	<div class='row' align="right">
-		<div class="col-md-12" style="padding-top:10px;">
-			<form class="form-inline" >
-				<div class="form-group" align="right">
-					<input class="form-control col-md-6" type="search" id="searchbox" name="f" value="@currentFilter" placeholder="Taper le pseudo..."><br>
-					<input type="submit" id="searchsubmit" value="Rechercher" class="btn btn-primary text-right">
-				</div>
-			</form>
-		</div>
+	<div class="col-md-12" style="padding-top:10px;">
+		<form class="form-inline" role="form" method="get" action="@routes.AdminController.searchUsersAdminPage()">
+			<div class="form-group">
+				<input type="text" name="userName" class='form-control' placeholder="Taper un nom d'utilisateur">
+			</div>
+			<button class='btn btn-info'>Rechercher</button>
+		</form>
 	</div>
+</div>
+
 	<!-- Members -->
 	<div class='row' style="margin-top:20px;padding-top:10px; border-top: 1px dashed rgba(86, 61, 124, 0.2);">
 		<div class="col-md-12">
@@ -59,17 +83,18 @@ routes.AdminController.listUsers(newPage, sortBy, order, currentFilter)
 						</button>
 						<ul class="dropdown-menu" role="menu">
 							<li>
-								<a href="#">Affecter/Déaffecter mod</a>
+								<a id="changeAdmin">Affecter/Déaffecter Admin</a>
 							</li>
 							<li>
-								<a href="#">Supprimer</a>
+								<a id="changeMod">Affecter/Déaffecter Mod</a>
 							</li>
+							<!-- <li>
+								<a id="changeExpert">Affecter/Déaffecter l'expert</a>
+							</li> -->
 							<li>
-								<a href="#">Bloquer</a>
+								<a id="blockUnblock">Bloquer/Débloquer</a>
 							</li>
-							<li>
-								<a href="#">Réaffecter l'expert</a>
-							</li>
+							
 						</ul>
 					</div>
 				</div>
@@ -81,18 +106,21 @@ routes.AdminController.listUsers(newPage, sortBy, order, currentFilter)
 			<table class="table table-hover">
 				<thead>
 					<tr>
+
 						<th></th>
 
 						@header("userName", "Membre")
 						@header("permission.permissionDescription", "Profil")
-
+						
+						@header("firstName", "Nom")
+						@header("lastName", "Prénom")
 						@header("service.serviceName", "Service")
-						@header("postCount", "Nb Posts")
-						@header("dateInscription", "Date Inscription")	
-						<!-- @header("dateFinalPost", "Dernier Post") -->
-
-
-						<th></th>
+						@header("threadCount", "Nb Articles")
+						@header("postCount", "Nb Commentaires")
+						@header("dateFinalPost", "Date de dernier post")
+						@header("dateInscription", "Date Inscription")
+						@header("isBlock", "Est bloqué")
+						
 					</tr>
 				</thead>
 				<tbody>
@@ -100,47 +128,34 @@ routes.AdminController.listUsers(newPage, sortBy, order, currentFilter)
 					@for(user
 					<- currentPage.getList()){ <tr>
 					<td>
-						<input type='checkbox' class="user_check_box"/>
+						<input id="@user.userName" type='checkbox' class="user_check_box"/>
 					</td>
 
 					<td>
 						<img class="img-thumbnail" src="@routes.Assets.at("imgs/users/" + user.userName + "/avatar/" + user.avatar)" alt="..." width="80" height="80">@user.userName</td>
-						<td>@user.permission.permissionName</td>
-						<td>@user.service.serviceName</td>
-						<td>@Post.countPostsByUser(user)</td>
-						<td>@("%1$td/%1$tm/%1$tY".format(user.dateInscription))</td>
-						<!-- <td>@("%1$td/%1$tm/%1$tY".format(user.dateFinalPost))</td> -->
+						<td>@user.permission.permissionDescription</td>
 						<td>
-							<div class="btn-group">
-								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-									Opération
-									<span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu" role="menu">
-									<li>
-										<a href="#" onclick="javascript:changeStatusMod('@routes.AdminController.changeStatusMod(user)')">Affecter/Déaffecter mod</a>
-									</li>
-									<li>
-										<a href="#" onclick="javascript:changeStatusAdmin('@routes.AdminController.changeStatusAdmin(user)')">Affecter/Déaffecter Admin</a>
-									</li>
-									<li>
-										<a href="#" onclick="javascript:delUser('@routes.AdminController.deleteUser(user)')">Supprimer</a>
-									</li>
-									<li>
-										<a href="#" onclick="javascript:blockUnblock('@routes.AdminController.blockUnblockUser(user)')">Bloquer/Débloquer</a>
-									</li>
-									<li>
-										<a href="#" onclick="javascript:changeExpert('@routes.AdminController.changeExpert(user)')">Affecter/Déaffecter l'expert</a>
-									</li>
-								</ul>
-							</div>
+							<a href="@routes.UserController.userHome(user)">
+									@user.firstName</a>
 						</td>
+						<td><a href="@routes.UserController.userHome(user)">
+									@user.lastName</a></td>
+
+						<td>@user.service.serviceName</td>
+						<td>@user.threadCount</td>
+						<td>@user.postCount</td>
+						<td>@("%1$td/%1$tm/%1$tY".format(user.dateFinalPost))</td>
+						<td>@("%1$td/%1$tm/%1$tY".format(user.dateInscription))</td>
+						
+						<td>@if(user.isBlock){oui}else{non}</td>
+						
 					</tr>
 				}
 
 			</tbody>
 		</table>
 	</div>
+	@if(userName == ""){
 	<div class="row">
 		<div class="col-md-6"></div>
 		<div class="col-md-6" align="right">
@@ -157,10 +172,31 @@ routes.AdminController.listUsers(newPage, sortBy, order, currentFilter)
 		}else{
 		<a class="btn btn-primary" disabled="disabled">Page suivante<span class='glyphicon glyphicon-chevron-right'></span></a>
 	}
-</div>
-</div>
-
-</div>
+			</div>
+		</div>
+	</div>
+}else{
+	<div class="row">
+		<div class="col-md-6"></div>
+		<div class="col-md-6" align="right">
+			<div class="btn-group">
+				@if(currentPage.hasPrev){
+				<a class="btn btn-primary" href="@linkSearchCase(currentPage.getPageIndex - 1, null)">
+					<span class='glyphicon glyphicon-chevron-left'>
+					</span>Page precedente</a>
+				}else{
+				<a class="btn btn-primary" disabled="disabled"><span class='glyphicon glyphicon-chevron-left'>
+				</span>Page precedente</a>
+			}<a class="btn btn-primary" href="">@currentPage.getDisplayXtoYofZ(" - ", " / ")</a> @if(currentPage.hasNext){
+			<a class="btn btn-primary" href="@linkSearchCase(currentPage.getPageIndex + 1, null)">Page suivante<span class='glyphicon glyphicon-chevron-right'></span></a>
+		}else{
+		<a class="btn btn-primary" disabled="disabled">Page suivante<span class='glyphicon glyphicon-chevron-right'></span></a>
+	}
+			</div>
+		</div>
+	</div>
+}
+	
 </div>
 
 </div>
@@ -169,23 +205,63 @@ routes.AdminController.listUsers(newPage, sortBy, order, currentFilter)
 
 <script type="text/javascript">
 $(document).ready(function(){
-	$("#select_all_users").click(function(){
-		if(this.checked){
-			$(".user_check_box").each(function(){
-				this.checked = true;
-			})
-		}else{
-			$(".user_check_box").each(function(){
-				this.checked = false;
-			})
 
-		}
-	});
+
+	$("#select_all_users").click(function(){
+			$('.user_check_box').prop('checked',false);
+			if(this.checked){
+				$('.user_check_box').prop('checked',true);
+
+			}
+		});
+
+		$(".user_check_box").click(function(){
+			$("#select_all_users").prop('checked', false);
+			if($(".user_check_box").length == $(".user_check_box:checked").length){
+				$("#select_all_users").prop('checked', true);
+			}
+		});
+
+		$("#changeAdmin").click(function(){
+				var data = findCheckecUsers();
+				if(data === undefined || data.length == 0){
+					alert("Sélectionnez au moin un objet");
+				}else{
+					changeStatusAdmin('Voulez vous vraiment appliquer ce changement ?', data);
+				}
+			});
+
+		$("#changeMod").click(function(){
+				var data = findCheckecUsers();
+				if(data === undefined || data.length == 0){
+					alert("Sélectionnez au moin un objet");
+				}else{
+					changeStatusMod('Voulez vous vraiment appliquer ce changement ?', data);
+				}
+			});
+
+		$("#changeExpert").click(function(){
+				var data = findCheckecUsers();
+				if(data === undefined || data.length == 0){
+					alert("Sélectionnez au moin un objet");
+				}else{
+					changeExpert('Voulez vous vraiment appliquer ce changement ?', data);
+				}
+			});
+
+		$("#blockUnblock").click(function(){
+				var data = findCheckecUsers();
+				if(data === undefined || data.length == 0){
+					alert("Sélectionnez au moin un objet");
+				}else{
+					blockUnblockUser('Voulez vous vraiment appliquer ce changement ?', data);
+				}
+			});
 
 
 });
 
-function changeStatusMod(urlToDelete) {
+/*function changeStatusMod(urlToDelete) {
 	$.ajax({
 		url: urlToDelete,
 		type: 'POST',
@@ -248,7 +324,160 @@ function changeExpert(urlToDelete) {
 				
 			}
 		});
+}*/
+
+function findCheckecUsers(){
+	var user_list = [];
+	$('.user_check_box').each(function(){
+		if(this.checked){
+			user_list.push(this.id);
+		}
+	});
+	return user_list;
 }
+
+function changeStatusAdmin(message, data){
+
+	    $('<div></div>').appendTo('body')
+	    				.html('<div><h6>'+message+'?</h6></div>')
+	                    .dialog({
+	                        modal: true, title: 'Confirmation de changement', zIndex: 10000, autoOpen: true,
+	                        width: 'auto', resizable: false,
+	                        buttons: {
+	                            Yes: function () {
+									$(".user_check_box").prop("checked",false);
+									
+									appRoutes.controllers.AdminController.changeStatusAdmin().ajax({
+											data:JSON.stringify(data),
+											contentType:'application/json',
+											type:'POST',
+											success:function(resultats){
+												alert(resultats);
+												location.reload();
+											},
+											error:function(resultats){
+												alert("Supprimer liste échec");
+											}
+									});
+
+	                                $(this).dialog("close");
+	                            },
+	                            No: function () {
+	                                $(this).dialog("close");
+	                            }
+	                        },
+	                        close: function (event, ui) {
+	                            $(this).remove();
+	                        }
+	                    });
+	};
+	function changeStatusMod(message, data){
+
+	    $('<div></div>').appendTo('body')
+	                    .html('<div><h6>'+message+'?</h6></div>')
+	                    .dialog({
+	                        modal: true, title: 'Confirmation de changement', zIndex: 10000, autoOpen: true,
+	                        width: 'auto', resizable: false,
+	                        buttons: {
+	                            Yes: function () {
+									$(".user_check_box").prop("checked",false);
+									
+									appRoutes.controllers.AdminController.changeStatusMod().ajax({
+											data:JSON.stringify(data),
+											contentType:'application/json',
+											type:'POST',
+											success:function(resultats){
+												alert(resultats);
+												location.reload();
+											},
+											error:function(resultats){
+												alert("Supprimer liste échec");
+											}
+									});
+
+	                                $(this).dialog("close");
+	                            },
+	                            No: function () {
+	                                $(this).dialog("close");
+	                            }
+	                        },
+	                        close: function (event, ui) {
+	                            $(this).remove();
+	                        }
+	                    });
+	};
+
+	function changeExpert(message, data){
+
+	    $('<div></div>').appendTo('body')
+	                    .html('<div><h6>'+message+'?</h6></div>')
+	                    .dialog({
+	                        modal: true, title: 'Confirmation de changement', zIndex: 10000, autoOpen: true,
+	                        width: 'auto', resizable: false,
+	                        buttons: {
+	                            Yes: function () {
+									$(".user_check_box").prop("checked",false);
+									
+									appRoutes.controllers.AdminController.changeExpert().ajax({
+											data:JSON.stringify(data),
+											contentType:'application/json',
+											type:'POST',
+											success:function(resultats){
+												alert(resultats);
+												location.reload();
+											},
+											error:function(resultats){
+												alert("Supprimer liste échec");
+											}
+									});
+
+	                                $(this).dialog("close");
+	                            },
+	                            No: function () {
+	                                $(this).dialog("close");
+	                            }
+	                        },
+	                        close: function (event, ui) {
+	                            $(this).remove();
+	                        }
+	                    });
+	};
+
+	function blockUnblockUser(message, data){
+
+	    $('<div></div>').appendTo('body')
+	                    .html('<div><h6>'+message+'?</h6></div>')
+	                    .dialog({
+	                        modal: true, title: 'Confirmation de changement', zIndex: 10000, autoOpen: true,
+	                        width: 'auto', resizable: false,
+	                        buttons: {
+	                            Yes: function () {
+									$(".user_check_box").prop("checked",false);
+									
+									appRoutes.controllers.AdminController.blockUnblockUser().ajax({
+											data:JSON.stringify(data),
+											contentType:'application/json',
+											type:'POST',
+											success:function(resultats){
+												
+												location.reload();
+											},
+											error:function(resultats){
+												alert("Supprimer liste échec");
+											}
+									});
+
+	                                $(this).dialog("close");
+	                            },
+	                            No: function () {
+	                                $(this).dialog("close");
+	                            }
+	                        },
+	                        close: function (event, ui) {
+	                            $(this).remove();
+	                        }
+	                    });
+	};
 
 </script>
 }

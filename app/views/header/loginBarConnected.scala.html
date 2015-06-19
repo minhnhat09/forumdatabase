@@ -5,10 +5,10 @@
 	<br>
 	<div class="row col-md-12" style="padding-right:0">
 		<!-- Signin -->
-		<a href="@routes.MessageController.message()#rappel">Rappel
+		<a href="@routes.MessageController.message(0, 0, 0, controllers.Application.getSessionUser())#rappel">Rappel
 			<span class="badge">@Notification.notificationsUnread(controllers.Application.getSessionUser())</span>
 		</a>
-		<a href="@routes.MessageController.message()">Message
+		<a href="@routes.MessageController.message(0, 0, 0, controllers.Application.getSessionUser())">Message
 			<span class="badge">@Message.messagesUnread(controllers.Application.getSessionUser())</span>
 		</a>
 

@@ -5,7 +5,7 @@
 
 <h1>Se Connecter</h1>
 
-@if(form.hasGlobalErrors) {
+<!-- @if(form.hasGlobalErrors) {
 <p class="alert alert-danger" style="width:50%">
 	@form.globalError.message
 </p>
@@ -13,7 +13,7 @@
 <p class="alert alert-success" style="width:50%">
 	@flash.get("success")
 </p>
-}
+} -->
 
 <p>
 	<input class="form-control" type="text" name="userName" placeholder="Nom d'utilisateur" value="@form("userName").value" style="width:50%" required ng-model="userName" ng-minlength="6">

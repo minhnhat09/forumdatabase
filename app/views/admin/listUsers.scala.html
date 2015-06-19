@@ -115,11 +115,12 @@ routes.AdminController.searchUsersAdminPage(newPage, userName, sortBy, order, cu
 						@header("firstName", "Nom")
 						@header("lastName", "Prénom")
 						@header("service.serviceName", "Service")
-						@header("postCount", "Nb Posts")
+						@header("threadCount", "Nb Articles")
+						@header("postCount", "Nb Commentaires")
 						@header("dateFinalPost", "Date de dernier post")
 						@header("dateInscription", "Date Inscription")
 						@header("isBlock", "Est bloqué")
-						<th></th>
+						
 					</tr>
 				</thead>
 				<tbody>
@@ -141,15 +142,13 @@ routes.AdminController.searchUsersAdminPage(newPage, userName, sortBy, order, cu
 									@user.lastName</a></td>
 
 						<td>@user.service.serviceName</td>
+						<td>@user.threadCount</td>
 						<td>@user.postCount</td>
 						<td>@("%1$td/%1$tm/%1$tY".format(user.dateFinalPost))</td>
 						<td>@("%1$td/%1$tm/%1$tY".format(user.dateInscription))</td>
 						
 						<td>@if(user.isBlock){oui}else{non}</td>
-						<td>
-							<a class="btn btn-info" href="@routes.AdminController.detailUser(user)">Detail</a>
-							
-						</td>
+						
 					</tr>
 				}
 

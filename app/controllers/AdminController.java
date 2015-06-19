@@ -108,9 +108,9 @@ public class AdminController extends Controller {
 		}
 	}
 	
-	public static Result detailUser(User user){
-		return ok(views.html.admin.detailUser.render(user, searchForm));
-	}
+//	public static Result detailUser(User user){
+//		return ok(views.html.admin.detailUser.render(user, searchForm));
+//	}
 	
 	/**
 	 * list of methods manage users
@@ -125,7 +125,6 @@ public class AdminController extends Controller {
 	 * @return
 	 */
 	public static Result listUsers(Integer page, String sortBy, String order, String filter){
-		
 		if(controllers.Application.isAdmin()){
 			Page<User> users = User.find(page, 10, sortBy, order, filter);
 			return ok(views.html.admin.listUsers.render(users, "", searchForm, sortBy, order, filter));
@@ -142,9 +141,7 @@ public class AdminController extends Controller {
 	 */
 	public static Result searchUsersAdminPage(Integer page, String userName, String sortBy, String order, String filter){
 		if(controllers.Application.isAdmin()){
-			
 			Page<User> users = User.getListUsersByName(page, userName);
-			
 			return ok(views.html.admin.listUsers.render(users, userName, searchForm, sortBy, order, filter));
 		}else{
 			flash("error", String.format("Vous n'avez pas le droit de consulter cette page"));
@@ -236,7 +233,6 @@ public class AdminController extends Controller {
 	@BodyParser.Of(BodyParser.Json.class)
 	public static Result changeStatusAdmin(){
 			JsonNode json = request().body().asJson();
-			
 			if(json ==null){
 				return badRequest("Json data not found");
 			}else{
@@ -248,15 +244,11 @@ public class AdminController extends Controller {
 					if(user != null){
 						User.changeStatusAdmin(user);
 					}
-					
 				}
 			}
 		flash("success", "Le statut d'utilisateur a bien été changé");
 		return ok();
 	}
-	
-	
-	
 	
 	/**
 	 * method delete user and all his references
@@ -293,9 +285,6 @@ public class AdminController extends Controller {
 			flash("error", String.format("Vous n'avez pas le droit de consulter cette page"));
 			return redirect(routes.AccueilController.accueil());
 		}
-		
-		
-		
 	}
 	/**
 	 * Method used to delete inscription demand
@@ -353,8 +342,6 @@ public class AdminController extends Controller {
 			flash("error", String.format("Vous n'avez pas le droit de consulter cette page"));
 			return redirect(routes.AccueilController.accueil());
 		}
-		
-		
 	}
 	/**
 	 * Method used to delete premium demand
@@ -383,9 +370,6 @@ public class AdminController extends Controller {
 		return GO_HOME_DEMAND_PREMIUM;
 	}
 	
-	
-	
-	
 	/**
 	 * Methods manage Service Tab
 	 * */
@@ -402,10 +386,6 @@ public class AdminController extends Controller {
 			flash("error", String.format("Vous n'avez pas le droit de consulter cette page"));
 			return redirect(routes.AccueilController.accueil());
 		}
-		
-		
-		
-		
 	}
 	/**
 	 * Method used to create new service
@@ -418,9 +398,6 @@ public class AdminController extends Controller {
 			flash("error", String.format("Vous n'avez pas le droit de consulter cette page"));
 			return redirect(routes.AccueilController.accueil());
 		}
-		
-		
-		
 	}
 	/**
 	 * Method used to modify an exist service
@@ -435,9 +412,6 @@ public class AdminController extends Controller {
 			flash("error", String.format("Vous n'avez pas le droit de consulter cette page"));
 			return redirect(routes.AccueilController.accueil());
 		}
-		
-		
-		
 	}
 	/**
 	 * Method used to save Service, it receive arguments from http post from client
@@ -551,7 +525,6 @@ public class AdminController extends Controller {
 				if(service != null){
 					Service.delService(service);
 				}
-				
 			}
 		}
 		
@@ -636,7 +609,6 @@ public class AdminController extends Controller {
 	 */
 	public static Result saveApp(){
 		Form<Application> boundForm = appForm.bindFromRequest();
-		
 		MultipartFormData body = request().body().asMultipartFormData();
 	    
 		if(boundForm.hasErrors()){
@@ -670,9 +642,9 @@ public class AdminController extends Controller {
 			 * if filetype not equal jpg, jpeg, bmp, gif (image format) return error
 			 */
 			if(!fileType.equalsIgnoreCase("jpg") && !fileType.equalsIgnoreCase("jpeg")&& !fileType.equalsIgnoreCase("bmp")
-					&& !fileType.equalsIgnoreCase("gif")){
+					&& !fileType.equalsIgnoreCase("gif")&& !fileType.equalsIgnoreCase("png")){
 				
-				flash("error", String.format("La photo doit être en format jpg, jpeg, bmp, gif"));
+				flash("error", String.format("La photo doit être en format jpg, jpeg, bmp, gif, png"));
 				return badRequest(views.html.admin.detailApp.render(boundForm, searchForm));
 			}
 			
@@ -845,7 +817,7 @@ public class AdminController extends Controller {
 	public static Result saveBonusRule(){
 		Form<BonusRule> boundForm = bonusRuleForm.bindFromRequest();
 		if(boundForm.hasErrors()){
-			return badRequest(views.html.admin.detailBonusRule.render(bonusRuleForm, searchForm));
+			return badRequest(views.html.admin.detailBonusRule.render(boundForm, searchForm));
 		}
 		BonusRule bonusRule = boundForm.get();
 		

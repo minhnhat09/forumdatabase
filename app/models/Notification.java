@@ -11,6 +11,8 @@ import javax.persistence.ManyToOne;
 
 import play.db.ebean.Model;
 
+import com.avaje.ebean.Page;
+
 @Entity
 public class Notification extends Model {
 	
@@ -60,12 +62,23 @@ public class Notification extends Model {
 	
 	
 	
-	public static List<Notification> findNotificationsByUser(String userName){
+	public static Page<Notification> findNotificationsByUser(String userName, int page){
+		return find.where()
+				.ilike("user_user_name", "%" + userName + "%")
+				.orderBy().desc("noteDate")
+				.findPagingList(10)
+				.setFetchAhead(false)
+				.getPage(page);
+	}
+	
+	public static List<Notification> findNotificationsByUserApi(String userName){
 		return find.where()
 				.ilike("user_user_name", "%" + userName + "%")
 				.orderBy().desc("noteDate")
 				.findList();
 	}
+	
+	
 
 	public static void deleteNotification(String idNoti){
 		int notiString = Integer.parseInt(idNoti);

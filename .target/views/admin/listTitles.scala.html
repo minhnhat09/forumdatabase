@@ -1,4 +1,4 @@
-@(searchForm:Form[controllers.SearchController.Search])
+@(currentPage: com.avaje.ebean.Page[Title],searchForm:Form[controllers.SearchController.Search])
 @adminMain(searchForm){
 
 
@@ -18,18 +18,19 @@
 				<a href="@routes.AdminController.newTitle()" class="btn btn-primary">Nouveau Titre</a>
 			</div>
 			<div class="col-md-6" align="right">
-				<div class="btn-group">
+				<a id="deleteListTitles" class="btn btn-danger">Supprimer</a>
+				<!-- <div class="btn-group">
 					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 						Opération
 						<span class="caret"></span>
 					</button>
 					<ul class="dropdown-menu" role="menu">
+							
 						
 						<li>
-							<a href="#">Supprimer</a>
 						</li>
 					</ul>
-				</div>
+				</div> -->
 
 			</div>
 		</div>
@@ -47,29 +48,30 @@
 				</tr>
 			</thead>
 			<tbody>
-				@for(title <- Title.findListTitles){
+				@for(title <- currentPage.getList()){
 				<tr>
 					<td>
-						<input class="title_check_box" type='checkbox' />
+						<input id="@title.idTitle" class="title_check_box" type='checkbox' />
 					</td>
 					<th>@title.titleName</th>
 					<th>@title.exp</th>
 					
 					<td>
-						<div class="btn-group">
+						<a class="btn btn-info" href="@routes.AdminController.modifyTitle(title)">Modifier</a>
+
+						<!-- <div class="btn-group">
 							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 								Opération
 								<span class="caret"></span>
 							</button>
 							<ul class="dropdown-menu" role="menu">
 								<li>
-									<a href="@routes.AdminController.modifyTitle(title)">Modifier</a>
 								</li>
 								<li>
-									<a href="#" onclick="javascript:del('@routes.AdminController.deleteTitle(title.idTitle.toString)')">Supprimer</a>
+									<a href="#" data-href="@routes.AdminController.deleteTitle(title.idTitle.toString)" data-toggle="modal" data-target="#confirm-delete">Supprimer</a>
 								</li>
 							</ul>
-						</div>
+						</div> -->
 					</td>
 				</tr>
 			}
@@ -77,22 +79,102 @@
 		</table>
 	</div>
 </div>
+<div class="row">
+	<div class="col-md-6"></div>
+		<div class="col-md-6" align="right">
+			<div class="btn-group">
+				@if(currentPage.hasPrev){
+				<a class="btn btn-primary" href="@routes.AdminController.listTitles(currentPage.getPageIndex - 1)">
+					<span class='glyphicon glyphicon-chevron-left'>
+					</span>Page precedente</a>
+				}else{
+				<a class="btn btn-primary" disabled="disabled"><span class='glyphicon glyphicon-chevron-left'>
+				</span>Page precedente</a>
+			}<a class="btn btn-primary" href="">@currentPage.getDisplayXtoYofZ(" - ", " / ")</a> @if(currentPage.hasNext){
+			<a class="btn btn-primary" href="@routes.AdminController.listTitles(currentPage.getPageIndex + 1)">Page suivante<span class='glyphicon glyphicon-chevron-right'></span></a>
+		}else{
+		<a class="btn btn-primary" disabled="disabled">Page suivante<span class='glyphicon glyphicon-chevron-right'></span></a>
+	}
+			</div>
+	</div>
+</div>
 <script type="text/javascript">
 	$(document).ready(function(){
+
+		
+
 		$("#select_all_titles").click(function(){
+			$('.title_check_box').prop('checked',false);
 			if(this.checked){
-				$(".title_check_box").each(function(){
-					this.checked = true;
-				})
-			}else{
-				$(".title_check_box").each(function(){
-					this.checked = false;
-				})
+				$('.title_check_box').prop('checked',true);
 
 			}
 		});
 
+		$(".title_check_box").click(function(){
+			$("#select_all_titles").prop('checked', false);
+			if($(".title_check_box").length == $(".title_check_box:checked").length){
+				$("#select_all_titles").prop('checked', true);
+			}
+		});
+
+		$('#deleteListTitles').click(function(){
+			var data = findCheckedTitles();
+			if(data === undefined || data.length == 0){
+				alert("Sélectionnez au moin un objet");
+			}else{
+				ConfirmDialog('Voulez vous vraiment supprimer ces objets ?', data);
+			}
+		})
+
 	});
+
+	function ConfirmDialog(message, data){
+
+	    $('<div></div>').appendTo('body')
+	                    .html('<div><h6>'+message+'?</h6></div>')
+	                    .dialog({
+	                        modal: true, title: 'Confirmation supression', zIndex: 10000, autoOpen: true,
+	                        width: 'auto', resizable: false,
+	                        buttons: {
+	                            Yes: function () {
+									$(".title_check_box").prop("checked",false);
+									
+									appRoutes.controllers.AdminController.deleteListTitles().ajax({
+											data:JSON.stringify(data),
+											contentType:'application/json',
+											type:'POST',
+											success:function(resultats){
+												alert(resultats);
+												location.reload();
+											},
+											error:function(resultats){
+												alert("Supprimer liste échec");
+											}
+									});
+
+	                                $(this).dialog("close");
+	                            },
+	                            No: function () {
+	                                $(this).dialog("close");
+	                            }
+	                        },
+	                        close: function (event, ui) {
+	                            $(this).remove();
+	                        }
+	                    });
+	    };
+
+	function findCheckedTitles(){
+		var title_list = [];
+		$('.title_check_box').each(function(){
+			if(this.checked){
+				title_list.push(this.id);
+			}
+		});
+		return title_list;
+	}
+
 	function del(urlToDelete) {
 		$.ajax({
 			url: urlToDelete,

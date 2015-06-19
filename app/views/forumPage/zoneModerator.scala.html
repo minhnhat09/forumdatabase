@@ -4,14 +4,15 @@
 		<div class='row'>
 			<div class="col-md-10">
 				<button class="btn btn-success"><h3>@app.appName</h3></button>
+
 				<p>Modérateur:
-					@for(user <- models.User.findModsByApp(app)){
-					<a href="@routes.UserController.userHome(user)" class="btn btn-link">@user.firstName @user.lastName</a>
+					@for(userMod <- models.UserMod.findModsByService(app.service)){
+					<a href="@routes.UserController.userHome(userMod.user)" class="btn btn-link">@userMod.user.firstName @userMod.user.lastName</a>
 				}
 				</p>
 				<p>Key Users:
-					@for(keyUser <- models.User.findKeyUsersByApp(app)){
-					<a href="@routes.UserController.userHome(keyUser)" class="btn btn-link">@keyUser.firstName @keyUser.lastName</a>
+					@for(keyUser <- models.KeyUser.findKeyUsersByApp(app)){
+					<a href="@routes.UserController.userHome(keyUser.user)" class="btn btn-link">@keyUser.user.firstName @keyUser.user.lastName</a>
 				}
 				</p>
 			</div>

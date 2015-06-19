@@ -27,7 +27,7 @@ POST	/admin/toggle									controllers.AdminController.toggleAdminMode()
 #Tab Admin User
 GET		/admin/users/									controllers.AdminController.listUsers(page: Integer ?= 0, s ?= "user_name", o ?= "asc", f ?= "")
 GET 	/admin/users/search								controllers.AdminController.searchUsersAdminPage(page: Integer ?=0, userName: String ?="", s ?= "user_name", o ?= "asc", f ?= "")
-GET		/admin/users/detailUser/:user					controllers.AdminController.detailUser(user: models.User)
+#GET		/admin/users/detailUser/:user					controllers.AdminController.detailUser(user: models.User)
 
 POST    /admin/users/mods		 						controllers.AdminController.changeStatusMod()
 POST    /admin/users/admins			 					controllers.AdminController.changeStatusAdmin()
@@ -110,7 +110,7 @@ POST	/demandpremium/savedemandpremium				controllers.InscriptionController.saveD
 
 POST	/inscription/saveuser							controllers.InscriptionController.saveUser()
 #Page Message
-GET		/message/										controllers.MessageController.message()
+GET		/message/										controllers.MessageController.message(pageReceivedMess: Integer ?= 0, pageSentMess: Integer ?= 0, pageNotis: Integer ?= 0, userName: String)
 GET		/message/sendmessage							controllers.MessageController.writeMessage()
 GET     /message/sendmessage/:user                      controllers.MessageController.writeMessageWithUser(user: models.User)
 POST	/message/										controllers.MessageController.sendMessage()
@@ -123,7 +123,7 @@ DELETE  /message/noti/:idNoti							controllers.MessageController.deleteNoti(idN
 #Page Person
 GET		/infoperson/:person								controllers.PersonController.person(person: models.User)
 GET  	/infoperson/modify/:person			   			controllers.PersonController.modifyPerson(person: models.User)
-POST	/infoperson/saveperson/:user					controllers.PersonController.savePerson(user:models.User)
+POST	/infoperson/saveperson/:user					controllers.PersonController.savePerson(user: models.User)
 POST 	/infoperson/sendgift/:person					controllers.PersonController.sendGift(person:models.User)
 POST  	/infoperson/postcode/:code						controllers.PersonController.postCode(code:String)
 POST	/infoperson/contact/:idContact					controllers.PersonController.confirmContact(idContact: String)

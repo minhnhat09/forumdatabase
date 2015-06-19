@@ -19,7 +19,7 @@ public class UserPermission extends Model {
 	 */
 	private static final long serialVersionUID = 1L;
 
-
+	
 	@Id
 	public int idUserPermission;
 	

@@ -1,4 +1,4 @@
-@(searchForm:Form[controllers.SearchController.Search])
+@(currentPage: com.avaje.ebean.Page[Tag], searchForm:Form[controllers.SearchController.Search])
 @adminMain(searchForm){
 
 
@@ -16,21 +16,10 @@
 				<input id="select_all_tags" type='checkbox' />
 				<b>Tous Choisir</b>
 				<a href="@routes.AdminController.newTag()" class="btn btn-primary">Nouveau Tag</a>
+			
 			</div>
 			<div class="col-md-6" align="right">
-				<div class="btn-group">
-					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-						Opération
-						<span class="caret"></span>
-					</button>
-					<ul class="dropdown-menu" role="menu">
-					
-						<li>
-							<a href="#" data-target="#confirm-delete">Supprimer</a>
-						</li>
-					</ul>
-				</div>
-
+				<a id="deleteListTags" class="btn btn-danger">Supprimer</a>
 			</div>
 		</div>
 	</div>
@@ -47,31 +36,16 @@
 				</tr>
 			</thead>
 			<tbody>
-				@for(tag <- Tag.findListTag){
+				@for(tag <- currentPage.getList()){
 				<tr>
 					<td>
-						<input class="tag_check_box" type='checkbox' />
+						<input id="@tag.idTag" class="tag_check_box" type='checkbox' />
 					</td>
 					<th>@tag.tagTitle</th>
 					<th>@tag.category</th>
 					
 					<td>
-						<div class="btn-group">
-							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-								Opération
-								<span class="caret"></span>
-							</button>
-							<ul class="dropdown-menu" role="menu">
-								<li>
-									<a href="@routes.AdminController.modifyTag(tag)">Modifier</a>
-								</li>
-								<li>
-									<a href="#" data-href="@routes.AdminController.deleteTag(tag.idTag)" data-toggle="modal" data-target="#confirm-delete">Supprimer</a>
-    
-									
-								</li>
-							</ul>
-						</div>
+						<a class="btn btn-info" href="@routes.AdminController.modifyTag(tag)">Modifier</a>
 					</td>
 				</tr>
 			}
@@ -79,25 +53,103 @@
 		</table>
 	</div>
 </div>
-
-
+<div class="row">
+	<div class="col-md-6"></div>
+		<div class="col-md-6" align="right">
+			<div class="btn-group">
+				@if(currentPage.hasPrev){
+				<a class="btn btn-primary" href="@routes.AdminController.listTags(currentPage.getPageIndex - 1)">
+					<span class='glyphicon glyphicon-chevron-left'>
+					</span>Page precedente</a>
+				}else{
+				<a class="btn btn-primary" disabled="disabled"><span class='glyphicon glyphicon-chevron-left'>
+				</span>Page precedente</a>
+			}<a class="btn btn-primary" href="">@currentPage.getDisplayXtoYofZ(" - ", " / ")</a> @if(currentPage.hasNext){
+			<a class="btn btn-primary" href="@routes.AdminController.listTags(currentPage.getPageIndex + 1)">Page suivante<span class='glyphicon glyphicon-chevron-right'></span></a>
+		}else{
+		<a class="btn btn-primary" disabled="disabled">Page suivante<span class='glyphicon glyphicon-chevron-right'></span></a>
+	}
+			</div>
+	</div>
+</div>
      
 <script type="text/javascript">
 	$(document).ready(function(){
+
 		$("#select_all_tags").click(function(){
+			$('.tag_check_box').prop('checked',false);
 			if(this.checked){
-				$(".tag_check_box").each(function(){
-					this.checked = true;
-				})
-			}else{
-				$(".tag_check_box").each(function(){
-					this.checked = false;
-				})
+				$('.tag_check_box').prop('checked',true);
+
 			}
 		});
+
+		$(".tag_check_box").click(function(){
+			$("#select_all_tags").prop('checked', false);
+			if($(".tag_check_box").length == $(".tag_check_box:checked").length){
+				$("#select_all_tags").prop('checked', true);
+			}
+		});
+
+		$("#deleteListTags").click(function(){
+				var data = findCheckedTags();
+				if(data === undefined || data.length == 0){
+					alert("Sélectionnez au moin un objet");
+				}else{
+					ConfirmDialog('Voulez vous vraiment supprimer ces objets ?', data);
+				}
+			});
+
+
 	});
 
-	
+	function ConfirmDialog(message, data){
+
+	    $('<div></div>').appendTo('body')
+	                    .html('<div><h6>'+message+'?</h6></div>')
+	                    .dialog({
+	                        modal: true, title: 'Confirmation supression', zIndex: 10000, autoOpen: true,
+	                        width: 'auto', resizable: false,
+	                        buttons: {
+	                            Yes: function () {
+									$(".tag_check_box").prop("checked",false);
+									
+									appRoutes.controllers.AdminController.deleteListTags().ajax({
+											data:JSON.stringify(data),
+											contentType:'application/json',
+											type:'POST',
+											success:function(resultats){
+												alert(resultats);
+												location.reload();
+											},
+											error:function(resultats){
+												alert("Supprimer liste échec");
+											}
+									});
+
+	                                $(this).dialog("close");
+	                            },
+	                            No: function () {
+	                                $(this).dialog("close");
+	                            }
+	                        },
+	                        close: function (event, ui) {
+	                            $(this).remove();
+	                        }
+	                    });
+	    };
+
+	function findCheckedTags(){
+		var tag_list = [];
+		$('.tag_check_box').each(function(){
+			if(this.checked){
+				tag_list.push(this.id);
+			}
+		});
+		return tag_list;
+	}
+
+
 </script>
 
 }

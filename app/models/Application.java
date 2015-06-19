@@ -47,6 +47,11 @@ public class Application extends Model implements PathBindable<Application>{
 	@OneToMany(mappedBy = "app")
 	public List<UserPermission> userPermission;
 	
+	@OneToMany(mappedBy = "app")
+	public List<KeyUser> keyUsers;
+	
+	
+	
 	@OneToMany(mappedBy = "application")
 	public List<ApplicationView> users;
 	

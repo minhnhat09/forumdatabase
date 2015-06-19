@@ -73,8 +73,12 @@
 			var code = "@AccountValidation.generateCode()";
 			appRoutes.controllers.PersonController.postCode(code).ajax({
 				type:'POST',
-				success: function(resultats){
+				success: function(data){
+					alert(data);
 					location.reload();
+				},
+				error:function(data){
+					alert(data.responseText);
 				}
 			});
 		});

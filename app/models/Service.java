@@ -43,6 +43,10 @@ public class Service extends Model implements PathBindable<Service>{
 	@OneToMany(mappedBy = "service")
 	public List<User> users;
 	
+	@OneToMany(mappedBy = "service")
+	public List<UserMod> userMods;
+	
+	
 	public static Finder<Integer, Service> find = new Finder<Integer, Service>(Integer.class, Service.class);
 	
 	public static void delService(Service service){

@@ -78,6 +78,7 @@ src="@routes.Assets.at("imgs/" + "users/" + thread.author.userName + "/avatar/" 
 					</div> -->
 				
 				<br>
+				@if(Bibliography.findListByThread(thread.idThread).length != 0){
 				<blockquote class="bibliographie">
 					<p><h2>Bibliographie</h2></p>
 					<table class="col-md-12" border="2px solid red;">
@@ -96,6 +97,8 @@ src="@routes.Assets.at("imgs/" + "users/" + thread.author.userName + "/avatar/" 
 						
 					</table>
 				</blockquote>
+			}
+				
 				
 			</div>
 			

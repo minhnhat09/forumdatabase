@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.util.Date;
 
 import models.AccountValidation;
+import models.Application;
+import models.BonusRule;
 import models.Contact;
 import models.Gift;
 import models.GiftUser;
@@ -49,7 +51,7 @@ public class PersonController extends Controller {
 	public static Result person(User user) {
 		// User user = User.findUserbyUserName(userName.);
 		
-		if(!user.userName.equals(Application.getUser().userName)){
+		if(!user.userName.equals(controllers.Application.getUser().userName)){
 			flash("error", String.format("No permission"));
 			return redirect(routes.AccueilController.accueil());
 		}else{
@@ -69,8 +71,9 @@ public class PersonController extends Controller {
 	    if(ua == null) {
 	        return notFound(String.format("Bookmark %s does not exists.", idUserAppreciation));
 	    }
-	    Ebean.delete(ua);
-	    flash("success", String.format("Bookmark supprimé"));
+	    ua.isFavorited = false;
+	    ua.update();
+	    flash("success", String.format("Le bookmark a bien été supprimé"));
 	    return ok();
 	  }
 
@@ -82,6 +85,8 @@ public class PersonController extends Controller {
 	public static Result changePictureUser(User user) {
 		MultipartFormData body = request().body().asMultipartFormData();
 		FilePart picture = body.getFile("picture");
+		
+		
 		if (picture != null) {
 			
 			String contentType = picture.getContentType();
@@ -94,17 +99,18 @@ public class PersonController extends Controller {
 			 * if filetype not equal jpg, jpeg, bmp, gif (image format) return error
 			 */
 			if(!fileType.equalsIgnoreCase("jpg") && !fileType.equalsIgnoreCase("jpeg")&& !fileType.equalsIgnoreCase("bmp")
-					&& !fileType.equalsIgnoreCase("gif")){
+					&& !fileType.equalsIgnoreCase("gif")&& !fileType.equalsIgnoreCase("png")){
 				
-				flash("error", String.format("La photo doit être en format jpg, jpeg, bmp, gif"));
-				return redirect(routes.PersonController.person(user));
+				flash("error", String.format("La photo doit être en format jpg, jpeg, bmp, gif, png"));
+				return badRequest(views.html.person.changePicture.render(user, searchForm));
 			}
 				
 			File content = picture.getFile();
 			if(content == null){
 				flash("error", String.format("Aucun fichier selectionné"));
-				return redirect(routes.PersonController.person(user));
+				return badRequest(views.html.person.changePicture.render(user, searchForm));
 			}
+			
 			FileOutputStream fop = null;
 			File file;
 			String path = "public\\imgs\\users\\" + user.userName + "\\avatar\\";
@@ -154,7 +160,7 @@ public class PersonController extends Controller {
 			return redirect(routes.PersonController.person(user));
 		} else {
 			flash("error", "Aucun fichier a été selectionné");
-			return redirect(routes.PersonController.person(user));
+			return badRequest(views.html.person.changePicture.render(user, searchForm));
 		}
 	}
 
@@ -183,7 +189,7 @@ public class PersonController extends Controller {
 	 * @return
 	 */
 	public static Result savePerson(User user) {
-		
+
 		DynamicForm form 	= Form.form().bindFromRequest();
 		String firstName 	= form.get("firstName");
 		String lastName  	= form.get("lastName");
@@ -235,6 +241,8 @@ public class PersonController extends Controller {
 		user.update();
 		
 		return redirect(routes.PersonController.person(user));
+		
+		
 
 	}
 
@@ -256,7 +264,7 @@ public class PersonController extends Controller {
 	 */
 	public static Result postCode(String str) {
 		if (str != null) {
-			User user = User.findById(Application.getSessionUser());
+			User user = User.findById(controllers.Application.getSessionUser());
 			if (AccountValidation.saveCode(user, str)) {
 				flash("success", String.format("Code généré avec succès"));
 				return ok("Le code parrainage a bien été créé");
