@@ -85,9 +85,9 @@ routes.AdminController.searchUsersAdminPage(newPage, userName, sortBy, order, cu
 							<li>
 								<a id="changeAdmin">Affecter/Déaffecter Admin</a>
 							</li>
-							<li>
+							<!-- <li>
 								<a id="changeMod">Affecter/Déaffecter Mod</a>
-							</li>
+							</li> -->
 							<!-- <li>
 								<a id="changeExpert">Affecter/Déaffecter l'expert</a>
 							</li> -->
@@ -106,12 +106,9 @@ routes.AdminController.searchUsersAdminPage(newPage, userName, sortBy, order, cu
 			<table class="table table-hover">
 				<thead>
 					<tr>
-
 						<th></th>
-
 						@header("userName", "Membre")
 						@header("permission.permissionDescription", "Profil")
-						
 						@header("firstName", "Nom")
 						@header("lastName", "Prénom")
 						@header("service.serviceName", "Service")
@@ -120,7 +117,7 @@ routes.AdminController.searchUsersAdminPage(newPage, userName, sortBy, order, cu
 						@header("dateFinalPost", "Date de dernier post")
 						@header("dateInscription", "Date Inscription")
 						@header("isBlock", "Est bloqué")
-						
+						<th></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -148,7 +145,22 @@ routes.AdminController.searchUsersAdminPage(newPage, userName, sortBy, order, cu
 						<td>@("%1$td/%1$tm/%1$tY".format(user.dateInscription))</td>
 						
 						<td>@if(user.isBlock){oui}else{non}</td>
-						
+						<td>
+							 <div class="btn-group">
+								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+									Opération
+									<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu" role="menu">
+									<li>
+										<a href="@routes.AdminController.userModPage(user)">Affecter Mod</a>
+									</li>
+									<li>
+										<a href="@routes.AdminController.keyUserPage(user)">Affecter Key User</a>
+									</li>
+								</ul>
+							</div>
+						</td>
 					</tr>
 				}
 
@@ -352,11 +364,11 @@ function changeStatusAdmin(message, data){
 											contentType:'application/json',
 											type:'POST',
 											success:function(resultats){
-												alert(resultats);
+												alert("Le statut a bien été changé");
 												location.reload();
 											},
 											error:function(resultats){
-												alert("Supprimer liste échec");
+												alert("Erreur lors du changement de statut");
 											}
 									});
 

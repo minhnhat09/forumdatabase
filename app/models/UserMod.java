@@ -31,4 +31,24 @@ public class UserMod extends Model{
 				.eq("service_id_service", service.idService)
 				.findList();
 	}
+	
+	public static List<UserMod> findModsByUser(String userName){
+		return find.where()
+				.eq("user_user_name", userName)
+				.findList();
+	}
+	/**
+	 * Method used to check if a user is a moderator of a service
+	 * @param userName
+	 * @param idService
+	 * @return
+	 */
+	public static boolean isModInService(String userName, int idService){
+		int count =  find.where()
+				   .eq("service_id_service", idService)
+				   .eq("user_user_name", userName)
+				   .findRowCount();
+		if(count != 0) return true;
+		else return false;
+	}
 }

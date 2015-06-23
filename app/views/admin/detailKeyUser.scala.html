@@ -1,0 +1,71 @@
+@(user:User, searchForm:Form[controllers.SearchController.Search])
+
+@import helper._
+@import helper.twitterBootstrap._
+
+
+@adminMain(searchForm) {
+    
+       
+       
+        @for(app <- models.Application.findList()){
+            <input id="@app.idApp" class="app_check_box" type='checkbox' />@app.appName
+        }
+         <div class="actions">
+            <button type="submit" id="setKeyUser" value="Engeristrer" class="btn btn-primary">Enregistrer</button>
+            <a href="@routes.AdminController.listUsers(0)" class="btn btn-danger">Annuler</a> 
+        </div>
+
+    
+
+
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#setKeyUser").click(function(){
+            var data = findCheckedApp();
+            console.log(data);
+            appRoutes.controllers.AdminController.setKeyUser().ajax({
+                                            data:JSON.stringify(data),
+                                            contentType:'application/json',
+                                            type:'POST',
+                                            success:function(resultats){
+                                                alert("Engeristrer");
+                                            },
+                                            error:function(resultats){
+                                                alert("Echec");
+                                            }
+                                    });
+            
+        });
+
+
+        $('.app_check_box').each(function(){
+            @for(keyUser <- KeyUser.findKeyUsersByUser(user.userName)){
+
+                if(@keyUser.app.idApp == this.id){
+                    console.log(this.id);
+                    this.checked = true;
+                }
+            }
+        });
+     });
+
+
+    function findCheckedApp(){
+        var app_list = [];
+        app_list.push("@user.userName");
+        $('.app_check_box').each(function(){
+            if(this.checked){
+                app_list.push(this.id);
+            }
+        });
+        
+        return app_list;
+    }
+
+</script>
+
+
+
+}

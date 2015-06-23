@@ -28,6 +28,10 @@ public class KeyUser extends Model{
 				.findList();
 	}
 	
-	
+	public static List<KeyUser> findKeyUsersByUser(String userName){
+		return find.where()
+				.eq("user_user_name", userName)
+				.findList();
+	}
 	
 }

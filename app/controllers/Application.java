@@ -266,6 +266,8 @@ import controllers.SearchController.Search;
 
 				routes.javascript.AdminController.getAppsByService(),
 				//User admin page
+				routes.javascript.AdminController.setKeyUser(),
+				routes.javascript.AdminController.setUserMod(),
 				routes.javascript.AdminController.changeExpert(),
 				routes.javascript.AdminController.changeStatusAdmin(),
 				routes.javascript.AdminController.changeStatusMod(),

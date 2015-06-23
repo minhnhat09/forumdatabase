@@ -16,14 +16,13 @@ import org.joda.time.Duration;
 
 import play.GlobalSettings;
 import play.Play;
-import play.libs.F.Promise;
-import play.mvc.Http.RequestHeader;
-import play.mvc.SimpleResult;
+import play.data.Form;
+import controllers.SearchController.Search;
 
 
 
 public class Global extends GlobalSettings{
-	
+	public static final Form<Search> SEARCHFORM = Form.form(Search.class);
 	/**
 	 * 
 	 * @param subject
@@ -98,6 +97,13 @@ public class Global extends GlobalSettings{
 			  }
 		 }
 	}
+	
+	
+	
+	
+	
+
+	  
 	
 	
 	

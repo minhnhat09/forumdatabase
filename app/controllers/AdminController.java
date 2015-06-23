@@ -13,12 +13,14 @@ import models.BonusRule;
 import models.Communication;
 import models.Demand;
 import models.DemandPremium;
+import models.KeyUser;
 import models.Permission;
 import models.Service;
 import models.Tag;
 import models.Thread;
 import models.Title;
 import models.User;
+import models.UserMod;
 import play.data.DynamicForm;
 import play.data.Form;
 import play.mvc.BodyParser;
@@ -147,6 +149,142 @@ public class AdminController extends Controller {
 			flash("error", String.format("Vous n'avez pas le droit de consulter cette page"));
 			return redirect(routes.AccueilController.accueil());
 		}
+	}
+	
+	/**
+	 * Method used to render usermode page
+	 * @param user whom we want to set mod for one or many service
+	 * @return
+	 */
+	public static Result userModPage(User user){
+		if(controllers.Application.isAdmin()){
+			//check if this user have a profile admin, throw error 
+			if(user.permission.idPermission == 1){
+				flash("error", String.format("Cet utilisateur est administrateur"));
+				return ADMIN_HOME;
+			}
+			return ok(views.html.admin.detailUserMod.render(user, searchForm));
+		}else{
+			flash("error", String.format("Vous n'avez pas le droit de consulter cette page"));
+			return redirect(routes.AccueilController.accueil());
+		}
+	}
+	
+	/**
+	 * Json Method used to set mod by user
+	 * It takes user, list of service and set user to these service
+	 * It means that this user is mode of these service
+	 * @return
+	 */
+	@BodyParser.Of(BodyParser.Json.class)
+	public static Result setUserMod(){
+		
+		JsonNode json = request().body().asJson();
+		
+		if(json == null){
+			return badRequest("Json data not found");
+		}else{
+			String userName = json.get(0).textValue();
+			User user = User.findById(userName);
+			List<UserMod> listUserMods = UserMod.findModsByUser(user.userName);
+			for (UserMod userMod : listUserMods) {
+				userMod.delete();
+			}
+			
+			
+			
+			//Get iterator and ignore first element (userName)
+			Iterator<JsonNode> it = json.elements();
+			it.next();
+			
+			while(it.hasNext()){
+				//Get service by idService from json data 
+				String idService = it.next().textValue();
+				Service service = Service.findById(idService);
+				//get list user mod from user
+				
+				//Check if service don't exist 
+				UserMod userMod = new UserMod();
+				userMod.service = service;
+				userMod.user    = user;
+				userMod.save();
+				user.userMods.add(userMod);
+				user.save();
+			}
+			//check if listusermod is null
+			//Change user statut to user
+			listUserMods = UserMod.findModsByUser(user.userName);
+			if(listUserMods.size() == 0){
+				Permission userStatut = Permission.findById(3);
+				user.permission = userStatut;
+				user.update();
+			}else{
+				//set permission of user to mod
+				Permission modStatut = Permission.findById(2);
+				user.permission = modStatut;
+				user.update();
+			}
+			
+		}
+		flash("success", "Le statut d'utilisateur a bien été changé");
+		return ADMIN_HOME;
+	}
+	
+	
+	/**
+	 * Method used to render usermode page
+	 * @param user whom we want to set mod for one or many service
+	 * @return
+	 */
+	public static Result keyUserPage(User user){
+		if(controllers.Application.isAdmin()){
+			
+			return ok(views.html.admin.detailKeyUser.render(user, searchForm));
+		}else{
+			flash("error", String.format("Vous n'avez pas le droit de consulter cette page"));
+			return redirect(routes.AccueilController.accueil());
+		}
+	}
+	
+	/**
+	 * Json Method used to set mod by user
+	 * It takes user, list of service and set user to these service
+	 * It means that this user is mode of these service
+	 * @return
+	 */
+	@BodyParser.Of(BodyParser.Json.class)
+	public static Result setKeyUser(){
+		JsonNode json = request().body().asJson();
+		if(json == null){
+			return badRequest("Json data not found");
+		}else{
+			String userName = json.get(0).textValue();
+			User user = User.findById(userName);
+			List<KeyUser> listKeyUsers = KeyUser.findKeyUsersByUser(user.userName);
+			for (KeyUser ku : listKeyUsers) {
+				ku.delete();
+			}
+			//Get iterator and ignore first element (userName)
+			Iterator<JsonNode> it = json.elements();
+			it.next();
+			
+			while(it.hasNext()){
+				//Get service by idService from json data 
+				String idApp = it.next().textValue();
+				Application app = Application.findById(idApp);
+				//get list user mod from user
+				
+				//Check if service don't exist 
+				KeyUser keyUser = new KeyUser();
+				keyUser.user    = user;
+				keyUser.app     = app;
+				keyUser.save();
+				user.keyUsers.add(keyUser);
+				user.save();
+			}
+		}
+		flash("success", "Le statut d'utilisateur a bien été changé");
+		return ADMIN_HOME;
 	}
 	
 	
