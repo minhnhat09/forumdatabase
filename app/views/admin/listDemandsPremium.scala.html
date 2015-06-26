@@ -1,4 +1,6 @@
 @(currentPage: com.avaje.ebean.Page[DemandPremium], searchForm:Form[controllers.SearchController.Search]) @adminMain(searchForm){
+	@if(currentPage.getList().size() != 0){
+
 	<!-- Button -->
 	<div class='row' align="right">
 	</div>
@@ -101,6 +103,9 @@
 			</div>
 	</div>
 </div>
+}else{
+	Aucune information à afficher
+}
 <script type="text/javascript">
 	$(document).ready(function(){
 

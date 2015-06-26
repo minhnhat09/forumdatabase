@@ -46,7 +46,7 @@
 	<td><div>@("%1$td/%1$tm/%1$tY %1$tH:%1$tM:%1$tS".format(thread.lastUpdate))</div></td>
 	
 	
-	@if(controllers.Application.getAdminMode=="on"){
+	@if(controllers.Application.getAdminMode=="on" && models.UserMod.isModInService(controllers.Application.getSessionUser, app.service.idService)){
 	<!-- <td><div>@thread.idThread</div></td> -->
 	<td class="zoneMode">
 

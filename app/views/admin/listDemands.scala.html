@@ -1,5 +1,7 @@
 @(currentPage: com.avaje.ebean.Page[Demand], searchForm:Form[controllers.SearchController.Search]) @adminMain(searchForm){
 	<!-- Button -->
+	@if(currentPage.getList().size() != 0){
+
 	<div class='row' align="right">
 	</div>
 	<!-- Members -->
@@ -85,6 +87,9 @@
 
 		</div>
 	</div>
+}else{
+	Aucune information à afficher
+}
 <script type="text/javascript">
 	$(document).ready(function(){
 		$("#select_all_demands").click(function(){

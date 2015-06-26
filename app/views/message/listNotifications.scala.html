@@ -1,5 +1,9 @@
 @(currentPage:com.avaje.ebean.Page[models.Notification])
+
+
+
 <div class="tab-pane" id="rappel">
+	@if(currentPage.getList().size() != 0){
 	<div class="col-md-10">
 	<div class="col-md-12"  >
 			<div class='col-md-7' align="left">
@@ -75,4 +79,9 @@
 			</div>
 	</div>
 </div>
+}else{
+	Aucune information à afficher
+}
 </div>
+
+	

@@ -114,9 +114,7 @@ public class AdminController extends Controller {
 //		return ok(views.html.admin.detailUser.render(user, searchForm));
 //	}
 	
-	/**
-	 * list of methods manage users
-	 */
+	
 	
 	/**
 	 * 

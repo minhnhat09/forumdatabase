@@ -1,5 +1,10 @@
 @(currentPage:com.avaje.ebean.Page[models.Message])
+
+	
+
+
 <div class="tab-pane" id="sentMessages">
+	@if(currentPage.getList().size() != 0){
 	<div class="col-md-10">
 		
 		<div class="col-md-12"  >
@@ -86,4 +91,8 @@
 			</div>
 	</div>
 </div>
+}else{
+	Aucune information à afficher
+}
 </div>
+

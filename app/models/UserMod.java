@@ -11,12 +11,8 @@ import play.db.ebean.Model;
 @Entity
 public class UserMod extends Model{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	
-
 	@Id
 	public int idUserMod;
 	@ManyToOne
@@ -26,17 +22,33 @@ public class UserMod extends Model{
 	
 	public static Finder<Integer, UserMod> find = new Finder<Integer, UserMod>(Integer.class, UserMod.class);
 	
+	
+	/**
+	 * 
+	 * @param service
+	 * @return
+	 */
+	
+	
 	public static List<UserMod> findModsByService(Service service){
 		return find.where()
 				.eq("service_id_service", service.idService)
 				.findList();
 	}
 	
+	
+	/**
+	 * 
+	 * @param userName
+	 * @return
+	 */
 	public static List<UserMod> findModsByUser(String userName){
 		return find.where()
 				.eq("user_user_name", userName)
 				.findList();
 	}
+	
+	
 	/**
 	 * Method used to check if a user is a moderator of a service
 	 * @param userName

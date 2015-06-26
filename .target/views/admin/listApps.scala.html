@@ -137,6 +137,7 @@ function ConfirmDialog(message, data){
 	                        width: 'auto', resizable: false,
 	                        buttons: {
 	                            Yes: function () {
+	                            	
 									$(".app_check_box").prop("checked",false);
 									
 									appRoutes.controllers.AdminController.deleteListApps().ajax({

@@ -252,12 +252,9 @@ public class ThreadController extends Controller {
 		PostQuote pq = new PostQuote();
 		
 		//create a notification
-		Notification noti = new Notification();
-		noti.user = post.user;
-		noti.noteDate = new Date();
-		noti.content = comment.user.firstName + " " + comment.user.lastName +  " " + Messages.get("notiwithquote") + " " + comment.thread.threadName;
-		noti.idThreadResponse = comment.thread.idThread;
-		noti.save();
+		
+		notificationForComment(thread, comment);
+		
 		//Attach precedent post to quote for this comment
 		pq.post = comment.idPost;
 		pq.quotes = post.idPost;

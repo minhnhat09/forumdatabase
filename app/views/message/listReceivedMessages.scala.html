@@ -1,5 +1,8 @@
 @(currentPage:com.avaje.ebean.Page[models.Message])
+
+
 <div class="tab-pane active" id="receivedMessages">
+	@if(currentPage.getList().size() != 0){
 	<div class="col-md-10">
 		<div class="col-md-12"  >
 			<div class='col-md-7' align="left">
@@ -74,23 +77,31 @@
 		</table>	
 	</div>
 	<div class="row">
-	<div class="col-md-6"></div>
-		<div class="col-md-6" align="right">
-			<div class="btn-group">
-				@if(currentPage.hasPrev){
-				<a class="btn btn-primary" href="@routes.MessageController.message(currentPage.getPageIndex - 1, 0, 0, controllers.Application.getUser.userName)#receivedMessages">
-					<span class='glyphicon glyphicon-chevron-left'>
+		<div class="col-md-6"></div>
+			<div class="col-md-6" align="right">
+				<div class="btn-group">
+					@if(currentPage.hasPrev){
+					<a class="btn btn-primary" href="@routes.MessageController.message(currentPage.getPageIndex - 1, 0, 0, controllers.Application.getUser.userName)#receivedMessages">
+						<span class='glyphicon glyphicon-chevron-left'>
+						</span>Page precedente</a>
+					}else{
+					<a class="btn btn-primary" disabled="disabled"><span class='glyphicon glyphicon-chevron-left'>
 					</span>Page precedente</a>
-				}else{
-				<a class="btn btn-primary" disabled="disabled"><span class='glyphicon glyphicon-chevron-left'>
-				</span>Page precedente</a>
-			}<a class="btn btn-primary" href="">@currentPage.getDisplayXtoYofZ(" - ", " / ")</a> @if(currentPage.hasNext){
-			<a class="btn btn-primary" href="@routes.MessageController.message(currentPage.getPageIndex + 1, 0, 0, controllers.Application.getUser.userName)#receivedMessages">Page suivante<span class='glyphicon glyphicon-chevron-right'></span></a>
-		}else{
-		<a class="btn btn-primary" disabled="disabled">Page suivante<span class='glyphicon glyphicon-chevron-right'></span></a>
-	}
-			</div>
-	</div>
-</div>
+				}<a class="btn btn-primary" href="">@currentPage.getDisplayXtoYofZ(" - ", " / ")</a> @if(currentPage.hasNext){
+				<a class="btn btn-primary" href="@routes.MessageController.message(currentPage.getPageIndex + 1, 0, 0, controllers.Application.getUser.userName)#receivedMessages">Page suivante<span class='glyphicon glyphicon-chevron-right'></span></a>
+			}else{
+			<a class="btn btn-primary" disabled="disabled">Page suivante<span class='glyphicon glyphicon-chevron-right'></span></a>
+		}
+				</div>
+		</div>
 
+
+	</div>
+}else{
+	Aucune information à afficher
+}
 </div>
+	
+	
+
+
