@@ -1,12 +1,7 @@
 @(currentPage:com.avaje.ebean.Page[models.Message])
-
-	
-
-
 <div class="tab-pane" id="sentMessages">
 	@if(currentPage.getList().size() != 0){
 	<div class="col-md-10">
-		
 		<div class="col-md-12"  >
 			<div class='col-md-7' align="left">
 				<input id="select_all_sent_mess" type='checkbox' />
@@ -16,15 +11,12 @@
 			<div class='col-md-5' align="right">
 				<button id="deleteListSentMess" class="btn btn-danger">Supprimer</button>
 			</div>
-			
 		</div>
 		<table class="table-condensed">
 			@for(messages <- currentPage.getList()){
-
 			<tr>
 				<td class="col-md-1"><a href="@routes.UserController.userHome(User.findById(messages.userNameTo))">@User.findById(messages.userNameTo).firstName @User.findById(messages.userNameTo).lastName</a></td>
-
-				
+	
 				<td class="col-md-2">
 					
 					<img src="@routes.Assets.at("imgs/" + "users/" + User.findById(messages.userNameTo).userName + "/avatar/" + User.findById(messages.userNameTo).avatar)" alt="..." width="70" height="70">

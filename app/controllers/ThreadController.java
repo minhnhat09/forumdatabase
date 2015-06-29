@@ -42,7 +42,7 @@ public class ThreadController extends Controller {
 	 */
 	public static Result threadHome(Thread thread, Integer page){
 		Page<Post> posts = Post.find(thread, page);
-		System.out.println("thread home");
+		
 		/**
 		 * Update the article view count
 		 */
@@ -309,7 +309,8 @@ public class ThreadController extends Controller {
 	 */
 	public static void notificationForComment(Thread thread, Post comment){
 		Notification noti = new Notification();
-		if(thread.author != comment.user){
+		if(!thread.author.userName.equals(comment.user.userName)){
+			System.out.println(thread.author.firstName + " - " + comment.user.firstName);
 			noti.user     = thread.author;
 			noti.noteDate = new Date();
 			noti.content  = comment.user.firstName + " " + comment.user.lastName +  " " + Messages.get("responseThread") + " " + comment.thread.threadName;
