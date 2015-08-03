@@ -463,7 +463,34 @@ public class Thread extends Model implements PathBindable<Thread>{
 
 	
 	
+	/**
+	 * Method find a List of thread in a specific forum by name
+	 * @param nameThread    Thread to search
+	 * @param idApp			App containing thread (to focus the result)
+	 * 
+	 * */
+	public static List<Thread> findInForumByName(String nameThread, int idApp){
+		return find.where()
+				.ilike("thread_name", "%" + nameThread + "%")
+				.eq("application_id_app", idApp)
+				.orderBy("id_thread asc")
+				.findList();
+						
+	}
 	
+	/**
+	 * Method find pages of thread by author (for search module)
+	 * @param authorName 	Author to search
+	 * @param idApp			App containing thread (to focus the result)
+	 *  */
+	public static List<Thread> findInForumByAuthor(String authorName, int idApp){
+		return find.where()
+				.ilike("author_user_name", "%" + authorName + "%")
+				.eq("application_id_app", idApp)
+				.orderBy("id_thread asc")
+				.findList();
+				
+	}
 	
 	
 	

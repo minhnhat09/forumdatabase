@@ -210,6 +210,11 @@ GET		/forum/api/forum/getModuleTags					api.ForumControllerApi.moduleOptionsJson
 #Page Inscription
 POST	/forum/api/demandCode							api.InscriptionControllerApi.demandCodeMobile()
 
+#Search Forum Json
+GET 	/forum/api/search/f=:idForum/n=:content			api.SearchControllerApi.searchInForumByName(idForum: Integer, content: String)
+
+GET 	/forum/api/search/f=:idForum/a=:content			api.SearchControllerApi.searchInForumByAuthor(idForum: Integer, content: String)
+
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/js/routes             					controllers.Application.jsRoutes()
